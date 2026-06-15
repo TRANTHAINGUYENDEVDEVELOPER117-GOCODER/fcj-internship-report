@@ -1,57 +1,47 @@
 ---
 title: "Week 5 Worklog"
-date: 2024-01-01
+date: 2026-06-06
 weight: 5
 chapter: false
 pre: " <b> 1.5. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 5 Overview (06/06 – 12/06/2026)
 
-### Week 5 Objectives:
+In week five, I moved on to **Lab 20 – AWS Transit Gateway** after completing VPC Peering in week 4. Unlike peering (two VPCs only), Transit Gateway connects **multiple VPCs** through a central hub. I also practiced **AWS Systems Manager** and **Session Manager** to manage EC2 without opening SSH port 22.
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Week 5 Objectives
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+* Complete **Lab 20 – AWS Transit Gateway** (CloudFormation → attachments → route tables → testing).
+* Practice **AWS Systems Manager** and **Session Manager**.
+* Compare **VPC Peering** vs **Transit Gateway** for network scaling.
 
+### Tasks Completed
 
-### Week 5 Achievements:
+| Step | Task | Status | Link |
+| --- | --- | --- | --- |
+| 02.1 | Launch CloudFormation stack (3 VPCs + Transit Gateway) | ✅ | [Lab 20](https://000020.awsstudygroup.com/) |
+| 03 | Create VPC attachments to Transit Gateway | ✅ | [Playlist](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i) |
+| 04 | Configure Transit Gateway route tables | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/3-optimize/) |
+| 05 | Test cross-VPC connectivity via TGW | ✅ | [Lab 20](https://000020.awsstudygroup.com/) |
+| 06 | Systems Manager: IAM role, Run Command | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 07 | Session Manager: connect without port 22 | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 08 | Cleanup stacks and resources | ✅ | [Lab 20](https://000020.awsstudygroup.com/) |
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+### Achievements
 
-* Successfully created and configured an AWS Free Tier account.
+* Completed **Lab 20** and learned **Systems Manager / Session Manager**.
+* Understood Transit Gateway as a multi-VPC hub vs one-to-one VPC Peering.
+* Managed EC2 without SSH — reduced attack surface.
+* Cleaned up resources in the correct order to avoid extra charges.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+### Challenges
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* Attachments stayed **pending** — had to wait before testing connectivity.
+* Initial ping failures — missing route propagation or Security Group rules.
+* Session Manager failed until IAM role `AmazonSSMManagedInstanceCore` was attached.
 
-* Used AWS CLI to perform basic operations such as:
+### Next Week
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Continue **Cloud Journey – Optimize** labs.
+* Review VPC, TGW, and SSM before moving to new topics.
