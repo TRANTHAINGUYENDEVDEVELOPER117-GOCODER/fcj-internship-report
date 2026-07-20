@@ -1,32 +1,27 @@
 ---
-title : "Clean up"
-date : 2024-01-01
-weight : 6
-chapter : false
-pre : " <b> 5.6. </b> "
+title: "References and Lab Cleanup"
+date: 2026-07-11
+weight: 6
+chapter: false
+pre: " <b> 5.6. </b> "
 ---
-Congratulations on completing this workshop! 
-In this workshop, you learned architecture patterns for accessing Amazon S3 without using the Public Internet. 
-+ By creating a gateway endpoint, you enabled direct communication between EC2 resources and Amazon S3, without traversing an Internet Gateway. 
-+ By creating an interface endpoint you extended S3 connectivity to resources running in your on-premises data center via AWS Site-to-Site VPN or Direct Connect. 
 
-#### clean up
-1. Navigate to Hosted Zones on the left side of Route 53 console. Click the name of *s3.us-east-1.amazonaws.com* zone. Click Delete and confirm deletion by typing delete. 
+# References and Lab Cleanup
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/delete-zone.png)
+### References
 
-2. Disassociate the Route 53 Resolver Rule - myS3Rule from "VPC Onprem" and Delete it. 
+- [AWS Architecture Icons](https://aws.amazon.com/architecture/icons/)
+- [AWS Well-Architected Framework – Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)
+- [Amazon GuardDuty Documentation](https://docs.aws.amazon.com/guardduty/)
+- [AWS Security Hub Documentation](https://docs.aws.amazon.com/securityhub/)
+- [Amazon Detective Documentation](https://docs.aws.amazon.com/detective/)
+- [AWS Step Functions Documentation](https://docs.aws.amazon.com/step-functions/)
+- [AWS Systems Manager Documentation](https://docs.aws.amazon.com/systems-manager/)
+- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 
-![hosted zone](/images/5-Workshop/5.6-Cleanup/vpc.png)
+### Cleanup checklist
 
-4. Open the CloudFormation console  and delete the two CloudFormation Stacks that you created for this lab:
-+ PLOnpremSetup
-+ PLCloudSetup
+After the lab, remove unused EC2 instances, EBS snapshots, S3 objects/buckets, CloudWatch log groups, EventBridge rules, Step Functions state machines, Lambda functions, SNS topics, IAM roles, and temporary security services if they were enabled only for testing.
 
-![delete stack](/images/5-Workshop/5.6-Cleanup/delete-stack.png)
+This prevents unexpected cost and keeps the AWS account clean after the workshop.
 
-5. Delete S3 buckets
-+ Open S3 console
-+ Choose the bucket we created for the lab, click and confirm empty. Click delete and confirm delete.
-
-![delete s3](/images/5-Workshop/5.6-Cleanup/delete-s3.png)

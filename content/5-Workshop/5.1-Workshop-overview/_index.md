@@ -1,18 +1,42 @@
 ---
-title : "Introduction"
-date : 2024-01-01 
-weight : 1 
-chapter : false
-pre : " <b> 5.1. </b> "
+title: "Detailed AWS CloudSOC Project Report"
+date: 2026-07-11
+weight: 1
+chapter: false
+pre: " <b> 5.1. </b> "
 ---
 
-#### VPC endpoints
-+ **VPC endpoints** are virtual devices. They are horizontally scaled, redundant, and highly available VPC components. They allow communication between your compute resources and AWS services without imposing availability risks.
-+ Compute resources running in VPC can access  **Amazon S3**  using a Gateway endpoint. PrivateLink interface endpoints can be used by compute resources running in VPC or on-premises.
+# AWS CloudSOC Project Report
 
-#### Workshop overview
-In this workshop, you will use two VPCs. 
-+ **"VPC Cloud"** is for cloud resources such as a  **Gateway endpoint** and an EC2 instance to test with. 
-+ **"VPC On-Prem"** simulates an on-premises environment such as a factory or corporate datacenter. An EC2 instance running strongSwan VPN software has been deployed in "VPC On-prem" and automatically configured to establish a Site-to-Site VPN tunnel with AWS Transit Gateway. This VPN simulates connectivity from an on-premises location to the AWS cloud. To minimize costs, only one VPN instance is provisioned to support this workshop. When planning VPN connectivity for your production workloads, AWS recommends using multiple VPN devices for high availability.
+**Project:** Design and implement AWS CloudSOC – controlled incident detection, investigation, and response on AWS  
+**Team:** Tran Thai Nguyen, Duong Ba Dat  
+**University/Class:** HUTECH – 22DTHB1  
+**Major:** Cybersecurity  
+**Program:** AWS Vietnam FCJ Workforce Bootcamp 2026  
+**Date:** July 2026
 
-![overview](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+### Team roles
+
+| Member | Main responsibility |
+| --- | --- |
+| Tran Thai Nguyen | Overall architecture, report writing, workshop documentation, Hugo website completion |
+| Duong Ba Dat | AWS service review, SOC workflow validation, architecture diagram review, final checklist support |
+
+### Objective
+
+AWS CloudSOC simulates a Security Operations Center workflow on AWS. It detects suspicious activity, investigates findings, requests analyst approval when needed, collects forensic evidence, and isolates an affected EC2 instance in a controlled way.
+
+### Scope
+
+This is a **Lab / Proof of Concept** architecture. It uses one AWS Region, one lab VPC, one EC2 workload, GuardDuty findings, EventBridge, Step Functions, Systems Manager, Lambda, SNS, DynamoDB, S3, CloudWatch, IAM, Config, and KMS.
+
+### Main value
+
+The project demonstrates a complete SOC flow:
+
+```text
+Detect → Investigate → Decide → Collect Evidence → Create Snapshot → Contain → Notify → Review
+```
+
+The most important design choice is the approval gate. The system does not isolate every finding automatically; it checks severity, instance ID, the `AutoIsolate=true` tag, and the configured response policy first.
+

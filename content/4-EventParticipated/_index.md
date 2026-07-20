@@ -1,6 +1,6 @@
 ---
 title: "Events Participated"
-date: 2024-01-01
+date: 2026-07-02
 weight: 4
 chapter: false
 pre: " <b> 4. </b> "
@@ -17,22 +17,24 @@ List events (workshops, seminars, meetups) attended during the internship. Each 
 
 <div class="content-cards">
 
-<a href="4.1-Event1/" class="content-card placeholder">
+<a href="4.1-Event1/" class="content-card">
   <span class="card-tag">Event 1</span>
-  <h4>Event name (update later)</h4>
-  <p>Date · Location · Role: Attendee</p>
-  <span class="status-badge todo">Not updated</span>
+  <h4>First Cloud Journey Kick-off / Bootcamp Orientation</h4>
+  <p>05/09/2026 · Online · Role: Attendee</p>
+  <span class="status-badge done">Completed</span>
 </a>
 
-<a href="4.2-Event2/" class="content-card placeholder">
+<a href="4.2-Event2/" class="content-card">
   <span class="card-tag">Event 2</span>
-  <h4>Event name (update later)</h4>
-  <p>Date · Location · Role: Attendee</p>
-  <span class="status-badge todo">Not updated</span>
+  <h4>AWS Study Group Lab Sessions / Cloud Journey Workshops</h4>
+  <p>05–07/2026 · Online + self-paced labs · Role: Attendee and practitioner</p>
+  <span class="status-badge done">Completed</span>
 </a>
 
 </div>
 
-{{% notice info %}}
-💡 **Tip:** See sample content inside each Event page for detailed presentation format.
-{{% /notice %}}
+### Key takeaways
+
+- Understood how FCJ structures AWS learning by modules.
+- Learned how to combine YouTube playlist sessions with Cloud Journey hands-on labs.
+- Improved note-taking, self-learning, troubleshooting, and reporting habits.

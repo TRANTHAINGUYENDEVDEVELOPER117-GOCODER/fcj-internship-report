@@ -1,95 +1,139 @@
 ---
-title : "VPC Endpoint Policies"
-date : 2024-01-01
-weight : 5
-chapter : false
-pre : " <b> 5.5 </b> "
+title: "Hướng phát triển Production"
+date: 2026-07-11
+weight: 5
+chapter: false
+pre: " <b> 5.5. </b> "
 ---
 
-Khi bạn tạo một Interface Endpoint  hoặc cổng, bạn có thể đính kèm một chính sách điểm cuối để kiểm soát quyền truy cập vào dịch vụ mà bạn đang kết nối. Chính sách VPC Endpoint là chính sách tài nguyên IAM mà bạn đính kèm vào điểm cuối. Nếu bạn không đính kèm chính sách khi tạo điểm cuối, thì AWS sẽ đính kèm chính sách mặc định cho bạn để cho phép toàn quyền truy cập vào dịch vụ thông qua điểm cuối.
+# Hướng phát triển Production cho AWS CloudSOC
 
-Bạn có thể tạo chính sách chỉ hạn chế quyền truy cập vào các S3 bucket cụ thể. Điều này hữu ích nếu bạn chỉ muốn một số Bộ chứa S3 nhất định có thể truy cập được thông qua điểm cuối.
+Kiến trúc hiện tại là **Lab / Proof of Concept**, ưu tiên chi phí thấp và dễ trình bày. Nếu triển khai thực tế, hệ thống cần được nâng cấp theo các hướng sau.
 
-Trong phần này, bạn sẽ tạo chính sách VPC Endpoint hạn chế quyền truy cập vào S3 bucket được chỉ định trong chính sách VPC Endpoint.
+### 1. Nâng cấp network architecture
 
-![endpoint diagram](/images/5-Workshop/5.5-Policy/s3-bucket-policy.png)
+| Hiện tại trong lab | Đề xuất production |
+| --- | --- |
+| EC2 ở Public Subnet | EC2 ở Private Subnet |
+| Truy cập trực tiếp từ Internet | Truy cập qua ALB/CloudFront/WAF |
+| Single AZ | Multi-AZ |
+| Public IP cho workload | Không public IP cho workload |
+| Security Group đơn giản | Security Group tách lớp web/app/admin |
 
-#### Kết nối tới EC2 và xác minh kết nối tới S3. 
+Kiến trúc production nên có:
 
-1. Bắt đầu một phiên AWS Session Manager mới trên máy chủ có tên là Test-Gateway-Endpoint. Từ phiên này, xác minh rằng bạn có thể liệt kê nội dung của bucket mà bạn đã tạo trong Phần 1: Truy cập S3 từ VPC.
+- **Public Subnet:** ALB, NAT Gateway nếu cần.
+- **Private Subnet:** EC2/application workload.
+- **VPC Endpoints:** SSM, S3, CloudWatch Logs, KMS để giảm phụ thuộc internet.
+- **AWS WAF:** bảo vệ ALB/CloudFront trước các tấn công web phổ biến.
 
+### 2. Nâng cấp detection
+
+Bổ sung thêm các dịch vụ:
+
+- **Amazon Inspector:** quét lỗ hổng EC2/container image.
+- **AWS WAF logs:** phát hiện XSS/SQLi/web exploit.
+- **AWS Config Rules:** kiểm tra cấu hình sai.
+- **Amazon Macie:** phát hiện dữ liệu nhạy cảm trong S3.
+- **CloudTrail Lake hoặc OpenSearch:** phục vụ truy vấn log nâng cao.
+
+### 3. Nâng cấp response workflow
+
+Workflow production nên chia rõ các nhánh:
+
+| Nhánh | Hành động |
+| --- | --- |
+| Alert only | Ghi incident, gửi cảnh báo |
+| Manual approval | Chờ SOC Analyst phê duyệt |
+| Auto containment | Cô lập tự động khi severity rất cao |
+| Forensic only | Thu thập evidence nhưng chưa cô lập |
+| Rollback | Khôi phục Security Group nếu cô lập nhầm |
+
+Nên có thêm cơ chế:
+
+- Timeout cho approval.
+- Escalation nếu không ai phản hồi.
+- Rollback button trên dashboard.
+- Lưu toàn bộ action vào audit trail.
+
+### 4. Nâng cấp evidence management
+
+S3 evidence bucket nên có:
+
+- SSE-KMS.
+- Bucket policy chặn public access.
+- Object Lock nếu cần bảo toàn bằng chứng.
+- Lifecycle policy để kiểm soát chi phí.
+- Prefix theo incident ID:
+
+```text
+s3://cloudsoc-evidence/
+  incidents/
+    INC-2026-0001/
+      finding.json
+      ssm-output/
+      sg-before.json
+      sg-after.json
+      snapshot-metadata.json
 ```
-aws s3 ls s3://<your-bucket-name>
-```
-![test](/images/5-Workshop/5.5-Policy/test1.png)
 
-Nội dung của bucket bao gồm hai tệp có dung lượng 1GB đã được tải lên trước đó.
+### 5. Nâng cấp IAM & governance
 
-2. Tạo một bucket S3 mới; tuân thủ mẫu đặt tên mà bạn đã sử dụng trong Phần 1, nhưng thêm '-2' vào tên. Để các trường khác là mặc định và nhấp vào **Create**.
+Production cần tách role theo nhiệm vụ:
 
-![create bucket](/images/5-Workshop/5.5-Policy/create-bucket.png)
+- `CloudSOC-DashboardApiRole`
+- `CloudSOC-IncidentResponseLambdaRole`
+- `CloudSOC-StepFunctionsRole`
+- `CloudSOC-EC2SSMInstanceRole`
+- `CloudSOC-ReadOnlyAnalystRole`
+- `CloudSOC-AdminApproverRole`
 
-3. Tạo bucket thành công.
+Nguyên tắc:
 
-![Success](/images/5-Workshop/5.5-Policy/create-bucket-success.png)
+- Không dùng wildcard permission nếu không cần.
+- Giới hạn Lambda chỉ được thay Security Group trên resource có tag phù hợp.
+- Chỉ cho phép thao tác với evidence bucket riêng.
+- Bật CloudTrail cho toàn account.
+- Dùng AWS Config để ghi lại thay đổi cấu hình.
 
-Policy mặc định cho phép truy cập vào tất cả các S3 Buckets thông qua VPC endpoint.
+### 6. Nâng cấp triển khai bằng IaC
 
-4. Trong giao diện **Edit Policy**, sao chép và dán theo policy sau, thay thế yourbucketname-2 với tên bucket thứ hai của bạn. Policy này sẽ cho phép truy cập đến bucket mới thông qua VPC endpoint, nhưng không cho phép truy cập đến các bucket còn lại. Chọn **Save** để kích hoạt policy.
+Trong lab có thể triển khai thủ công để học. Tuy nhiên production nên dùng:
 
+- AWS CDK.
+- Terraform.
+- CloudFormation.
 
-```
-{
-  "Id": "Policy1631305502445",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1631305501021",
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": [
-      				"arn:aws:s3:::yourbucketname-2",
-       				"arn:aws:s3:::yourbucketname-2/*"
-       ],
-      "Principal": "*"
-    }
-  ]
-}
-```
+Lợi ích:
 
-![custom policy](/images/5-Workshop/5.5-Policy/policy2.png)
+- Tái triển khai được.
+- Review thay đổi bằng Git.
+- Giảm lỗi cấu hình thủ công.
+- Dễ tách môi trường `dev`, `staging`, `production`.
 
-Cấu hình policy thành công.
+### 7. Nâng cấp dashboard
 
-![success](/images/5-Workshop/5.5-Policy/success.png)
+Dashboard production nên có:
 
-5. Từ session của bạn trên Test-Gateway-Endpoint instance, kiểm tra truy cập đến S3 bucket bạn tạo ở bước đầu
+- Danh sách incident theo severity.
+- Bộ lọc theo status: `NEW`, `NEEDS_REVIEW`, `APPROVED`, `REJECTED`, `ISOLATED`, `FAILED`.
+- Trang chi tiết incident.
+- Nút Approve/Reject.
+- Nút rollback containment.
+- Link mở Detective/Security Hub.
+- Timeline xử lý sự cố.
 
-```
-aws s3 ls s3://<yourbucketname>
-```
+### 8. Bài tập nâng cao
 
-Câu lệnh trả về lỗi bởi vì truy cập vào S3 bucket không có quyền trong VPC endpoint policy.
+Sau workshop, có thể mở rộng bằng các bài tập:
 
-![error](/images/5-Workshop/5.5-Policy/error.png)
+1. Vẽ phiên bản production có Private Subnet, ALB, WAF, Multi-AZ.
+2. Bổ sung Inspector để quét EC2.
+3. Thêm CloudTrail Lake/OpenSearch để truy vấn log.
+4. Viết CDK/Terraform cho toàn bộ kiến trúc.
+5. Tạo high-level diagram chỉ gồm 5–6 box để dùng trong slide 5 phút.
 
-6. Trở lại home directory của bạn trên EC2 instance ```cd~```
+### 9. Kết luận
 
-+ Tạo file ```fallocate -l 1G test-bucket2.xyz ```
-+ Sao chép file lên bucket thứ  2 ```aws s3 cp test-bucket2.xyz s3://<your-2nd-bucket-name>```
+Bản lab CloudSOC giúp chứng minh tư duy thiết kế SOC trên AWS. Bản production cần tập trung vào network hardening, IAM least privilege, evidence integrity, rollback, audit trail và triển khai bằng IaC để đảm bảo hệ thống có thể vận hành ổn định trong môi trường thực tế.
 
-![success](/images/5-Workshop/5.5-Policy/test2.png)
-
-Thao tác này được cho phép bởi VPC endpoint policy.
-
-![success](/images/5-Workshop/5.5-Policy/test2-success.png)
-
-Sau đó chúng ta kiểm tra truy cập vào S3 bucket đầu tiên
-
- ```aws s3 cp test-bucket2.xyz s3://<your-1st-bucket-name>```
-
- ![fail](/images/5-Workshop/5.5-Policy/test2-fail.png)
-
- Câu lệnh xảy ra lỗi bởi vì bucket không có quyền truy cập bởi VPC endpoint policy.
-
-Trong phần này, bạn đã tạo chính sách VPC Endpoint cho Amazon S3 và sử dụng AWS CLI để kiểm tra chính sách. Các hoạt động AWS CLI liên quan đến bucket S3 ban đầu của bạn thất bại vì bạn áp dụng một chính sách chỉ cho phép truy cập đến bucket thứ hai mà bạn đã tạo. Các hoạt động AWS CLI nhắm vào bucket thứ hai của bạn thành công vì chính sách cho phép chúng. Những chính sách này có thể hữu ích trong các tình huống khi bạn cần kiểm soát quyền truy cập vào tài nguyên thông qua VPC Endpoint.

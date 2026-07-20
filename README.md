@@ -1,4 +1,6 @@
-# Báo cáo thực tập FCJ — Trần Thái Nguyên
+﻿# TRANTHAINGUYEN-fcj-internship-report
+
+Báo cáo thực tập FCJ — Trần Thái Nguyên
 
 **Sinh viên:** Trần Thái Nguyên · HUTECH · An ninh mạng · 22DTHB1  
 **Chương trình:** First Cloud Journey Workforce Bootcamp — Amazon Web Services Viet Nam  
@@ -9,7 +11,7 @@
 Sau khi deploy GitHub Pages, link báo cáo:
 
 ```
-https://<GITHUB_USERNAME>.github.io/<TEN_REPO>/vi/
+https://<GITHUB_USERNAME>.github.io/TRANTHAINGUYEN-fcj-internship-report/vi/
 ```
 
 ## Cấu trúc
@@ -26,11 +28,37 @@ https://<GITHUB_USERNAME>.github.io/<TEN_REPO>/vi/
 
 ## Chạy local
 
+Mở PowerShell, vào đúng thư mục chứa source Hugo:
+
 ```powershell
-hugo server -D
+cd "C:\Users\Lenovo\Downloads\TRANTHAINGUYEN-fcj-internship-report"
+hugo server -D -p 3655 --disableFastRender
 ```
 
-Mở: http://localhost:1313/vi/
+Sau đó mở trình duyệt:
+
+```text
+http://localhost:3655/vi/
+```
+
+Hoặc chạy nhanh bằng file có sẵn:
+
+```powershell
+.\serve.bat
+```
+
+Nếu Hugo báo port đang được sử dụng, dừng tiến trình Hugo cũ rồi chạy lại:
+
+```powershell
+Get-Process hugo -ErrorAction SilentlyContinue | Stop-Process -Force
+hugo server -D -p 3655 --disableFastRender
+```
+
+Nếu muốn build bản tĩnh để kiểm tra trước khi deploy:
+
+```powershell
+hugo
+```
 
 ## Deploy
 

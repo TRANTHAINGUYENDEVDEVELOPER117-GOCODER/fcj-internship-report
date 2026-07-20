@@ -1,31 +1,31 @@
 ---
-title: "Blog 1"
-date: 2024-01-01
+title: "Safeguarding Generative AI Applications with Amazon Bedrock Guardrails"
+date: 2026-07-19
 weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# SESSION POLICIES IN AMAZON EKS POD IDENTITY
+# Safeguarding Generative AI Applications with Amazon Bedrock Guardrails
 
-Amazon EKS Pod Identity has recently added the session policies feature, allowing you to narrow IAM permissions flexibly and precisely for each pod without needing to create many separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
+This blog note summarizes an AWS Artificial Intelligence Blog architecture for using **Amazon Bedrock Guardrails** through a centralized **Generative AI Gateway**.
 
-Key points to know:
+![Generative AI Gateway with Amazon Bedrock Guardrails](/images/3-BlogsPosted/blog1-bedrock-guardrails.png)
 
-* A session policy is an inline IAM policy specified when creating or updating a Pod Identity association.
-* Effective permissions = intersection between the IAM role permissions and the session policy → the session policy can only narrow permissions, not expand them.
-* Helps avoid over-permissioning when reusing a single IAM role for multiple workloads with different needs.
-* Supports both same-account and cross-account (via IAM role chaining).
-* Significantly reduces the number of IAM roles that need to be managed, helping avoid hitting IAM quota limits in large clusters.
-* Easily configured through the AWS Management Console, AWS CLI, or AWS SDK when creating an association between a Kubernetes ServiceAccount and an IAM role.
+### Key idea
 
-This feature is especially useful when you have many applications running on the same IAM role but need different permission restrictions (for example: one pod only reads a specific S3 bucket, another pod only calls certain APIs).
+Instead of letting each application implement its own prompt filtering, credential handling, and logging, the architecture places a gateway between users/applications and LLM providers. The gateway checks prompts with Bedrock Guardrails before forwarding them to Amazon Bedrock or external LLMs.
 
-...Image...
+### Why it matters
 
-...Link...
+Generative AI applications can expose risks such as prompt injection, jailbreak attempts, accidental PII sharing, inconsistent safety policies, and scattered API credentials. Bedrock Guardrails helps enforce centralized controls such as content filtering, denied topics, prompt attack detection, PII masking, and word filters.
 
-...Guide...
+### Security takeaway
+
+Guardrails are not a complete security solution. They should be part of a defense-in-depth model together with IAM least privilege, authentication, authorization, encryption, monitoring, data minimization, and regular testing.
+
+### References
+
+- [AWS Blog: Safeguard generative AI applications with Amazon Bedrock Guardrails](https://aws.amazon.com/blogs/machine-learning/safeguard-generative-ai-applications-with-amazon-bedrock-guardrails/)
+- [Amazon Bedrock Guardrails documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)
+

@@ -1,6 +1,6 @@
 ---
 title: "Các events đã tham gia"
-date: 2024-01-01
+date: 2026-07-02
 weight: 4
 chapter: false
 pre: " <b> 4. </b> "
@@ -17,22 +17,24 @@ Liệt kê các sự kiện (workshop, hội thảo, buổi chia sẻ) đã tham
 
 <div class="content-cards">
 
-<a href="4.1-Event1/" class="content-card placeholder">
+<a href="4.1-Event1/" class="content-card">
   <span class="card-tag">Event 1</span>
-  <h4>Tên sự kiện (cập nhật sau)</h4>
-  <p>Thời gian · Địa điểm · Vai trò: Người tham dự</p>
-  <span class="status-badge todo">Chưa cập nhật</span>
+  <h4>First Cloud Journey Kick-off / Bootcamp Orientation</h4>
+  <p>09/05/2026 · Online · Vai trò: Người tham dự</p>
+  <span class="status-badge done">Hoàn thành</span>
 </a>
 
-<a href="4.2-Event2/" class="content-card placeholder">
+<a href="4.2-Event2/" class="content-card">
   <span class="card-tag">Event 2</span>
-  <h4>Tên sự kiện (cập nhật sau)</h4>
-  <p>Thời gian · Địa điểm · Vai trò: Người tham dự</p>
-  <span class="status-badge todo">Chưa cập nhật</span>
+  <h4>AWS Study Group Lab Sessions / Cloud Journey Workshops</h4>
+  <p>05–07/2026 · Online + tự học lab · Vai trò: Người tham dự và thực hành</p>
+  <span class="status-badge done">Hoàn thành</span>
 </a>
 
 </div>
 
-{{% notice info %}}
-💡 **Gợi ý:** Tham khảo nội dung mẫu trong từng trang Event để biết cách trình bày chi tiết.
-{{% /notice %}}
+### Bài học chính từ events
+
+- Hiểu cách chương trình FCJ tổ chức lộ trình học AWS theo từng module.
+- Biết cách kết hợp playlist YouTube với tài liệu Cloud Journey để tự học hiệu quả.
+- Tăng kỹ năng ghi chép, hỏi đáp và tự xử lý lỗi khi làm lab.

@@ -1,57 +1,63 @@
 ---
 title: "Week 8 Worklog"
-date: 2024-01-01
+date: 2026-06-27
 weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+### Week 8 Overview (06/27 – 07/03/2026)
 
+In week eight, I continued the security track with a focus on **data protection** and **threat detection**: encryption with **AWS KMS**, private S3 connectivity with **VPC Endpoints**, **S3 security best practices**, enabling **GuardDuty**, and safer secret handling with **Secrets Manager**.
 
-### Week 8 Objectives:
+### Week 8 Objectives
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Practice **KMS** to understand key management and encrypt/decrypt basics.
+* Use **VPC Endpoints** to access S3 privately (reduce Internet exposure).
+* Apply **S3 Security Best Practices**: block public access, bucket policy, encryption.
+* Enable **GuardDuty** and review findings/severity.
+* Store credentials in **Secrets Manager** instead of hardcoding.
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Tasks Completed
 
+| Item | Task | Status | Reference |
+| --- | --- | --- | --- |
+| 01 | KMS: create key, test encrypt/decrypt | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 02 | S3 Gateway VPC Endpoint + routing | ✅ | [S3 Endpoint Lab](https://000069.awsstudygroup.com/) |
+| 03 | S3 security hardening (BPA, policy, encryption) | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 04 | GuardDuty: enable + review findings | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 05 | Secrets Manager: create secret + basic permissions | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| 06 | Cleanup and cost check | ✅ | — |
 
-### Week 8 Achievements:
+### What I Did
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+**KMS**
+* Created a customer managed key and learned the difference between key policy and IAM policy.
+* Performed a simple encrypt/decrypt flow to understand KMS usage permissions.
 
-* Successfully created and configured an AWS Free Tier account.
+**VPC Endpoint for S3**
+* Created a Gateway VPC Endpoint for S3 and attached it to the correct route table.
+* Noted how endpoint policies and bucket policies must align to avoid unexpected denies.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+**S3 Security**
+* Enabled Block Public Access.
+* Reviewed bucket policies for least privilege.
+* Enabled default encryption and verified object encryption on upload.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+**GuardDuty**
+* Enabled GuardDuty and learned severity-based triage.
+* Documented findings workflow: triage → validate → remediate.
 
-* Used AWS CLI to perform basic operations such as:
+**Secrets Manager**
+* Stored demo credentials as a secret and controlled access with least privilege.
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
+### Achievements
 
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Built a security baseline around encryption, private connectivity, threat detection, and secret hygiene.
+* Reduced attack surface by removing public paths and unsafe credential storage.
+
+### Challenges
+
+* Policy confusion (KMS key policy vs IAM policy) required checking both layers.
+* Endpoint worked but S3 access was denied until bucket policy/endpoint policy were aligned.
+* GuardDuty findings may take time to appear after enabling.
+

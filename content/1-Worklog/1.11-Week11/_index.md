@@ -1,57 +1,41 @@
 ---
 title: "Week 11 Worklog"
-date: 2024-01-01
+date: 2026-07-18
 weight: 11
 chapter: false
 pre: " <b> 1.11. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# Week 11 Worklog: Docker, Amazon ECS, and CI/CD
 
-### Week 11 Objectives:
+### Overview
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+Week 11 focused on **DevOps & Containers** in the Modernize track. The main topics were Docker, Amazon ECR, Amazon ECS, CodeBuild, CodePipeline, and security considerations for automated deployments.
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Completed tasks
 
+| Item | Task | Status |
+| --- | --- | --- |
+| 01 | Dockerfile, image build, and local container run | ✅ Completed |
+| 02 | Amazon ECR repository and image push | ✅ Completed |
+| 03 | Amazon ECS task definition, cluster, and service | ✅ Completed |
+| 04 | CodeBuild build/test/push workflow | ✅ Completed |
+| 05 | CodePipeline source → build → deploy flow | ✅ Completed |
+| 06 | Cleanup ECS/ECR/pipeline resources | ✅ Completed |
 
-### Week 11 Achievements:
+### Key learning outcomes
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+- Understood how containers make application deployment more consistent.
+- Learned the flow: build image → push to ECR → deploy with ECS.
+- Practiced the basic concepts of ECS task definitions and services.
+- Learned how CodeBuild and CodePipeline support CI/CD automation.
+- Identified key security points in container and pipeline workflows.
 
-* Successfully created and configured an AWS Free Tier account.
+### Cybersecurity relevance
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+CI/CD pipelines must be secured carefully. Secrets should not be hard-coded, CodeBuild/CodePipeline roles should follow least privilege, container images should be scanned, and build logs should not expose tokens or passwords.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+### Preparation for week 12
 
-* Used AWS CLI to perform basic operations such as:
+After completing week 11, I prepared for the final phase: cleanup, final report review, Proposal, Workshop, Self-evaluation, Feedback, and full website validation.
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...

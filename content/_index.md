@@ -1,8 +1,10 @@
----
+﻿---
 title: "Internship Report"
 date: 2024-01-01
 weight: 1
 chapter: false
+aliases:
+  - /home/
 ---
 
 <div class="page-hero">
@@ -41,15 +43,15 @@ chapter: false
       <i class="fas fa-chart-line"></i>
       <div>
         <span class="progress-title">Internship Progress</span>
-        <span class="progress-sub">Lab 01–04, Lab 19 completed · Working on Lab 20</span>
+        <span class="progress-sub">12 weeks completed · Final report ready</span>
       </div>
     </div>
     <div class="progress-stats">
-      <span class="progress-percent">33%</span>
-      <span class="progress-label">Week 4 / 12</span>
+      <span class="progress-percent">100%</span>
+      <span class="progress-label">Week 12 / 12</span>
     </div>
   </div>
-  <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
 </div>
 
 <h2 class="section-heading"><i class="fas fa-folder-open"></i> Report Contents</h2>
@@ -61,7 +63,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Worklog</span>
       <span class="card-desc">Weekly tasks, AWS labs, and hands-on results.</span>
-      <span class="status-badge progress">4 / 12 weeks</span>
+      <span class="status-badge progress">Week 12 / 12</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -71,8 +73,8 @@ chapter: false
     <div class="card-icon-wrap proposal"><i class="fas fa-file-alt"></i></div>
     <div class="card-body">
       <span class="card-title">Proposal</span>
-      <span class="card-desc">Project architecture, cost, and implementation plan.</span>
-      <span class="status-badge todo">Not completed</span>
+      <span class="card-desc">AWS CloudSOC team proposal, scope, architecture, and deliverables.</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -82,8 +84,8 @@ chapter: false
     <div class="card-icon-wrap blogs"><i class="fas fa-newspaper"></i></div>
     <div class="card-body">
       <span class="card-title">Blogs Posted</span>
-      <span class="card-desc">Articles published on AWS Study Group.</span>
-      <span class="status-badge todo">Not updated</span>
+      <span class="card-desc">Technical posts on AWS AI, Big Data, Redshift, and cloud operations.</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -93,8 +95,8 @@ chapter: false
     <div class="card-icon-wrap events"><i class="fas fa-calendar-check"></i></div>
     <div class="card-body">
       <span class="card-title">Events Participated</span>
-      <span class="card-desc">AWS workshops and events attended.</span>
-      <span class="status-badge todo">Not updated</span>
+      <span class="card-desc">Kick-off, playlist sessions, AWS Study Group workshops/labs.</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -104,8 +106,8 @@ chapter: false
     <div class="card-icon-wrap workshop"><i class="fas fa-tools"></i></div>
     <div class="card-body">
       <span class="card-title">Workshop</span>
-      <span class="card-desc">AWS S3 VPC Endpoint lab documentation.</span>
-      <span class="status-badge todo">Reference template</span>
+      <span class="card-desc">AWS CloudSOC workshop: SOC architecture, response flow, and diagram guide.</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -116,7 +118,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Self-evaluation</span>
       <span class="card-desc">Skills assessment and contributions.</span>
-      <span class="status-badge todo">Not completed</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -127,7 +129,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Feedback</span>
       <span class="card-desc">Feedback on FCJ program and internship experience.</span>
-      <span class="status-badge todo">Not completed</span>
+      <span class="status-badge done">Completed</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>

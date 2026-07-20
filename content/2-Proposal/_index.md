@@ -1,115 +1,203 @@
 ---
 title: "Proposal"
-date: 2024-01-01
+date: 2026-07-19
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
+# Project Proposal: AWS CloudSOC
 
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+## Controlled Threat Detection, Investigation, and Incident Response on AWS
 
 ### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
 
-### 2. Problem Statement
-### What’s the Problem?
-Current weather stations require manual data collection, becoming unmanageable with multiple units. There is no centralized system for real-time data or analytics, and third-party platforms are costly and overly complex.
+Our team proposes **AWS CloudSOC**, a Lab / Proof of Concept project that simulates a Security Operations Center workflow on AWS. The system is designed to collect logs, detect suspicious behavior, support investigation, request approval when needed, collect forensic evidence, create EBS snapshots, and isolate affected EC2 instances through Security Group Isolation.
 
-### The Solution
-The platform uses AWS IoT Core to ingest MQTT data, AWS Lambda and API Gateway for processing, Amazon S3 for storage (including a data lake), and AWS Glue Crawlers and ETL jobs to extract, transform, and load data from the S3 data lake to another S3 bucket for analysis. AWS Amplify with Next.js provides the web interface, and Amazon Cognito ensures secure access. Similar to Thingsboard and CoreIoT, users can register new devices and manage connections, though this platform operates on a smaller scale and is designed for private use. Key features include real-time dashboards, trend analysis, and low operational costs.
+The key value of this proposal is controlled automation. AWS CloudSOC does not isolate every GuardDuty finding automatically. Instead, the response decision is based on finding type, severity, instance identity, the `AutoIsolate=true` tag, Dry-run/Enforce mode, and SOC Analyst approval.
 
-### Benefits and Return on Investment
-The solution establishes a foundational resource for lab members to develop a larger IoT platform, serving as a study resource, and provides a data foundation for AI enthusiasts for model training or analysis. It reduces manual reporting for each station via a centralized platform, simplifying management and maintenance, and improves data reliability. Monthly costs are $0.66 USD per the AWS Pricing Calculator, with a 12-month total of $7.92 USD. All IoT equipment costs are covered by the existing weather station setup, eliminating additional development expenses. The break-even period of 6-12 months is achieved through significant time savings from reduced manual work.
+![AWS CloudSOC Architecture](/images/2-Proposal/aws-cloudsoc-architecture.png)
 
-### 3. Solution Architecture
-The platform employs a serverless AWS architecture to manage data from 5 Raspberry Pi-based stations, scalable to 15. Data is ingested via AWS IoT Core, stored in an S3 data lake, and processed by AWS Glue Crawlers and ETL jobs to transform and load it into another S3 bucket for analysis. Lambda and API Gateway handle additional processing, while Amplify with Next.js hosts the dashboard, secured by Cognito. The architecture is detailed below:
+*Figure 1. AWS CloudSOC reference architecture – a Lab / Proof of Concept model for controlled detection, investigation, evidence collection, and EC2 isolation on AWS.*
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
+### 2. Team Members
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+| Member | Main role |
+| --- | --- |
+| Tran Thai Nguyen | Requirements analysis, CloudSOC architecture design, report writing, Hugo website completion |
+| Duong Ba Dat | AWS service research support, SOC workflow review, diagram validation, submission checklist review |
 
-### AWS Services Used
-- **AWS IoT Core**: Ingests MQTT data from 5 stations, scalable to 15.
-- **AWS Lambda**: Processes data and triggers Glue jobs (two functions).
-- **Amazon API Gateway**: Facilitates web app communication.
-- **Amazon S3**: Stores raw data in a data lake and processed outputs (two buckets).
-- **AWS Glue**: Crawlers catalog data, and ETL jobs transform and load it.
-- **AWS Amplify**: Hosts the Next.js web interface.
-- **Amazon Cognito**: Secures access for lab users.
+### 3. Problem Statement
 
-### Component Design
-- **Edge Devices**: Raspberry Pi collects and filters sensor data, sending it to IoT Core.
-- **Data Ingestion**: AWS IoT Core receives MQTT messages from the edge devices.
-- **Data Storage**: Raw data is stored in an S3 data lake; processed data is stored in another S3 bucket.
-- **Data Processing**: AWS Glue Crawlers catalog the data, and ETL jobs transform it for analysis.
-- **Web Interface**: AWS Amplify hosts a Next.js app for real-time dashboards and analytics.
-- **User Management**: Amazon Cognito manages user access, allowing up to 5 active accounts.
+Cloud security incidents often involve multiple telemetry sources: CloudTrail, VPC Flow Logs, GuardDuty findings, EC2 state, Security Group changes, and IAM activity. Without a coordinated workflow, SOC analysts may struggle to prioritize findings, identify impacted resources, preserve evidence, avoid false-positive containment, and maintain an audit trail.
 
-### 4. Technical Implementation
-**Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
+AWS CloudSOC addresses this problem by combining detection, investigation, orchestration, approval, forensic collection, containment, and notification in one controlled workflow.
 
-**Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+### 4. Objectives
 
-### 5. Timeline & Milestones
-**Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
+- Design an event-driven CloudSOC architecture.
+- Demonstrate a SOC workflow: Detect → Investigate → Decide → Collect Evidence → Snapshot → Contain → Notify.
+- Use AWS managed and serverless services to reduce manual operations.
+- Add an approval gate to prevent unsafe automatic isolation.
+- Store forensic evidence in S3 and EBS Snapshots.
+- Build a professional architecture diagram workshop.
+- Deliver the report as a bilingual Hugo website.
 
-### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
+### 5. Scope
 
-### Infrastructure Costs
-- AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+In scope:
 
-Total: $0.7/month, $8.40/12 months
+- One AWS Region: `ap-southeast-1`.
+- One lab VPC with a Public Subnet.
+- One EC2 workload for controlled testing.
+- GuardDuty, Security Hub, Detective, EventBridge, Step Functions.
+- Systems Manager forensic collection.
+- Lambda-based EC2 isolation.
+- DynamoDB, S3, CloudWatch, IAM, Config, and KMS.
+- SNS, Amazon Q Developer, Slack/Email/SMS for approval and alerting.
 
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+Out of scope for this PoC:
 
-### 7. Risk Assessment
-#### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
+- Multi-account SOC.
+- Centralized enterprise SIEM.
+- Full Multi-AZ production deployment.
+- Automated restore after containment.
+- Ticketing integrations such as Jira or ServiceNow.
 
-#### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+### 6. Proposed Architecture
 
-#### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
+| Function | AWS services | Role |
+| --- | --- | --- |
+| Dashboard & Access | Amplify, Cognito, API Gateway, Lambda | SOC portal and authenticated API access |
+| Incident Data | DynamoDB | Incident metadata and status |
+| Logging & Evidence | CloudTrail, CloudWatch, S3, EBS Snapshot | Audit logs, forensic output, snapshots |
+| Detection & Investigation | GuardDuty, Security Hub, Detective | Threat detection and investigation |
+| Response Orchestration | EventBridge, Step Functions | Event routing and workflow control |
+| Forensic & Containment | Systems Manager, Lambda, Security Groups | Evidence collection and EC2 isolation |
+| Notification | SNS, Amazon Q Developer, Slack/Email/SMS | Approval requests and alerts |
+| Governance | IAM, Config, KMS | Least privilege, configuration audit, encryption |
 
-### 8. Expected Outcomes
-#### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
-#### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+Main flow:
+
+```text
+GuardDuty Finding
+→ EventBridge
+→ Step Functions
+→ Policy Check / Approval
+→ Systems Manager Forensics
+→ EBS Snapshot
+→ Lambda Isolation
+→ SNS / Slack / Email Notification
+```
+
+### 7. Response Policy
+
+| Condition | Proposed action |
+| --- | --- |
+| Non-EC2 finding | Store incident and send alert |
+| Missing Instance ID | Mark as `NEEDS_REVIEW` |
+| Low/Medium severity | Alert only |
+| High + `AutoIsolate=true` | Require SOC Analyst approval |
+| Critical + `AutoIsolate=true` | Continue automatically depending on policy |
+| Missing `AutoIsolate=true` tag | Dry-run or manual review |
+
+### 8. Expected Value
+
+Technical value:
+
+- Demonstrates a realistic SOC workflow on AWS.
+- Combines detection, investigation, orchestration, evidence collection, and containment.
+- Uses managed/serverless services to reduce infrastructure operations.
+
+Security value:
+
+- Reduces unsafe automation through approval gates.
+- Preserves evidence before isolation.
+- Applies IAM least privilege and audit-oriented design.
+- Supports future extension into production incident response playbooks.
+
+Academic and presentation value:
+
+- Aligns with the Cybersecurity major.
+- Provides clear architecture, diagram, checklist, and production roadmap.
+- Can be presented to mentors, company reviewers, or technical stakeholders.
+
+### 9. Implementation Plan
+
+| Phase | Work item | Output |
+| --- | --- | --- |
+| 1 | SOC requirement and scenario analysis | Use cases and response policy |
+| 2 | Architecture design | Diagram and AWS service mapping |
+| 3 | Dashboard/API design | Amplify, Cognito, API Gateway, Lambda, DynamoDB |
+| 4 | Logging and evidence storage | CloudTrail, CloudWatch, S3, KMS |
+| 5 | Detection and orchestration | GuardDuty, Security Hub, Detective, EventBridge, Step Functions |
+| 6 | Forensic and containment flow | Systems Manager, EBS Snapshot, Lambda, SG-Isolation |
+| 7 | Testing and review | Test cases, evidence, checklist |
+| 8 | Final report and workshop | Hugo website, proposal, workshop, drawing guide |
+
+### 10. Risks and Mitigations
+
+| Risk | Impact | Mitigation |
+| --- | --- | --- |
+| False-positive findings | Wrong resource isolation | Use severity, `AutoIsolate` tag, Dry-run and approval gate |
+| Forensic collection failure | Loss of evidence | Collect evidence before isolation; validate SSM Agent and role |
+| Over-permissive IAM | Privilege escalation risk | Least privilege roles and scoped permissions |
+| Sensitive evidence in S3 | Data exposure | SSE-KMS, bucket policy, block public access |
+| Public subnet lab workload | Larger attack surface | Clearly mark as Lab/PoC; move to Private Subnet in production |
+| Unexpected cost | Lab account impact | Cleanup checklist and lifecycle policies |
+
+### 11. Production Roadmap
+
+Future production improvements include:
+
+- Move workloads into Private Subnets.
+- Add Application Load Balancer and AWS WAF.
+- Deploy across multiple Availability Zones.
+- Separate Lab/Staging/Production environments.
+- Add rollback approval for Security Group restoration.
+- Apply lifecycle policies for S3 evidence and EBS snapshots.
+- Use AWS CDK, Terraform, or CloudFormation for repeatable deployment.
+- Integrate ticketing/SIEM systems for enterprise operation.
+
+### 12. Deliverables
+
+- Bilingual Hugo report website.
+- Formal AWS CloudSOC proposal.
+- Detailed architecture and SOC workflow report.
+- Architecture diagram workshop.
+- CloudSOC diagram displayed directly on the website.
+- Review checklist and production roadmap.
+
+### 13. Acceptance Criteria
+
+The project is considered successful when:
+
+- The architecture clearly shows Dashboard, Logging, Detection/Response, Governance, and VPC Workload areas.
+- The workflow follows: Detect → Investigate → Decide → Collect Evidence → Snapshot → Contain → Notify.
+- The approval gate is clearly justified.
+- Forensic collection happens before isolation.
+- The response policy for GuardDuty findings is documented.
+- The Lab/PoC limitation and production roadmap are clearly stated.
+- The documentation is clear enough for another reader to reproduce the diagram and explain the system.
+
+### 14. Approval Request
+
+Our team respectfully proposes AWS CloudSOC as a suitable project for FCAJ evaluation and company-facing presentation. The project demonstrates cloud security thinking, incident response design, AWS service integration, and controlled automation.
+
+AWS CloudSOC is not only a collection of AWS services; it is an integrated model for SOC operations on AWS:
+
+```text
+Collect Logs
+→ Detect Threats
+→ Aggregate Findings
+→ Investigate
+→ Classify
+→ Approve if needed
+→ Collect Forensics
+→ Snapshot
+→ Isolate EC2
+→ Store Evidence
+→ Update Dashboard
+→ Notify SOC Analyst
+```
+

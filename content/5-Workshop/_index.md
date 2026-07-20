@@ -1,31 +1,48 @@
 ---
 title: "Workshop"
-date: 2024-01-01
+date: 2026-07-11
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# Secure Hybrid Access to S3 using VPC Endpoints
+# Project Report & Workshop: AWS CloudSOC
 
-#### Overview
+This workshop presents **AWS CloudSOC – controlled incident detection, investigation, and response on AWS**. The project simulates a Security Operations Center workflow using AWS managed and serverless services with an EC2 workload for lab traffic.
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+The core workflow is:
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
+```text
+Detect → Investigate → Decide → Collect Evidence → Contain → Notify → Recover
+```
 
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
+### Project information
 
-#### Content
+| Item | Detail |
+| --- | --- |
+| Project | AWS CloudSOC |
+| Team members | Tran Thai Nguyen, Duong Ba Dat |
+| University/Class | HUTECH – 22DTHB1 |
+| Major | Cybersecurity |
+| Program | AWS Vietnam FCJ Workforce Bootcamp 2026 |
+| Date | July 2026 |
+| Main Region | `ap-southeast-1` |
+| Model | Lab / Proof of Concept |
 
-1. [Workshop overview](5.1-Workshop-overview)
-2. [Prerequiste](5.2-Prerequiste/)
-3. [Access S3 from VPC](5.3-S3-vpc/)
-4. [Access S3 from On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (Bonus)](5.5-Policy/)
-6. [Clean up](5.6-Cleanup/)
+### Team roles
+
+| Member | Main role |
+| --- | --- |
+| Tran Thai Nguyen | Requirements analysis, CloudSOC architecture design, report writing, Hugo website completion |
+| Duong Ba Dat | AWS service research support, SOC workflow review, architecture diagram validation, submission checklist review |
+
+### Workshop content
+
+1. [Detailed AWS CloudSOC project report](5.1-Workshop-overview/)
+2. [System architecture and SOC workflow](5.2-Prerequiste/)
+3. [CloudSOC architecture diagram workshop](5.3-S3-vpc/)  
+   Includes six submodules: tools, canvas layout, AWS service groups, incident flows, export/review, and a detailed drawing specification.
+4. [Diagram review checklist and submission requirements](5.4-S3-onprem/)
+5. [Production improvement roadmap](5.5-Policy/)
+6. [References and lab cleanup](5.6-Cleanup/)
+

@@ -1,57 +1,57 @@
 ---
 title: "Week 12 Worklog"
-date: 2024-01-01
+date: 2026-07-25
 weight: 12
 chapter: false
 pre: " <b> 1.12. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+# Week 12 Worklog: Wrap-up, Cleanup, and Final Report Completion
 
-### Week 12 Objectives:
+### Overview
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+Week 12 is the final wrap-up stage of the **First Cloud Journey Workforce Bootcamp**. The focus is not learning a new AWS service, but consolidating the full journey, finalizing the Hugo report website, checking bilingual content, completing Proposal/Workshop/Blogs, writing the final Self-evaluation and Feedback, and preparing AWS cleanup.
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Completed tasks
 
+| Item | Task | Status |
+| --- | --- | --- |
+| Worklog | Reviewed and completed week 1–12 worklogs | ✅ Completed |
+| Proposal | Rewrote the AWS CloudSOC proposal in a more formal style | ✅ Completed |
+| Workshop | Completed CloudSOC report, diagram guide, modules, and checklist | ✅ Completed |
+| Blogs Posted | Rewrote three technical AWS blog summaries | ✅ Completed |
+| Self-evaluation | Updated final self-evaluation | ✅ Completed |
+| Feedback | Updated final program feedback | ✅ Completed |
+| Cleanup | Prepared AWS cleanup checklist | ✅ Completed |
+| Hugo Build | Built and validated the website | ✅ Completed |
 
-### Week 12 Achievements:
+### Final updates
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+The report now includes:
 
-* Successfully created and configured an AWS Free Tier account.
+- A complete 12-week worklog.
+- A formal AWS CloudSOC project proposal.
+- A detailed AWS CloudSOC workshop and architecture diagram guide.
+- Three technical blog posts based on AWS AI, Big Data, and Redshift operations topics.
+- Final self-evaluation and feedback sections.
+- Cleanup and deployment readiness notes.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+### Cleanup checklist
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+The final cleanup checklist includes:
 
-* Used AWS CLI to perform basic operations such as:
+- EC2, EBS volumes/snapshots, Elastic IP.
+- CloudFormation stacks.
+- Lambda, API Gateway, SQS, SNS resources.
+- S3 buckets and log objects.
+- ECR images, ECS services, CodeBuild/CodePipeline resources.
+- Security tools that may generate cost, such as GuardDuty, Security Hub, Detective, and CloudWatch Logs.
 
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
+### Final outcome
 
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+By the end of week 12, the Hugo website is ready as the final FCAJ report. The report is bilingual, structured, aligned with the course roadmap, and focused on the AWS CloudSOC project.
+
+### Key lesson
+
+The most important learning outcome is understanding how AWS services work together as a system. Instead of studying each service separately, the project connects identity, networking, monitoring, security, incident response, backup, IaC, serverless, containers, and CI/CD into a coherent cloud security learning journey.
+

@@ -1,31 +1,47 @@
 ---
-title: "Blog 3"
-date: 2024-01-01
+title: "Automating Patch Testing for Amazon Redshift"
+date: 2026-07-19
 weight: 3
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# SESSION POLICIES IN AMAZON EKS POD IDENTITY
+# Automating Patch Testing for Amazon Redshift
 
-Amazon EKS Pod Identity has recently added the session policies feature, allowing you to narrow IAM permissions flexibly and precisely for each pod without needing to create many separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
+This blog note summarizes an event-driven approach for automatically testing Amazon Redshift patches before they reach production workloads.
 
-Key points to know:
+![Automated Patch Testing Pipeline for Amazon Redshift](/images/3-BlogsPosted/blog3-redshift-patch-testing.png)
 
-* A session policy is an inline IAM policy specified when creating or updating a Pod Identity association.
-* Effective permissions = intersection between the IAM role permissions and the session policy → the session policy can only narrow permissions, not expand them.
-* Helps avoid over-permissioning when reusing a single IAM role for multiple workloads with different needs.
-* Supports both same-account and cross-account (via IAM role chaining).
-* Significantly reduces the number of IAM roles that need to be managed, helping avoid hitting IAM quota limits in large clusters.
-* Easily configured through the AWS Management Console, AWS CLI, or AWS SDK when creating an association between a Kubernetes ServiceAccount and an IAM role.
+### Core strategy
 
-This feature is especially useful when you have many applications running on the same IAM role but need different permission restrictions (for example: one pod only reads a specific S3 bucket, another pod only calls certain APIs).
+Use separate patch tracks:
 
-...Image...
+- **Dev/QA clusters:** Current patch track, receive updates earlier.
+- **Production clusters:** Trailing patch track, receive updates later.
 
-...Link...
+This buffer window allows automated tests to detect regressions before production is patched.
 
-...Guide...
+### Event-driven pipeline
+
+The architecture uses:
+
+- Amazon Redshift event notifications.
+- Amazon EventBridge.
+- AWS Lambda.
+- Amazon ECS / AWS Fargate.
+- Amazon S3 for detailed test results.
+- Amazon SNS for PASS/FAIL notifications.
+- Amazon CloudWatch Logs for execution logs.
+
+### Test coverage
+
+The Fargate task can run JDBC driver tests, ODBC driver tests, catalog SQL queries, and performance benchmarks based on real workloads.
+
+### Operations takeaway
+
+Patch testing should be repeatable, event-driven, and evidence-based. If a test fails, the operations team has detailed logs and results to investigate or delay production maintenance.
+
+### Reference
+
+- [AWS Big Data Blog: Patch perfect – automating patch testing for Amazon Redshift](https://aws.amazon.com/blogs/big-data/patch-perfect-automating-patch-testing-for-amazon-redshift/)
+

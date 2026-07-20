@@ -1,8 +1,10 @@
----
+﻿---
 title: "Báo cáo thực tập"
 date: 2024-01-01
 weight: 1
 chapter: false
+aliases:
+  - /vi/home/
 ---
 
 <div class="page-hero">
@@ -41,15 +43,15 @@ chapter: false
       <i class="fas fa-chart-line"></i>
       <div>
         <span class="progress-title">Tiến độ thực tập</span>
-        <span class="progress-sub">Lab 01–04, Lab 19 hoàn thành · Đang làm Lab 20</span>
+        <span class="progress-sub">Hoàn thành 12 tuần · Báo cáo cuối kỳ đã sẵn sàng nộp</span>
       </div>
     </div>
     <div class="progress-stats">
-      <span class="progress-percent">33%</span>
-      <span class="progress-label">Tuần 4 / 12</span>
+      <span class="progress-percent">100%</span>
+      <span class="progress-label">Tuần 12 / 12</span>
     </div>
   </div>
-  <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
 </div>
 
 <h2 class="section-heading"><i class="fas fa-folder-open"></i> Nội dung báo cáo</h2>
@@ -61,7 +63,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Worklog — Nhật ký công việc</span>
       <span class="card-desc">Ghi chép công việc hàng tuần, lab AWS và kết quả thực hành.</span>
-      <span class="status-badge progress">4 / 12 tuần</span>
+      <span class="status-badge progress">Tuần 12 / 12</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -71,8 +73,8 @@ chapter: false
     <div class="card-icon-wrap proposal"><i class="fas fa-file-alt"></i></div>
     <div class="card-body">
       <span class="card-title">Proposal — Bản đề xuất</span>
-      <span class="card-desc">Kiến trúc dự án, chi phí và lộ trình triển khai workshop.</span>
-      <span class="status-badge todo">Chưa hoàn thành</span>
+      <span class="card-desc">Đề xuất dự án nhóm AWS CloudSOC, phạm vi, kiến trúc và sản phẩm bàn giao.</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -82,8 +84,8 @@ chapter: false
     <div class="card-icon-wrap blogs"><i class="fas fa-newspaper"></i></div>
     <div class="card-body">
       <span class="card-title">Blogs đã đăng</span>
-      <span class="card-desc">Bài viết trên AWS Study Group trong quá trình thực tập.</span>
-      <span class="status-badge todo">Chưa cập nhật</span>
+      <span class="card-desc">Bài viết kỹ thuật về AWS AI, Big Data, Redshift và vận hành cloud.</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -93,8 +95,8 @@ chapter: false
     <div class="card-icon-wrap events"><i class="fas fa-calendar-check"></i></div>
     <div class="card-body">
       <span class="card-title">Events đã tham gia</span>
-      <span class="card-desc">Workshop, sự kiện AWS và hoạt động ngoại khóa.</span>
-      <span class="status-badge todo">Chưa cập nhật</span>
+      <span class="card-desc">Kick-off, buổi học playlist, workshop/lab AWS Study Group.</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -104,8 +106,8 @@ chapter: false
     <div class="card-icon-wrap workshop"><i class="fas fa-tools"></i></div>
     <div class="card-body">
       <span class="card-title">Workshop</span>
-      <span class="card-desc">Tài liệu và kết quả lab AWS S3 VPC Endpoint.</span>
-      <span class="status-badge todo">Mẫu tham khảo</span>
+      <span class="card-desc">Workshop AWS CloudSOC: kiến trúc SOC, luồng response và hướng dẫn vẽ sơ đồ.</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -116,7 +118,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Tự đánh giá</span>
       <span class="card-desc">Đánh giá năng lực, kỹ năng và đóng góp thực tập.</span>
-      <span class="status-badge todo">Chưa hoàn thành</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
@@ -127,7 +129,7 @@ chapter: false
     <div class="card-body">
       <span class="card-title">Chia sẻ & Feedback</span>
       <span class="card-desc">Ý kiến về chương trình FCJ, mentor và trải nghiệm thực tập.</span>
-      <span class="status-badge todo">Chưa hoàn thành</span>
+      <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
