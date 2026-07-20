@@ -21,23 +21,21 @@ The event helped participants understand how students can grow from learning bas
 
 ### Speakers and Presentation Groups
 
-* Kien & Tho – FCAJ Meetup Sharing Session
-* Danh Hoang Hieu Nghi – AI Engineer, AWS Community Builder, AWS Student Builder Group Leader
-* Trong H. Truong – DevOps Engineer at Endava Vietnam
+* FCAJ community members – learning journey and practical project sharing
+* AWS Community Builder speaker – journey from FCAJ to the AWS ecosystem
+* DevOps Engineer speaker – DevOps role in real working environments
 
 ### Main Contents
 
-#### Kien & Tho – FCAJ Meetup Sharing Session
+#### FCAJ Meetup Sharing Session
 
-This sharing session mainly focused on the real journey and experience of Kien and Tho in the First Cloud AI Journey community.
+This sharing session mainly focused on the real journey and experience of community members in the First Cloud AI Journey community.
 
 The presentation used many images to illustrate their learning process, activities, projects, challenges, and achievements. Although the slides contained limited text, the main message was about how students can start from basic knowledge, participate in community activities, and gradually gain experience in cloud computing and AWS.
 
 The session also showed the importance of learning consistently, joining practical programs, working on real projects, and connecting with people in the technology community.
 
 #### From First Cloud AI Journey to AWS Partner
-
-This presentation was shared by Danh Hoang Hieu Nghi, an AI Engineer, AWS Community Builder, and AWS Student Builder Group Leader.
 
 The session introduced the journey from the First Cloud AI Journey Program, formerly known as First Cloud Journey, to opportunities in the AWS ecosystem. The speaker shared how participating in community programs can help students build technical knowledge, gain experience, and open career opportunities.
 
@@ -55,9 +53,7 @@ One of the key messages from this session was: “Getting the job is just a begi
 
 #### What does a DevOps Engineer really do?
 
-This presentation was shared by Trong H. Truong, a DevOps Engineer at Endava Vietnam.
-
-The speaker explained what a DevOps Engineer actually does in real working environments. At the beginning, he shared that he did not intentionally choose DevOps at first, but gradually entered this field through real work and experience.
+The speaker explained what a DevOps Engineer actually does in real working environments. The session also explained that many people do not intentionally choose DevOps at first, but gradually enter this field through real work and experience.
 
 The presentation also corrected several common misunderstandings about DevOps. Many people think DevOps is only about writing CI/CD pipelines, using Docker and Kubernetes, deploying code, or fixing production issues at midnight. However, the real role of DevOps is broader and includes system design, automation, monitoring, reliability, and collaboration between development and operations teams.
 
@@ -71,14 +67,14 @@ The speaker also shared what beginners should learn first when they want to foll
 * Containers
 * How applications are built, tested, deployed, logged, and configured
 
-He emphasized that learners should build small practical projects instead of only reading theory or copying commands.
+The speaker emphasized that learners should build small practical projects instead of only reading theory or copying commands.
 
 The session also included several important lessons from real experience:
 
 * Copying commands does not mean understanding.
 * It is important to understand “why” before “how”.
 * Communication is an important part of the DevOps role.
-* DevOps Engineers do not always need to be heroes.
+* DevOps Engineers do not always need to solve everything alone.
 * Strong fundamentals are more important than only learning tools.
 * A good DevOps Engineer should be curious, think systematically, automate repetitive tasks, and use AI wisely as a supporting tool.
 

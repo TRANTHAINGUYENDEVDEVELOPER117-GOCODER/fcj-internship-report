@@ -16,12 +16,12 @@ FCAJ Community Day được tổ chức nhằm chia sẻ kiến thức, kinh ngh
 Sự kiện cũng giúp người tham dự tìm hiểu sâu hơn về AI Agents, hệ thống cấp doanh nghiệp, tối ưu hiệu suất, bảo mật và quy trình triển khai AI trong môi trường kinh doanh thực tế.
 
 ### Diễn giả và nhóm trình bày
-* Vy Lam – Senior Business Systems Analyst, VPBank
-* Duc Dao – Solution Architect, Cloud Kinetics
-* Team VIB – Dự án UTMorpho tại LotusHacks 2026
-* Nguyen Tuan Thinh – DevOps Engineer, First Cloud AI Journey
-* Pham Ng Hai Anh – AWS Community Builder, G-AsiaPacific Vietnam
-* Tinh Truong – Platform Engineer, GoTymeX
+* Diễn giả về Business Systems Analysis và hệ thống doanh nghiệp
+* Diễn giả về Solution Architecture và Cloud Computing
+* Nhóm trình bày dự án AI tại LotusHacks 2026
+* Diễn giả về DevOps trong chương trình First Cloud AI Journey
+* Diễn giả AWS Community Builder
+* Diễn giả về Platform Engineering
 
 ### Nội dung chính
 
@@ -31,8 +31,8 @@ Bài trình bày tập trung vào việc ứng dụng hệ thống Multi-Agent A
 #### Non-Determinism of “Deterministic” LLM Settings
 Phiên này giải thích tại sao Large Language Models vẫn có thể đưa ra kết quả khác nhau dù đã thiết lập temperature = 0. Nội dung bao gồm quá trình sinh token, temperature, top-p, top-k và ảnh hưởng của tính toán dấu phẩy động trên GPU.
 
-#### UTMorpho – Building From Idea to Reality
-Team VIB chia sẻ hành trình xây dựng dự án UTMorpho tại LotusHacks 2026 trong vòng 36 giờ. Dự án tập trung vào việc sử dụng AI để sinh giao diện người dùng và cho phép người dùng chỉnh sửa trực tiếp trên canvas theo mô hình WYSIWYG.
+#### Building From Idea to Reality
+Phiên chia sẻ trình bày hành trình xây dựng một dự án AI tại LotusHacks 2026 trong vòng 36 giờ. Dự án tập trung vào việc sử dụng AI để sinh giao diện người dùng và cho phép người dùng chỉnh sửa trực tiếp trên canvas theo mô hình WYSIWYG.
 
 #### CloudFront-Foundational – From Edge to Origin
 Bài trình bày giới thiệu Amazon CloudFront và các tính năng chính liên quan đến CDN, bảo mật và tối ưu hiệu suất hệ thống. Nội dung bao gồm Edge Network, chống DDoS, HTTP/3, nén dữ liệu, chiến lược caching và mô hình giá CloudFront.

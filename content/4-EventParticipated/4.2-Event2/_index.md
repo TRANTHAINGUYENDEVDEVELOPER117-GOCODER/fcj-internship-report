@@ -21,12 +21,12 @@ The event also helped participants learn more about AI Agents, enterprise-grade 
 
 ### Speakers and Presentation Groups
 
-* Vy Lam – Senior Business Systems Analyst, VPBank
-* Duc Dao – Solution Architect, Cloud Kinetics
-* Team VIB – UTMorpho Project at LotusHacks 2026
-* Nguyen Tuan Thinh – DevOps Engineer, First Cloud AI Journey
-* Pham Ng Hai Anh – AWS Community Builder, G-AsiaPacific Vietnam
-* Tinh Truong – Platform Engineer, GoTymeX
+* Speaker on Business Systems Analysis and enterprise systems
+* Speaker on Solution Architecture and Cloud Computing
+* AI project sharing session at LotusHacks 2026
+* DevOps Engineer sharing session from First Cloud AI Journey
+* AWS Community Builder sharing session
+* Speaker on Platform Engineering
 
 ### Main Contents
 
@@ -38,9 +38,9 @@ This presentation focused on the application of Multi-Agent AI systems in startu
 
 This session explained why Large Language Models may still produce different outputs even when temperature is set to 0. The content covered token generation, temperature, top-p, top-k, and the effect of floating-point arithmetic on GPUs.
 
-#### UTMorpho – Building From Idea to Reality
+#### Building From Idea to Reality
 
-Team VIB shared the process of building the UTMorpho project at LotusHacks 2026 within 36 hours. The project focused on using AI to generate user interfaces and allowing users to edit the interface directly on a canvas using the WYSIWYG model.
+The session shared the process of building an AI project at LotusHacks 2026 within 36 hours. The project focused on using AI to generate user interfaces and allowing users to edit the interface directly on a canvas using the WYSIWYG model.
 
 #### CloudFront-Foundational – From Edge to Origin
 

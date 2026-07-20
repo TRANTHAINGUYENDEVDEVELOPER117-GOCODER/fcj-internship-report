@@ -10,45 +10,36 @@ During my internship, I participated in several events related to AWS, Artificia
 
 Each event provided useful lessons that supported my AWS learning journey, internship progress, and future career orientation.
 
-### [Event 1](4.1-Event1/)  
-&emsp;**Event Name:** AWS AI Day / FCAJ Meetup  
+### Event Overview
 
-&emsp;**Date & Time:** May 9, 2026  
+<div class="event-grid">
+  <article class="event-card">
+    <img src="/images/event1.png" alt="AWS AI Day / FCAJ Meetup">
+    <div class="event-card-body">
+      <span class="event-date">09/05/2026</span>
+      <h3>AWS AI Day / FCAJ Meetup</h3>
+      <p>This event focused on AI product development, AWS cloud services, serverless architecture, prompt optimization, AI security, and modern AI-assisted software development methods.</p>
+      <a class="event-link" href="4.1-Event1/">View details</a>
+    </div>
+  </article>
 
-&emsp;**Location:** FCAJ Meetup  
+  <article class="event-card">
+    <img src="/images/event23-05.png" alt="FCAJ Community Day">
+    <div class="event-card-body">
+      <span class="event-date">23/05/2026</span>
+      <h3>FCAJ Community Day</h3>
+      <p>This event shared knowledge about Generative AI, Cloud Computing, AI Agents, enterprise systems, and how AI/cloud technologies are applied in real environments.</p>
+      <a class="event-link" href="4.2-Event2/">View details</a>
+    </div>
+  </article>
 
-&emsp;**Role:** Attendee  
-
-&emsp;**Description:** This event focused on AI product development, AWS cloud services, serverless architecture, prompt optimization, AI hallucination, AI security, and modern AI-assisted software development methods such as Vibe Coding and Vibe Method.
-
-&emsp;**Outcomes:** Through this event, I learned how to choose between AWS Lambda and Amazon EC2, understand Amazon Bedrock cost factors, reduce AI hallucination through better prompt design, and apply structured workflows such as PRD, architecture design, task planning, review, QA, and deployment when using AI for software development.
-
----
-
-### [Event 2](4.2-Event2/)  
-&emsp;**Event Name:** FCAJ Community Day  
-
-&emsp;**Date & Time:** 09:00 - 12:00, May 23, 2026  
-
-&emsp;**Location:** 26th Floor, Bitexco Tower, 02 Hai Trieu Street, Saigon Ward, Ho Chi Minh City  
-
-&emsp;**Role:** Attendee  
-
-&emsp;**Description:** FCAJ Community Day was an event focused on sharing knowledge, experience, and technology trends related to Generative AI, Cloud Computing, AI Agents, enterprise-grade systems, and modern architectures on AWS. The event included multiple presentations from speakers working in business systems analysis, solution architecture, DevOps, platform engineering, and AWS community building.
-
-&emsp;**Outcomes:** Through this event, I learned more about Multi-Agent AI systems, Large Language Models, Amazon CloudFront, GenAIOps, context systems, and enterprise-level system design. The event also helped me better understand how AI and cloud technologies are applied in real business environments.
-
----
-
-### [Event 3](4.3-Event3/)  
-&emsp;**Event Name:** FCAJ Meetup  
-
-&emsp;**Date & Time:** June 13, 2026  
-
-&emsp;**Location:** FCAJ Meetup  
-
-&emsp;**Role:** Attendee  
-
-&emsp;**Description:** FCAJ Meetup was an event focused on real learning journeys, AWS community opportunities, cloud career paths, and practical DevOps experience. The event included sessions about the journey from First Cloud AI Journey to AWS Partner, real stories from FCAJ members, and the actual role of a DevOps Engineer in real working environments.
-
-&emsp;**Outcomes:** Through this event, I learned more about AWS community programs, cloud career development, DevOps fundamentals, system thinking, automation, communication, and the importance of building practical projects.
+  <article class="event-card">
+    <img src="/images/event3.png" alt="FCAJ Meetup">
+    <div class="event-card-body">
+      <span class="event-date">13/06/2026</span>
+      <h3>FCAJ Meetup</h3>
+      <p>This event covered real learning journeys, AWS community opportunities, Cloud/AWS career paths, and practical DevOps experience in working environments.</p>
+      <a class="event-link" href="4.3-Event3/">View details</a>
+    </div>
+  </article>
+</div>
