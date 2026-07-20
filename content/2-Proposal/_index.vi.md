@@ -1,414 +1,530 @@
 ---
 title: "Bản đề xuất"
-date: 2026-07-19
+date: 2026-06-30
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
 
-# Đề xuất dự án: AWS CloudSOC
+# AWS CloudSOC  
+## Hệ thống phát hiện mối đe dọa, điều tra và phản ứng sự cố tự động trên AWS
 
-## Thiết kế và triển khai hệ thống phát hiện, điều tra và phản ứng sự cố có kiểm soát trên AWS
+### 1. Tóm tắt điều hành
 
-### 1. Lời mở đầu
+**AWS CloudSOC** là một mô hình Security Operations Center được triển khai trên Amazon Web Services nhằm hỗ trợ phát hiện mối đe dọa, điều tra sự cố, phản ứng tự động và gửi cảnh báo đến người vận hành bảo mật.
 
-Kính gửi anh/chị admin, các mentor và quý đơn vị quan tâm,
+Mục tiêu của dự án là xây dựng một hệ thống có khả năng phát hiện các hành vi đáng ngờ trên môi trường AWS, chẳng hạn như truy cập bất thường, SSH brute force, port scan hoặc dấu hiệu EC2 bị xâm nhập. Khi có security finding được tạo ra, hệ thống sẽ tự động tiếp nhận sự kiện, phân loại mức độ nghiêm trọng, ghi nhận incident, thu thập bằng chứng, cô lập tài nguyên bị nghi ngờ và gửi cảnh báo cho SOC Analyst.
 
-Nhóm chúng em xin đề xuất dự án **“AWS CloudSOC – Thiết kế và triển khai hệ thống phát hiện, điều tra và phản ứng sự cố có kiểm soát trên AWS”**. Dự án được xây dựng nhằm mô phỏng quy trình vận hành của một trung tâm điều hành an ninh mạng (**Security Operations Center – SOC**) trên nền tảng AWS, tập trung vào ba năng lực cốt lõi: **phát hiện mối đe dọa**, **điều tra sự cố** và **phản ứng có kiểm soát**.
+Dự án sử dụng các dịch vụ AWS như **Amazon GuardDuty**, **AWS Security Hub**, **Amazon EventBridge**, **AWS Step Functions**, **AWS Lambda**, **AWS Systems Manager**, **Amazon EC2**, **Amazon S3**, **Amazon DynamoDB**, **Amazon SNS**, **Amazon CloudWatch**, **AWS CloudTrail**, **AWS Config** và **Amazon Detective**.
 
-Trong bối cảnh các tổ chức ngày càng dịch chuyển workload lên cloud, rủi ro bảo mật không chỉ đến từ lỗ hổng ứng dụng mà còn đến từ cấu hình sai, quyền truy cập quá rộng, thiếu giám sát tập trung và phản ứng sự cố không có quy trình rõ ràng. AWS CloudSOC được đề xuất như một mô hình **Lab / Proof of Concept** để chứng minh cách kết hợp các dịch vụ AWS managed và serverless nhằm xây dựng một quy trình SOC có thể quan sát, kiểm soát và mở rộng.
+Hệ thống được thiết kế theo hướng **event-driven** và **serverless-oriented**, giúp giảm bớt thao tác thủ công, tăng khả năng tự động hóa trong quy trình phản ứng sự cố và phù hợp với môi trường lab có chi phí thấp.
 
-### 2. Thông tin nhóm thực hiện
+---
 
-| Thành viên | Vai trò chính |
-| --- | --- |
-| Trần Thái Nguyên | Phân tích yêu cầu, thiết kế kiến trúc CloudSOC, tổng hợp báo cáo và xây dựng website Hugo |
-| Dương Bá Đạt | Hỗ trợ nghiên cứu dịch vụ AWS, kiểm tra logic luồng SOC, review sơ đồ kiến trúc và checklist nộp |
+### 2. Tuyên bố vấn đề
 
-**Bối cảnh thực hiện:** AWS Vietnam FCJ Workforce Bootcamp 2026  
-**Chuyên ngành liên quan:** An ninh mạng  
-**Mô hình triển khai:** Lab / Proof of Concept  
-**AWS Region chính:** `ap-southeast-1`
+#### Vấn đề hiện tại
 
-### 3. Tóm tắt điều hành
+Trong môi trường cloud, các tài nguyên như EC2, VPC, IAM, Security Group và storage có thể bị tấn công hoặc cấu hình sai nếu không được giám sát liên tục. Một số vấn đề thường gặp bao gồm:
 
-AWS CloudSOC là một hệ thống mô phỏng quy trình SOC trên AWS, cho phép:
+- Khó phát hiện sớm hành vi bất thường trên EC2.
+- Thiếu hệ thống tập trung để theo dõi security findings.
+- Quy trình phản ứng sự cố còn phụ thuộc nhiều vào thao tác thủ công.
+- SOC Analyst mất thời gian kiểm tra log, xác định tài nguyên bị ảnh hưởng và thực hiện cô lập.
+- Bằng chứng sự cố có thể bị thiếu hoặc không được lưu trữ đúng cách.
+- Cảnh báo bảo mật có thể bị chậm nếu không có hệ thống notification tự động.
 
-- Thu thập log từ nhiều nguồn cloud.
-- Phát hiện hành vi đáng ngờ bằng Amazon GuardDuty.
-- Tổng hợp và điều tra security findings qua AWS Security Hub và Amazon Detective.
-- Điều phối phản ứng sự cố bằng Amazon EventBridge và AWS Step Functions.
-- Yêu cầu phê duyệt thủ công khi cần, tránh tự động cô lập nhầm.
-- Thu thập forensic bằng AWS Systems Manager trước khi containment.
-- Tạo EBS Snapshot để bảo toàn trạng thái ổ đĩa.
-- Cô lập EC2 bị ảnh hưởng bằng Security Group Isolation.
-- Lưu bằng chứng, cập nhật dashboard và gửi cảnh báo đến SOC Analyst.
+Trong thực tế, nếu một EC2 bị nghi ngờ xâm nhập mà không được cô lập kịp thời, attacker có thể tiếp tục dò quét, di chuyển ngang trong hệ thống hoặc truy cập dữ liệu nhạy cảm.
 
-Điểm khác biệt của đề xuất này là hệ thống **không tự động cô lập mọi GuardDuty finding**. Quyết định phản ứng được kiểm soát bằng chính sách dựa trên loại tài nguyên, severity, tag `AutoIsolate=true`, chế độ `Dry-run/Enforce` và phê duyệt của SOC Analyst. Cách tiếp cận này phù hợp với nguyên tắc vận hành an toàn trong môi trường doanh nghiệp: tự động hóa nhưng vẫn có kiểm soát.
+#### Giải pháp đề xuất
 
-![Sơ đồ kiến trúc AWS CloudSOC](/images/2-Proposal/aws-cloudsoc-architecture.png)
+Giải pháp được đề xuất là xây dựng một hệ thống **AWS CloudSOC** có khả năng tự động hóa quy trình phát hiện và phản ứng sự cố.
 
-*Hình 1. Sơ đồ kiến trúc tổng thể AWS CloudSOC – mô hình Lab / Proof of Concept cho quy trình phát hiện, điều tra, thu thập bằng chứng và cô lập EC2 có kiểm soát trên AWS.*
-
-### 4. Vấn đề cần giải quyết
-
-Trong môi trường AWS, một sự cố bảo mật có thể liên quan đến nhiều nguồn dữ liệu và nhiều dịch vụ khác nhau:
-
-- CloudTrail ghi nhận hoạt động API/Console/CLI/SDK.
-- VPC Flow Logs ghi metadata traffic mạng.
-- GuardDuty tạo finding dựa trên threat intelligence và telemetry.
-- Security Group thay đổi theo thời gian.
-- EC2 có thể chứa dấu vết tiến trình, kết nối mạng và log hệ thống.
-- IAM activity có thể liên quan đến quyền truy cập bất thường.
-
-Nếu không có quy trình điều phối tập trung, SOC Analyst có thể gặp các khó khăn:
-
-- Không biết finding nào cần ưu tiên xử lý.
-- Không xác định được tài nguyên bị ảnh hưởng.
-- Không thu thập kịp bằng chứng trước khi containment.
-- Cô lập nhầm workload do false positive.
-- Thiếu audit trail để giải thích sự cố sau khi xử lý.
-- Không có cơ chế phê duyệt rõ ràng giữa tự động hóa và quyết định con người.
-
-Vì vậy, dự án AWS CloudSOC được đề xuất nhằm tạo ra một quy trình phản ứng sự cố có kiểm soát, có thể quan sát và có khả năng mở rộng.
-
-### 5. Mục tiêu dự án
-
-#### Mục tiêu tổng quát
-
-Thiết kế một mô hình CloudSOC trên AWS có khả năng mô phỏng đầy đủ chu trình:
+Luồng xử lý chính của hệ thống:
 
 ```text
-Detect → Investigate → Decide → Collect Evidence → Snapshot → Contain → Notify → Review
+GuardDuty Finding
+→ EventBridge Rule
+→ Step Functions Workflow
+→ Incident Response Lambda
+→ Systems Manager Evidence Collection
+→ EBS Forensic Snapshot
+→ S3 Evidence Storage
+→ DynamoDB Incident Update
+→ SNS Notification
+→ Email / Slack Alert
 ```
 
-#### Mục tiêu cụ thể
+Trong hệ thống này:
 
-- Xây dựng kiến trúc event-driven để phản ứng với GuardDuty findings.
-- Thiết kế SOC Dashboard phục vụ SOC Analyst theo dõi incident.
-- Thiết lập luồng log và evidence storage bằng CloudTrail, CloudWatch và S3.
-- Sử dụng Security Hub và Detective để hỗ trợ tổng hợp/điều tra.
-- Thiết kế Step Functions workflow có policy check và approval gate.
-- Thu thập forensic bằng Systems Manager trước khi cô lập.
-- Tạo EBS Snapshot để bảo toàn trạng thái ổ đĩa.
-- Cô lập EC2 bằng cách thay `SG-Workload` bằng `SG-Isolation`.
-- Gửi thông báo qua SNS, Amazon Q Developer, Slack và Email/SMS.
-- Trình bày kiến trúc dưới dạng website Hugo và workshop hướng dẫn vẽ sơ đồ.
+- **Amazon GuardDuty** phát hiện hành vi đáng ngờ.
+- **AWS Security Hub** tổng hợp và chuẩn hóa security findings.
+- **Amazon EventBridge** nhận GuardDuty finding và kích hoạt workflow.
+- **AWS Step Functions** điều phối luồng phản ứng sự cố.
+- **AWS Lambda** xử lý logic response và cập nhật incident.
+- **AWS Systems Manager** thu thập forensic evidence từ EC2.
+- **Amazon S3** lưu raw event và response summary.
+- **Amazon DynamoDB** lưu trạng thái incident.
+- **Amazon SNS** gửi cảnh báo qua Email hoặc Slack.
+- **Amazon CloudWatch** giám sát log, metric và alarm.
+- **Amazon Detective** hỗ trợ điều tra mối quan hệ giữa các finding.
 
-### 6. Phạm vi đề xuất
+Ngoài ra, dự án có một **SOC Dashboard** đơn giản được triển khai bằng **AWS Amplify**, giúp SOC Analyst theo dõi incident, kiểm tra trạng thái xử lý và xác thực workflow.
 
-#### Trong phạm vi Proof of Concept
+#### Lợi ích và giá trị mang lại
 
-- Một AWS Region chính: `ap-southeast-1`.
-- Một VPC lab có Public Subnet.
-- Một Amazon EC2 làm workload thử nghiệm.
-- Một Security Group bình thường (`SG-Workload`) và một Security Group cô lập (`SG-Isolation`).
-- GuardDuty finding kích hoạt EventBridge và Step Functions.
-- Systems Manager thu thập forensic.
-- EBS Snapshot phục vụ điều tra.
-- Lambda thực hiện cô lập EC2.
-- DynamoDB lưu incident metadata.
-- S3 lưu evidence, findings, Security Group trước/sau cô lập.
-- CloudWatch lưu logs và alarm.
-- IAM, Config, KMS hỗ trợ governance.
+Dự án mang lại các lợi ích chính:
 
-#### Ngoài phạm vi hiện tại
+- Tự động phát hiện và phản ứng với security finding.
+- Giảm thời gian phản hồi khi có sự cố bảo mật.
+- Cô lập EC2 nghi ngờ bằng Security Group riêng.
+- Lưu trữ bằng chứng sự cố vào S3 để phục vụ điều tra.
+- Theo dõi trạng thái incident trong DynamoDB.
+- Gửi cảnh báo đến SOC Analyst qua Email hoặc Slack.
+- Cung cấp dashboard để giám sát incident.
+- Giúp sinh viên hiểu rõ quy trình vận hành SOC trên môi trường AWS.
 
-- Multi-account SOC.
-- SIEM tập trung quy mô lớn.
-- Production multi-AZ hoàn chỉnh.
-- Tự động rollback/restore sau containment.
-- Tích hợp ticketing system như Jira/ServiceNow.
-- Incident response playbook đầy đủ cho nhiều loại tài nguyên ngoài EC2.
+Dự án phù hợp với mục tiêu học tập về **Cloud Security**, **Incident Response**, **AWS Security Services** và **AWS Solution Architecture**.
 
-### 7. Kiến trúc tổng quan và công nghệ
+---
 
-| Nhóm chức năng | Dịch vụ AWS | Vai trò |
-| --- | --- | --- |
-| Frontend & Hosting | AWS Amplify Hosting | Cung cấp SOC Web Dashboard |
-| Xác thực | Amazon Cognito | Đăng nhập và cấp JWT token |
-| Backend API | Amazon API Gateway, AWS Lambda | Nhận request, đọc incident, gửi approval callback |
-| Incident Data | Amazon DynamoDB | Lưu trạng thái incident và metadata |
-| Log & Evidence | CloudTrail, CloudWatch, S3, EBS Snapshot | Lưu audit logs, forensic, snapshot |
-| Threat Detection | Amazon GuardDuty | Phát hiện hành vi đáng ngờ |
-| Aggregation & Investigation | AWS Security Hub, Amazon Detective | Tổng hợp finding và hỗ trợ điều tra |
-| Response Orchestration | EventBridge, Step Functions | Điều phối quy trình phản ứng |
-| Forensic Collection | AWS Systems Manager | Run Command/Automation trên EC2 |
-| Containment | Incident Response Lambda, SG-Isolation | Cô lập EC2 bằng Security Group |
-| Notification | SNS, Amazon Q Developer, Slack, Email/SMS | Alert, approval request, result notification |
-| Governance | IAM, Config, KMS | Least privilege, configuration audit, encryption |
+### 3. Kiến trúc giải pháp
 
-Kiến trúc không hoàn toàn serverless vì workload thử nghiệm vẫn chạy trên Amazon EC2. Tuy nhiên, dashboard, API, workflow, notification và phần lớn quy trình phản ứng sử dụng dịch vụ managed/serverless, giúp giảm vận hành thủ công và dễ mở rộng trong tương lai.
+Hệ thống AWS CloudSOC được thiết kế theo kiến trúc event-driven, trong đó các security findings được tự động chuyển qua nhiều lớp xử lý khác nhau.
 
-### 8. Luồng hoạt động chính
-
-#### 8.1. Luồng truy cập SOC Dashboard
-
-SOC Analyst truy cập dashboard qua HTTPS:
+Kiến trúc tổng thể gồm các lớp chính:
 
 ```text
+Detection Layer
+→ Event Routing Layer
+→ Workflow Orchestration Layer
+→ Response Automation Layer
+→ Evidence Storage Layer
+→ Monitoring and Alerting Layer
+→ SOC Dashboard Layer
+```
+
+![AWS CloudSOC Architecture](/images/2-Proposal/cloudsoc-architecture.png)
+
+
+#### Dịch vụ AWS sử dụng
+
+- **Amazon GuardDuty**: Phát hiện hành vi đáng ngờ và tạo security findings.
+- **AWS Security Hub**: Tổng hợp findings và hỗ trợ quản lý tình trạng bảo mật.
+- **Amazon EventBridge**: Định tuyến GuardDuty findings đến Step Functions.
+- **AWS Step Functions**: Điều phối workflow phản ứng sự cố.
+- **AWS Lambda**: Xử lý logic incident response.
+- **AWS Systems Manager**: Chạy lệnh forensic collection trên EC2.
+- **Amazon EC2**: Workload giả lập mục tiêu cần bảo vệ.
+- **Amazon VPC**: Mạng lab chứa EC2 workload.
+- **Amazon S3**: Lưu trữ evidence, raw event và response summary.
+- **Amazon DynamoDB**: Lưu metadata và trạng thái incident.
+- **Amazon SNS**: Gửi cảnh báo đến Email hoặc Slack.
+- **Amazon CloudWatch**: Lưu log, metric và tạo alarm.
+- **AWS CloudTrail**: Ghi nhận hoạt động API trong tài khoản AWS.
+- **AWS Config**: Theo dõi thay đổi cấu hình tài nguyên.
+- **Amazon Detective**: Hỗ trợ điều tra và phân tích mối quan hệ giữa các finding.
+- **AWS IAM**: Quản lý quyền truy cập cho các dịch vụ.
+- **AWS KMS**: Hỗ trợ mã hóa dữ liệu nếu được cấu hình.
+- **AWS Amplify**: Triển khai SOC Dashboard.
+- **Amazon API Gateway**: Cung cấp API cho dashboard.
+- **Amazon Cognito**: Quản lý xác thực người dùng dashboard.
+
+#### Thiết kế thành phần
+
+##### Detection Layer
+
+Lớp phát hiện sử dụng GuardDuty, CloudTrail, VPC Flow Logs và Security Hub để giám sát các hành vi bất thường trong tài khoản AWS.
+
+GuardDuty có vai trò chính trong việc phát hiện các dấu hiệu như:
+
+```text
+UnauthorizedAccess:EC2/SSHBruteForce
+Recon:EC2/Portscan
+CryptoCurrency:EC2/BitcoinTool.B
+Trojan:EC2/BlackholeTraffic
+```
+
+##### Event Routing Layer
+
+EventBridge rule được cấu hình để nhận GuardDuty findings và chuyển sự kiện đến Step Functions workflow.
+
+Rule này giúp hệ thống hoạt động theo mô hình event-driven, nghĩa là workflow chỉ được kích hoạt khi có security event phù hợp.
+
+##### Workflow Orchestration Layer
+
+Step Functions chịu trách nhiệm điều phối luồng xử lý incident.
+
+Workflow có thể chia thành các nhánh:
+
+```text
+Alert Only
+Approval Required
+Auto Response
+```
+
+- Finding mức thấp hoặc không đủ điều kiện sẽ chỉ gửi cảnh báo.
+- Finding mức cao có thể yêu cầu SOC Analyst phê duyệt.
+- Finding nghiêm trọng liên quan đến EC2 có thể kích hoạt auto isolation.
+
+##### Response Automation Layer
+
+Lambda xử lý logic phản ứng sự cố, bao gồm:
+
+- Đọc thông tin finding.
+- Xác định EC2 instance bị ảnh hưởng.
+- Kiểm tra tag `AutoIsolate=true`.
+- Ghi incident vào DynamoDB.
+- Gọi Systems Manager để thu thập evidence.
+- Tạo EBS Snapshot.
+- Thay Security Group của EC2 sang `SG-Isolation`.
+- Gửi notification qua SNS.
+
+##### Evidence Storage Layer
+
+S3 được dùng để lưu trữ bằng chứng sự cố, bao gồm:
+
+```text
+raw-event.json
+response-summary.json
+SSM command output
+forensic evidence
+```
+
+DynamoDB lưu trạng thái xử lý incident, ví dụ:
+
+```text
+incidentId
+findingId
+findingType
+severity
+resourceId
+responseMode
+approvalStatus
+incidentStatus
+evidencePath
+snapshotIds
+notificationMessageId
+```
+
+##### Monitoring and Alerting Layer
+
+CloudWatch được dùng để theo dõi log và lỗi của Lambda, Step Functions và các thành phần liên quan.
+
+SNS được dùng để gửi cảnh báo đến:
+
+```text
+Email
+Slack Channel
 SOC Analyst
-→ AWS Amplify Hosting
-→ Amazon Cognito
-→ Amazon API Gateway
-→ Dashboard API Lambda
 ```
 
-Dashboard API Lambda có nhiệm vụ:
+##### SOC Dashboard Layer
 
-- Đọc danh sách incident từ DynamoDB.
-- Đọc bằng chứng chi tiết từ S3.
-- Ghi API logs vào CloudWatch.
-- Gửi Approve/Reject về Step Functions thông qua Approval Callback.
+SOC Dashboard được triển khai bằng Amplify. Dashboard giúp hiển thị:
 
-#### 8.2. Luồng traffic thử nghiệm
+- Tổng số incident.
+- Incident đang chờ phê duyệt.
+- Finding nghiêm trọng.
+- Trạng thái xử lý incident.
+- Kết quả auto isolation.
+- Trạng thái notification.
 
-Trong môi trường lab, nhóm đặt một Amazon EC2 trong Public Subnet để mô phỏng threat traffic:
+---
 
-```text
-Threat Actor
-→ Internet
-→ Internet Gateway
-→ Amazon EC2
-```
+### 4. Triển khai kỹ thuật
 
-Các tình huống thử nghiệm:
+#### Các giai đoạn triển khai
 
-- Port scanning.
-- SSH brute-force.
-- Truy cập từ IP đáng ngờ.
-- Hành vi mạng bất thường.
+Dự án được triển khai theo các giai đoạn sau:
 
-EC2 hoạt động bình thường với `SG-Workload`. Khi cần containment, Lambda thay thế Security Group này bằng `SG-Isolation`, security group không có inbound/outbound rules.
+##### Giai đoạn 1: Nghiên cứu và thiết kế kiến trúc
 
-#### 8.3. Thu thập log và lưu bằng chứng
+Trong giai đoạn này, tiến hành nghiên cứu các dịch vụ AWS Security và thiết kế kiến trúc CloudSOC.
 
-Hệ thống thu thập và lưu trữ:
+Các nội dung chính:
 
-- **CloudTrail → S3:** audit logs dài hạn.
-- **CloudTrail → CloudWatch:** management events phục vụ giám sát nhanh.
-- **VPC Flow Logs → CloudWatch:** metadata traffic mạng.
-- **Systems Manager → S3:** forensic output.
-- **Systems Manager → EBS Snapshot:** snapshot phục vụ điều tra.
-- **Lambda/Step Functions → CloudWatch:** execution logs.
+- Tìm hiểu GuardDuty, Security Hub, EventBridge và Step Functions.
+- Tìm hiểu Lambda, Systems Manager và DynamoDB.
+- Tìm hiểu mô hình incident response trên cloud.
+- Thiết kế kiến trúc tổng thể theo chuẩn AWS.
+- Xác định luồng detection, investigation, response và notification.
 
-S3 evidence bucket có thể sử dụng SSE-KMS để mã hóa bằng khóa do AWS KMS quản lý.
+##### Giai đoạn 2: Chuẩn bị môi trường AWS
 
-#### 8.4. Phát hiện và điều tra mối đe dọa
+Giai đoạn này tập trung tạo môi trường lab:
 
-Amazon GuardDuty phân tích:
+- Tạo VPC.
+- Tạo public subnet.
+- Tạo route table.
+- Tạo Internet Gateway.
+- Tạo EC2 workload.
+- Tạo Security Group cho workload.
+- Tạo Security Group cô lập `SG-Isolation`.
+- Gắn IAM Role cho EC2 để sử dụng Systems Manager.
 
-- CloudTrail events.
+##### Giai đoạn 3: Triển khai logging và security services
+
+Bật và cấu hình các dịch vụ giám sát:
+
+- CloudTrail.
 - VPC Flow Logs.
-- DNS logs.
+- GuardDuty.
+- Security Hub.
+- AWS Config.
+- Amazon Detective.
+- CloudWatch Logs.
 
-Khi phát hiện bất thường, GuardDuty tạo finding và gửi theo ba hướng:
+Mục tiêu là đảm bảo hệ thống có đủ nguồn dữ liệu để phát hiện và điều tra sự cố.
 
-```text
-GuardDuty
-├──→ AWS Security Hub
-├──→ Amazon Detective
-└──→ Amazon EventBridge
-```
+##### Giai đoạn 4: Xây dựng workflow phản ứng sự cố
 
-Security Hub phục vụ tổng hợp findings. Detective hỗ trợ SOC Analyst điều tra mối liên hệ giữa finding, EC2, IP và hành vi. EventBridge kích hoạt workflow phản ứng nếu finding phù hợp event pattern.
+Cấu hình các thành phần tự động hóa:
 
-#### 8.5. Điều phối phản ứng bằng Step Functions
+- EventBridge rule nhận GuardDuty findings.
+- Step Functions workflow điều phối response.
+- Lambda function xử lý incident.
+- Systems Manager Run Command thu thập evidence.
+- S3 bucket lưu evidence.
+- DynamoDB table lưu incident status.
+- SNS topic gửi notification.
 
-Step Functions đóng vai trò trung tâm điều phối. Workflow kiểm tra:
+##### Giai đoạn 5: Xây dựng dashboard và alert
 
-- Finding có liên quan đến EC2 không?
-- Có xác định được Instance ID không?
-- Severity là Low, Medium, High hay Critical?
-- EC2 có tag `AutoIsolate=true` không?
-- Hệ thống đang ở chế độ Dry-run hay Enforce?
-- Có cần SOC Analyst phê duyệt không?
+Triển khai SOC Dashboard:
 
-Chính sách xử lý đề xuất:
+- Amplify Hosting cho giao diện dashboard.
+- API Gateway làm endpoint cho dashboard.
+- Lambda API xử lý request.
+- Cognito hỗ trợ xác thực người dùng nếu cần.
+- Dashboard hiển thị trạng thái incident và approval workflow.
 
-| Điều kiện | Hành động |
-| --- | --- |
-| Finding không phải EC2 | Lưu incident và gửi cảnh báo |
-| Không xác định được Instance ID | Chuyển sang `NEEDS_REVIEW` |
-| Low hoặc Medium severity | Alert only, không cô lập |
-| High + `AutoIsolate=true` | Yêu cầu SOC Analyst phê duyệt |
-| Critical + `AutoIsolate=true` | Có thể tự động tiếp tục tùy policy |
-| Thiếu tag `AutoIsolate=true` | Dry-run hoặc chờ xem xét |
+##### Giai đoạn 6: Kiểm thử và xác thực
 
-#### 8.6. Luồng phê duyệt thủ công
+Thực hiện kiểm thử toàn bộ hệ thống:
 
-Với incident cần kiểm tra trước khi containment:
+- Tạo GuardDuty sample findings.
+- Kiểm tra EventBridge rule.
+- Kiểm tra Step Functions execution.
+- Kiểm tra Approval Workflow.
+- Kiểm tra Auto Isolation.
+- Kiểm tra DynamoDB record.
+- Kiểm tra S3 evidence.
+- Kiểm tra EBS Snapshot.
+- Kiểm tra Email và Slack alert.
+- Kiểm tra CloudWatch Alarm.
 
-```text
-Step Functions
-→ Amazon SNS
-→ Amazon Q Developer / Slack / Email / SMS
-→ SOC Analyst
-→ SOC Dashboard
-→ Dashboard API Lambda
-→ Step Functions Callback
-```
+##### Giai đoạn 7: Dọn dẹp tài nguyên
 
-Step Functions có thể sử dụng callback task token để tạm dừng workflow cho đến khi nhận được quyết định Approve hoặc Reject.
+Sau khi hoàn thành workshop, xóa các tài nguyên không còn sử dụng để tránh phát sinh chi phí.
 
-#### 8.7. Thu thập forensic và tạo EBS Snapshot
+---
 
-Sau khi được phê duyệt hoặc đủ điều kiện xử lý, Step Functions gọi Systems Manager:
+#### Yêu cầu kỹ thuật
 
-```text
-Step Functions
-→ AWS Systems Manager
-→ Amazon EC2
-→ Run Command / Automation
-```
+Để triển khai dự án, cần chuẩn bị:
 
-Thông tin forensic có thể gồm:
+- Tài khoản AWS có quyền tạo các dịch vụ cần thiết.
+- Kiến thức cơ bản về AWS Console.
+- Kiến thức cơ bản về VPC, EC2, IAM và Security Group.
+- Kiến thức cơ bản về Cloud Security và Incident Response.
+- Trình duyệt web để truy cập AWS Console.
+- Email để nhận SNS notification.
+- Slack workspace nếu muốn kiểm thử cảnh báo qua Slack.
 
-- Tiến trình đang chạy.
-- Kết nối mạng hiện tại.
-- Người dùng đang đăng nhập.
-- System logs.
-- IP address và routing table.
-- Trạng thái Security Group trước khi cô lập.
+---
 
-Kết quả được lưu vào S3, sau đó Systems Manager tạo EBS Snapshot:
+### 5. Lộ trình và mốc triển khai
 
-```text
-Collect Evidence
-→ Store Forensics
-→ Create Snapshot
-→ Apply Isolation
-```
+Dự án được thực hiện trong thời gian thực tập, chia thành các mốc chính:
 
-Không cô lập EC2 trước khi thu thập dữ liệu vì `SG-Isolation` không có outbound rule và có thể làm mất kết nối với Systems Manager.
+#### Tuần 1–2: Nghiên cứu và lập kế hoạch
 
-#### 8.8. Cô lập EC2
+- Tìm hiểu các dịch vụ AWS Security.
+- Phân tích yêu cầu đề tài.
+- Xây dựng phạm vi dự án.
+- Thiết kế kiến trúc ban đầu.
 
-Incident Response Lambda thực hiện:
+#### Tuần 3–4: Thiết kế kiến trúc và chuẩn bị lab
 
-- Đọc Instance ID từ workflow.
-- Kiểm tra EC2 và tag.
-- Lưu Security Group hiện tại.
-- Thay `SG-Workload` bằng `SG-Isolation`.
-- Lưu finding và kết quả xử lý vào S3.
-- Cập nhật incident trong DynamoDB.
-- Ghi execution logs vào CloudWatch.
-- Gửi kết quả qua SNS.
+- Hoàn thiện sơ đồ AWS CloudSOC.
+- Tạo VPC, subnet, route table và Internet Gateway.
+- Tạo EC2 workload.
+- Cấu hình IAM Role và Security Group.
 
-Luồng chính:
+#### Tuần 5–6: Triển khai detection và logging
 
-```text
-Incident Response Lambda
-├──→ EC2: Replace Security Group
-├──→ S3: Store Evidence
-├──→ DynamoDB: Update Incident
-├──→ CloudWatch: Execution Logs
-└──→ SNS: Send Result
-```
+- Bật CloudTrail.
+- Cấu hình VPC Flow Logs.
+- Bật GuardDuty.
+- Bật Security Hub.
+- Cấu hình AWS Config và Detective.
 
-### 9. Giá trị đề xuất
+#### Tuần 7–8: Triển khai workflow tự động
 
-#### Giá trị kỹ thuật
+- Tạo EventBridge rule.
+- Tạo Step Functions workflow.
+- Viết Lambda Incident Response.
+- Tạo S3 Evidence Bucket.
+- Tạo DynamoDB Incident Table.
 
-- Mô phỏng được quy trình SOC hiện đại trên AWS.
-- Thể hiện cách kết hợp detection, investigation, orchestration và containment.
-- Minh họa rõ nguyên tắc evidence-first trong incident response.
-- Tận dụng dịch vụ managed/serverless để giảm vận hành thủ công.
+#### Tuần 9–10: Triển khai dashboard và cảnh báo
 
-#### Giá trị bảo mật
+- Tạo SOC Dashboard.
+- Triển khai bằng Amplify.
+- Cấu hình API Gateway và Lambda API.
+- Cấu hình SNS Email.
+- Cấu hình Slack alert nếu cần.
 
-- Giảm rủi ro phản ứng tự động sai bằng approval gate.
-- Lưu bằng chứng trước khi cô lập tài nguyên.
-- Áp dụng least privilege cho IAM roles.
-- Hỗ trợ audit bằng CloudTrail, CloudWatch và AWS Config.
-- Có thể mở rộng thành playbook phản ứng cho các loại finding khác.
+#### Tuần 11: Kiểm thử hệ thống
 
-#### Giá trị học thuật và trình bày
+- Kiểm thử GuardDuty sample findings.
+- Kiểm thử approval workflow.
+- Kiểm thử auto isolation.
+- Kiểm thử evidence storage.
+- Kiểm thử dashboard và alert.
 
-- Phù hợp chuyên ngành An ninh mạng.
-- Có kiến trúc rõ ràng, có sơ đồ, có checklist.
-- Có thể trình bày trước mentor, công ty hoặc hội đồng đánh giá.
-- Có định hướng nâng cấp production thay vì chỉ dừng ở lab.
+#### Tuần 12: Hoàn thiện báo cáo và cleanup
 
-### 10. Kế hoạch triển khai đề xuất
+- Hoàn thiện workshop.
+- Chụp ảnh kết quả.
+- Viết báo cáo.
+- Dọn dẹp tài nguyên AWS.
 
-| Giai đoạn | Nội dung | Đầu ra |
-| --- | --- | --- |
-| Phase 1 | Phân tích yêu cầu SOC và threat scenario | Use case, scope, response policy |
-| Phase 2 | Thiết kế kiến trúc CloudSOC | Architecture diagram, service mapping |
-| Phase 3 | Xây dựng dashboard/API và incident data model | Amplify, Cognito, API Gateway, Lambda, DynamoDB |
-| Phase 4 | Thiết lập logging/evidence storage | CloudTrail, CloudWatch, S3, KMS |
-| Phase 5 | Thiết kế detection và orchestration | GuardDuty, Security Hub, Detective, EventBridge, Step Functions |
-| Phase 6 | Xây dựng forensic và containment flow | Systems Manager, EBS Snapshot, Lambda SG-Isolation |
-| Phase 7 | Kiểm thử và review | Test cases, evidence, checklist |
-| Phase 8 | Hoàn thiện báo cáo và workshop | Website Hugo, Proposal, Workshop, Drawing Guide |
+---
 
-### 11. Rủi ro và biện pháp kiểm soát
+### 6. Ước tính ngân sách
 
-| Rủi ro | Ảnh hưởng | Biện pháp kiểm soát |
-| --- | --- | --- |
-| GuardDuty finding false positive | Cô lập nhầm tài nguyên | Dùng severity, tag `AutoIsolate`, approval gate |
-| Không thu thập được forensic | Thiếu bằng chứng điều tra | Thu thập evidence trước isolation, kiểm tra SSM Agent/Role |
-| Lambda thiếu quyền | Workflow thất bại | IAM least privilege nhưng đủ quyền cần thiết |
-| S3 evidence chứa dữ liệu nhạy cảm | Rủi ro rò rỉ dữ liệu | SSE-KMS, bucket policy, block public access |
-| EC2 public subnet không phù hợp production | Attack surface lớn | Ghi rõ Lab/PoC, đề xuất Private Subnet khi production |
-| Chi phí phát sinh | Ảnh hưởng tài khoản lab | Cleanup checklist, lifecycle policy |
+Dự án được thiết kế theo hướng lab, ưu tiên sử dụng tài nguyên nhỏ và thời gian chạy ngắn để tối ưu chi phí.
 
-### 12. Khả năng mở rộng production
+Các tài nguyên có thể phát sinh chi phí gồm:
 
-Trong phiên bản production, nhóm đề xuất:
+| Nhóm dịch vụ | Dịch vụ | Ghi chú chi phí |
+|---|---|---|
+| Compute | EC2, Lambda | EC2 phát sinh theo thời gian chạy, Lambda tính theo request và thời gian thực thi |
+| Storage | S3, EBS Snapshot, DynamoDB | Phát sinh theo dung lượng lưu trữ |
+| Security | GuardDuty, Security Hub, Detective, Config | Có thể phát sinh theo lượng log/finding/resource được phân tích |
+| Monitoring | CloudWatch Logs, CloudWatch Alarm | Phát sinh theo log lưu trữ và metric/alarm |
+| Workflow | Step Functions, EventBridge | Phát sinh theo số lần execution/event |
+| Notification | SNS | Phát sinh theo số lượng notification |
+| Dashboard | Amplify, API Gateway, Cognito | Phát sinh theo hosting, request và người dùng |
 
-- Chuyển workload vào Private Subnet.
-- Thêm Application Load Balancer và AWS WAF.
-- Triển khai Multi-AZ.
-- Tách môi trường Lab/Staging/Production.
-- Bổ sung rollback Security Group có phê duyệt.
-- Thiết lập lifecycle cho S3 evidence và EBS Snapshots.
-- Dùng AWS CDK/Terraform/CloudFormation để triển khai nhất quán.
-- Tích hợp ticketing system và SIEM nếu mở rộng đa tài khoản.
+#### Chi phí dự kiến cho môi trường lab
 
-### 13. Sản phẩm bàn giao
+Vì đây là môi trường lab nhỏ, chỉ sử dụng một EC2 workload và số lượng finding/test hạn chế, chi phí có thể được kiểm soát ở mức thấp nếu:
 
-- Website báo cáo Hugo song ngữ.
-- Proposal học thuật và thuyết phục cho dự án AWS CloudSOC.
-- Báo cáo chi tiết kiến trúc và luồng xử lý SOC.
-- Workshop hướng dẫn vẽ sơ đồ kiến trúc.
-- Sơ đồ AWS CloudSOC minh họa trực tiếp trên website.
-- Checklist review trước khi nộp.
-- Định hướng nâng cấp production và cleanup lab.
+- Chỉ bật tài nguyên trong thời gian thực hành.
+- Terminate EC2 sau khi test.
+- Xóa EBS Snapshot sau khi hoàn thành.
+- Empty và delete S3 bucket sau workshop.
+- Xóa CloudWatch log group không còn cần thiết.
+- Disable các dịch vụ security nếu không tiếp tục sử dụng.
 
-### 14. Tiêu chí nghiệm thu
-
-Dự án được xem là đạt yêu cầu nếu:
-
-- Kiến trúc thể hiện đầy đủ các vùng: Dashboard, Logging, Detection/Response, Governance và VPC Workload.
-- Luồng xử lý đúng thứ tự: Detect → Investigate → Decide → Collect Evidence → Snapshot → Contain → Notify.
-- Có giải thích rõ vì sao cần approval gate.
-- Có giải thích rõ vì sao cần forensic trước isolation.
-- Có bảng policy xử lý GuardDuty findings.
-- Có phân biệt rõ Lab/PoC và Production roadmap.
-- Có tài liệu đủ rõ để người khác đọc và vẽ lại sơ đồ.
-
-### 15. Đề xuất chấp thuận
-
-Nhóm đề xuất anh/chị admin, mentor và đơn vị đánh giá chấp thuận dự án AWS CloudSOC như một đề tài phù hợp để trình bày trong chương trình FCAJ. Dự án có tính thực tiễn cao, bám sát chuyên ngành An ninh mạng, khai thác nhiều dịch vụ AWS quan trọng và thể hiện tư duy thiết kế hệ thống bảo mật theo hướng có kiểm soát.
-
-Tóm lại, AWS CloudSOC không chỉ là một bài lab về từng dịch vụ riêng lẻ mà là một mô hình tích hợp, mô phỏng quy trình SOC hoàn chỉnh trên AWS:
+Ước tính chi phí nên được kiểm tra lại bằng **AWS Pricing Calculator** trước khi triển khai chính thức.
 
 ```text
-Thu thập log
-→ Phát hiện mối đe dọa
-→ Tổng hợp finding
-→ Điều tra bằng Detective
-→ Phân loại bằng Step Functions
-→ Yêu cầu phê duyệt khi cần
-→ Thu thập forensic
-→ Tạo EBS Snapshot
-→ Cô lập EC2
-→ Lưu bằng chứng
-→ Cập nhật Dashboard
-→ Gửi cảnh báo
+Estimated monthly lab cost: Low, depending on running time and enabled security services.
 ```
 
-Nhóm rất mong nhận được câu hỏi phản biện và góp ý từ anh/chị admin, mentor và mọi người để tiếp tục hoàn thiện kiến trúc, quy trình phản ứng sự cố và khả năng mở rộng của dự án.
+---
 
+### 7. Đánh giá rủi ro
+
+#### Ma trận rủi ro
+
+| Rủi ro | Ảnh hưởng | Xác suất | Mức độ |
+|---|---|---|---|
+| Phát sinh chi phí do quên xóa tài nguyên | Trung bình | Trung bình | Trung bình |
+| Lambda cô lập nhầm EC2 | Cao | Thấp | Trung bình |
+| IAM Role cấp quyền quá rộng | Cao | Trung bình | Cao |
+| GuardDuty sample finding không kích hoạt đúng workflow | Trung bình | Trung bình | Trung bình |
+| Dashboard không đồng bộ trạng thái DynamoDB | Trung bình | Trung bình | Trung bình |
+| SNS Email/Slack không nhận được cảnh báo | Thấp | Trung bình | Thấp |
+| Xóa nhầm tài nguyên không thuộc lab | Cao | Thấp | Trung bình |
+
+#### Chiến lược giảm thiểu
+
+- Gắn tag cho toàn bộ tài nguyên lab:
+
+```text
+Project = AWS-CloudSOC
+Environment = Lab
+```
+
+- Chỉ cho phép auto isolation với EC2 có tag:
+
+```text
+AutoIsolate = true
+```
+
+- Sử dụng `SG-Isolation` thay vì xóa tài nguyên trực tiếp.
+- Dùng approval workflow cho finding mức High.
+- Chỉ auto response với finding Critical hoặc test event có kiểm soát.
+- Chụp hình và lưu evidence trước khi cleanup.
+- Kiểm tra kỹ tên resource trước khi delete.
+- Giới hạn quyền IAM theo nguyên tắc least privilege.
+- Tạo AWS Budget để theo dõi chi phí lab.
+
+#### Kế hoạch dự phòng
+
+Nếu auto isolation không hoạt động, có thể thực hiện thủ công:
+
+```text
+EC2
+→ Instance
+→ Security
+→ Change security groups
+→ Replace SG-Workload with SG-Isolation
+```
+
+Nếu SNS không gửi email, có thể kiểm tra lại subscription confirmation.
+
+Nếu dashboard không đọc được DynamoDB, có thể kiểm tra lại API Gateway, Lambda API, CORS và IAM permission.
+
+Nếu Step Functions không chạy, có thể test trực tiếp Lambda bằng sample GuardDuty event.
+
+---
+
+### 8. Kết quả kỳ vọng
+
+Sau khi hoàn thành dự án, hệ thống AWS CloudSOC có thể đạt được các kết quả sau:
+
+#### Cải tiến kỹ thuật
+
+- Tạo được mô hình CloudSOC chạy trên AWS.
+- Tự động phát hiện security finding từ GuardDuty.
+- Tự động chuyển finding vào workflow bằng EventBridge.
+- Điều phối phản ứng sự cố bằng Step Functions.
+- Tự động xử lý incident bằng Lambda.
+- Thu thập forensic evidence bằng Systems Manager.
+- Tạo EBS Snapshot để hỗ trợ điều tra.
+- Cô lập EC2 nghi ngờ bằng `SG-Isolation`.
+- Lưu evidence vào S3.
+- Cập nhật incident status trong DynamoDB.
+- Gửi cảnh báo qua SNS, Email và Slack.
+- Hiển thị incident trên SOC Dashboard.
+
+#### Giá trị học tập
+
+Dự án giúp người thực hiện hiểu rõ hơn về:
+
+- AWS Security Services.
+- Cloud Incident Response.
+- Event-driven architecture.
+- Serverless automation.
+- Security monitoring.
+- Forensic evidence collection.
+- IAM Role và least privilege.
+- Thiết kế kiến trúc theo chuẩn AWS Solution Architecture.
+
+#### Giá trị dài hạn
+
+Mô hình AWS CloudSOC có thể được mở rộng trong tương lai để:
+
+- Tích hợp thêm nhiều nguồn log.
+- Kết nối với SIEM bên ngoài.
+- Thêm nhiều playbook response.
+- Tự động phân loại incident theo mức độ rủi ro.
+- Thêm dashboard chuyên nghiệp hơn.
+- Tối ưu chi phí và vận hành theo FinOps.
+- Áp dụng cho các bài lab Cloud Security nâng cao.

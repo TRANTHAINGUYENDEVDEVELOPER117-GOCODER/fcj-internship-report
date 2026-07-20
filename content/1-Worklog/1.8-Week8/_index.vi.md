@@ -1,70 +1,109 @@
 ---
-title: "Worklog Tuần 8"
-date: 2026-06-27
+title: "Nhật ký công việc Tuần 8"
+date: 2026-06-22
 weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
 
-### Tổng quan tuần 8 (27/06 – 03/07/2026)
+### Thời gian thực hiện
 
-Tuần thứ tám, em tiếp tục security track với các nội dung thiên về **bảo vệ dữ liệu** và **phát hiện mối đe dọa**: mã hóa bằng **AWS KMS**, truy cập private đến S3 bằng **VPC Endpoints**, rà soát best practices của **S3 Security**, bật **GuardDuty** và chuẩn hóa quản lý secrets bằng **Secrets Manager**.
+* **Tuần 8:** Từ ngày **2026-06-22** đến **2026-06-28**.
 
-### Mục tiêu tuần 8
+### Mục tiêu Tuần 8
 
-* Thực hành **KMS** để hiểu nguyên lý mã hóa/giải mã và quản lý key.
-* Tạo **VPC Endpoint** để truy cập S3 private (giảm phụ thuộc Internet).
-* Áp dụng **S3 Security Best Practices**: policy, block public access, encryption.
-* Bật **GuardDuty** và hiểu pipeline phát hiện threat.
-* Quản lý credentials bằng **Secrets Manager** thay vì hardcode.
+* Hiểu khái niệm kiến trúc hướng sự kiện trên AWS.
+* Tìm hiểu cách Amazon EventBridge tiếp nhận và định tuyến các sự kiện bảo mật.
+* Tạo EventBridge Rule cho các Finding từ Amazon GuardDuty và AWS Security Hub.
+* Tìm hiểu cách Amazon SNS gửi thông báo bảo mật đến quản trị viên.
+* Cấu hình SNS Topic và Email Subscription.
+* Xây dựng luồng sự kiện và thông báo bảo mật cơ bản.
+* Lọc Security Finding dựa trên nguồn sự kiện, loại tài nguyên và mức độ nghiêm trọng.
+* Chuẩn bị nền tảng xử lý sự kiện cho quy trình phản ứng sự cố tự động của dự án AWS CloudSOC.
 
-### Công việc đã triển khai
+### Các công việc thực hiện trong tuần
 
-| Bước | Nội dung | Trạng thái | Link |
-| --- | --- | --- | --- |
-| 01 | AWS KMS: tạo key, mã hóa/giải mã thử nghiệm | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 02 | VPC Endpoint (Gateway) cho S3, test truy cập private | ✅ | [S3 Endpoint Lab](https://000069.awsstudygroup.com/) |
-| 03 | S3 Security: Block Public Access, bucket policy, encryption | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 04 | GuardDuty: enable + xem findings + hiểu severity | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 05 | Secrets Manager: tạo secret, rotate/permission cơ bản | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 06 | Cleanup: xóa tài nguyên lab, kiểm tra phát sinh phí | ✅ | — |
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
+| --- | --- | --- | --- | --- |
+| Thứ Hai | - Ôn lại các dịch vụ bảo mật nhiều lớp đã học trong Tuần 7 <br> - Tìm hiểu các khái niệm cơ bản về kiến trúc hướng sự kiện <br> - Hiểu Event, Event Source, Event Bus, Rule và Target <br> - Xác định vai trò của Amazon EventBridge trong kiến trúc AWS CloudSOC | 2026-06-22 | 2026-06-22 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html> |
+| Thứ Ba | - Tìm hiểu Amazon EventBridge Event Bus <br> - Xem cấu trúc của một AWS Service Event <br> - Xác định các trường Source, Detail Type, Account, Region, Time, Resources và Detail <br> - Xem các sự kiện mẫu từ GuardDuty và Security Hub | 2026-06-23 | 2026-06-23 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events-structure.html> |
+| Thứ Tư | - Tạo Amazon SNS Topic để gửi thông báo bảo mật <br> - Tạo Email Subscription <br> - Xác nhận đăng ký SNS thông qua email <br> - Gửi Test Message và kiểm tra email thông báo đã được nhận | 2026-06-24 | 2026-06-24 | <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html> |
+| Thứ Năm | - Tạo EventBridge Rule cho Amazon GuardDuty Finding <br> - Cấu hình Event Pattern sử dụng nguồn sự kiện GuardDuty <br> - Thêm Amazon SNS làm Target <br> - Kiểm tra Rule bằng Sample Finding hoặc Test Event | 2026-06-25 | 2026-06-25 | <https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings_eventbridge.html> |
+| Thứ Sáu | - Tạo EventBridge Rule cho AWS Security Hub Finding <br> - Lọc Finding dựa trên Workflow Status, Severity hoặc Resource Type <br> - Thêm Amazon SNS làm Target gửi thông báo <br> - Kiểm tra nội dung thông báo nhận được qua email | 2026-06-26 | 2026-06-26 | <https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe-integration.html> |
+| Thứ Bảy | - Xem lại EventBridge Event Pattern <br> - Tạo các Rule riêng cho Finding mức Low, Medium, High và Critical khi cần thiết <br> - Kiểm tra khả năng lọc theo loại tài nguyên EC2 và mức độ nghiêm trọng <br> - Xác nhận chỉ các Security Finding phù hợp mới được gửi đến SNS Topic | 2026-06-27 | 2026-06-27 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html> |
+| Chủ Nhật | - Kiểm tra quyền IAM cho EventBridge và Amazon SNS <br> - Xem Metrics và kết quả Invocation của EventBridge Rule <br> - Tìm hiểu cơ chế Retry và xử lý sự kiện thất bại <br> - Kiểm tra chi phí dịch vụ và xóa các tài nguyên thử nghiệm không cần thiết <br> - Hoàn thành nhật ký Tuần 8 | 2026-06-28 | 2026-06-28 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html> |
 
-### Em đã làm được gì trong tuần
+### Kết quả đạt được trong Tuần 8
 
-**AWS KMS**
-* Tạo customer managed key (CMK) và phân biệt key policy vs IAM policy.
-* Thực hành encrypt/decrypt (dữ liệu mẫu) để hiểu “data key” và quyền sử dụng key.
+* Hiểu được khái niệm kiến trúc hướng sự kiện và vai trò của mô hình này trong việc tự động hóa hoạt động bảo mật cloud.
 
-**VPC Endpoint cho S3**
-* Tạo **Gateway VPC Endpoint** cho S3 và gắn vào route table.
-* Test truy cập S3 theo hướng “private path” (giảm exposure ra Internet).
-* Ghi chú: endpoint policy là lớp kiểm soát bổ sung, nên dùng để giới hạn bucket/action.
+* Nắm được các thành phần chính của Amazon EventBridge, bao gồm:
 
-**S3 Security Best Practices**
-* Bật Block Public Access.
-* Rà soát bucket policy theo hướng least privilege.
-* Bật default encryption và kiểm tra object encryption khi upload.
+  * Event
+  * Event Source
+  * Event Bus
+  * Event Pattern
+  * Rule
+  * Target
 
-**GuardDuty**
-* Enable GuardDuty và theo dõi findings.
-* Hiểu cách phân loại severity và luồng xử lý: triage → xác minh → khắc phục.
+* Hiểu cách các dịch vụ AWS gửi sự kiện đến Default Event Bus của Amazon EventBridge.
 
-**Secrets Manager**
-* Tạo secret (thông tin demo) và cấp quyền truy cập theo principle of least privilege.
-* Ghi chú thói quen an toàn: không hardcode key/webhook vào source code.
+* Xem cấu trúc cơ bản của một AWS Event và xác định các trường dữ liệu quan trọng, bao gồm:
 
-### Kết quả đạt được
+  * Source
+  * Detail Type
+  * AWS Account
+  * AWS Region
+  * Event Time
+  * Resources
+  * Event Detail
 
-* Nắm được baseline về **encryption, private connectivity, threat detection, secrets hygiene**.
-* Biết cách “đóng” bề mặt tấn công: S3 public access + Internet path.
-* Có checklist thực hành để áp dụng lại trong dự án thực tế.
+* Hiểu cách Amazon GuardDuty Finding được gửi đến Amazon EventBridge.
 
-### Khó khăn gặp phải
+* Hiểu cách AWS Security Hub Finding được định tuyến thông qua Amazon EventBridge.
 
-* Nhầm lẫn key policy và IAM policy khi cấp quyền KMS — phải kiểm tra cả 2 lớp.
-* Endpoint hoạt động nhưng vẫn bị deny do bucket policy chưa cho phép — cần kết hợp endpoint policy + bucket policy hợp lý.
-* GuardDuty cần thời gian sync findings; không thấy ngay lập tức.
+* Tạo Amazon SNS Topic để gửi thông báo bảo mật.
 
-### Chuẩn bị cho tuần 9
+* Tạo và xác nhận Email Subscription cho SNS Topic.
 
-* Chuyển sang IaC/Operations: **AWS Backup**, **CloudFormation**, giới thiệu **AWS CDK**.
+* Gửi Test Message qua Amazon SNS và xác nhận email thông báo đã được nhận.
+
+* Tạo EventBridge Rule cho Amazon GuardDuty Finding.
+
+* Cấu hình Amazon SNS làm Target của EventBridge Rule.
+
+* Tạo EventBridge Rule cho AWS Security Hub Finding.
+
+* Thực hành lọc Security Finding dựa trên các trường trong Event Pattern, bao gồm:
+
+  * Nguồn dịch vụ bảo mật
+  * Mức độ nghiêm trọng của Finding
+  * Loại tài nguyên
+  * AWS Account
+  * AWS Region
+  * Workflow Status
+
+* Hiểu sự khác nhau giữa các mức độ nghiêm trọng:
+
+  * Low
+  * Medium
+  * High
+  * Critical
+
+* Kiểm tra luồng thông báo bằng Sample Security Finding hoặc Test Event.
+
+* Xác nhận hoạt động của luồng thông báo bảo mật cơ bản:
+
+  **GuardDuty hoặc Security Hub → Amazon EventBridge → Amazon SNS → Email Notification**
+
+* Kiểm tra các quyền IAM cần thiết để EventBridge có thể gửi thông báo đến SNS Topic.
+
+* Tìm hiểu cơ chế Retry và Dead-Letter Queue trong trường hợp EventBridge không thể chuyển sự kiện đến Target.
+
+* Xem EventBridge Metrics để kiểm tra các Invocation thành công hoặc thất bại.
+
+* Xác định Amazon EventBridge là dịch vụ định tuyến sự kiện trung tâm trong dự án AWS CloudSOC cuối kỳ.
+
+* Chuẩn bị nền tảng xử lý sự kiện cần thiết để tích hợp AWS Step Functions và AWS Lambda trong các tuần tiếp theo.
+
+* Hoàn thành Tuần 8 với kiến thức nền tảng về Amazon EventBridge, Amazon SNS, lọc sự kiện bảo mật và gửi thông báo tự động.

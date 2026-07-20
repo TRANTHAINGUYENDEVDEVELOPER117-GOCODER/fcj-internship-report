@@ -1,72 +1,75 @@
 ---
 title: "Week 1 Worklog"
-date: 2026-05-09
+date: 2026-05-05
 weight: 1
 chapter: false
 pre: " <b> 1.1. </b> "
 ---
 
-### Week 1 Overview (05/09 – 05/15/2026)
+### Implementation Period
 
-During the first week of my internship, **Tran Thai Nguyen** focused on getting acquainted with the **First Cloud Journey Workforce Bootcamp** organized by AWS Study Group, setting up the learning environment, and completing foundational labs in **Module 01 – AWS Foundation** via the [FCJ Bootcamp 2025 playlist](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i) and [Cloud Journey](https://cloudjourney.awsstudygroup.com/).
+* **Week 1:** From **2026-05-05** to **2026-05-10**.
 
 ### Week 1 Objectives
 
-* Join the FCJ Workforce Bootcamp and understand the 3-month internship roadmap.
-* Set up a personal AWS account with security and cost controls.
-* Learn basic AWS service categories and IAM access management.
+* Become familiar with the First Cloud AI Journey internship program and learning roadmap.
+* Understand the basic concepts of cloud computing and Amazon Web Services.
+* Become familiar with the AWS Management Console.
+* Create and secure an AWS account.
+* Learn the basics of AWS Identity and Access Management.
+* Install and configure AWS CLI.
+* Set up basic billing alerts and cost monitoring.
 
-### Work Completed
+### Tasks to Be Carried Out This Week
 
-| Day | Detailed Tasks | Start Date | Completion Date | Reference |
+| Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 2 (05/09) | Joined FCJ Bootcamp; reviewed internship guidelines; joined AWS Study Group Facebook community | 05/09/2026 | 05/09/2026 | [FCJ Playlist](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i) |
-| 3 (05/10) | **Lab 01:** Registered AWS account; verified payment; enabled MFA; selected Region `ap-southeast-1` | 05/10/2026 | 05/10/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 4 (05/11) | **Lab 02:** Created AWS Budget; set email alerts at 80% and 100% thresholds | 05/11/2026 | 05/11/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 5 (05/12) | **Lab 03:** Explored AWS Support plans; surveyed Compute, Storage, Networking, Database, Security services | 05/12/2026 | 05/12/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 6 (05/13) | **Lab 04:** Created IAM User, Group, Policy; applied least privilege; generated Access Keys for CLI | 05/13/2026 | 05/13/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 7 (05/14) | Reviewed Week 1; documented lab steps and common errors (card verification, MFA setup) | 05/14/2026 | 05/15/2026 | [FCJ Playlist](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i) |
+| Tuesday | - Learn about the internship program, rules, and weekly reporting requirements <br> - Review the 12-week AWS learning roadmap <br> - Understand the expected project and final report structure | 2026-05-05 | 2026-05-05 | <https://hcm-rules.awsfcaj.com/3-project/> |
+| Wednesday | - Learn basic cloud computing concepts <br> - Understand what AWS is and how cloud services are delivered <br> - Learn the main AWS service categories: Compute, Storage, Networking, Database, Security, and Monitoring | 2026-05-06 | 2026-05-06 | <https://cloudjourney.awsstudygroup.com/> |
+| Thursday | - Create and access an AWS account <br> - Become familiar with the AWS Management Console <br> - Select the appropriate AWS Region <br> - Enable Multi-Factor Authentication for the root account | 2026-05-07 | 2026-05-07 | <https://cloudjourney.awsstudygroup.com/> |
+| Friday | - Learn the basic concepts of AWS Identity and Access Management <br> - Understand IAM User, Group, Role, and Policy <br> - Create an IAM user for daily tasks <br> - Review the principle of least privilege | 2026-05-08 | 2026-05-08 | <https://cloudjourney.awsstudygroup.com/> |
+| Saturday | - Install AWS CLI on the local computer <br> - Configure the default AWS Region and output format <br> - Practice basic commands such as checking the CLI version, configuration, and current caller identity | 2026-05-09 | 2026-05-09 | <https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html> |
+| Sunday | - Learn about AWS Billing and Cost Management <br> - Create an AWS Budget and basic billing alert <br> - Review Free Tier usage <br> - Summarize the knowledge learned during Week 1 and complete the weekly worklog | 2026-05-10 | 2026-05-10 | <https://cloudjourney.awsstudygroup.com/> |
 
-### Lab Details
+### Week 1 Achievements
 
-#### Lab 01 – Creating Your First AWS Account
-* Registered AWS account with `Tranthainguyen015@gmail.com`.
-* Verified international payment method; enabled **MFA** on root account.
-* Explored **AWS Management Console**: service search, Region switching, Account ID.
+* Understood the basic concepts of cloud computing and the role of AWS in modern information systems.
 
-#### Lab 02 – Managing Costs with AWS Budgets
-* Created a **Cost budget** with alert thresholds.
-* Configured email notifications at 80% and 100% of budget.
-* Monitored spending via **Billing Dashboard** and **Cost Explorer**.
+* Learned the main AWS service categories, including:
 
-#### Lab 03 – Getting Help with AWS Support
-* Compared AWS Support plan tiers.
-* Practiced searching AWS Documentation.
-* Mapped core services: EC2, S3, VPC, RDS, IAM, CloudWatch.
+  * Compute
+  * Storage
+  * Networking
+  * Database
+  * Security
+  * Monitoring
 
-#### Lab 04 – Access Management with IAM
-* Created dedicated **IAM User** for daily practice.
-* Created **IAM Group** with **Policy** following least privilege.
-* Generated **Access Key / Secret Key** for future CLI configuration.
-* Verified permissions using **IAM Policy Simulator**.
+* Became familiar with the AWS Management Console and learned how to search for and access AWS services.
 
-### Achievements
+* Created and accessed an AWS account successfully.
 
-* Completed **4/4 foundational labs** (Lab 01 – Lab 04).
-* Active AWS account with MFA and automated cost alerts.
-* Understood **IAM** structure: User, Group, Role, Policy.
-* Ready to deploy compute and networking services in Week 2.
+* Improved account security by enabling Multi-Factor Authentication for the root account.
 
-### Skills Acquired
+* Learned the basic components of AWS Identity and Access Management, including:
 
-| Skill | Description |
-| --- | --- |
-| AWS Console | Navigate, search, and use services via web interface |
-| Cost Management | Budget setup, billing monitoring, cost control |
-| IAM | Create users, groups, policies; apply least privilege |
-| Account Security | MFA, protect root credentials |
+  * IAM User
+  * IAM Group
+  * IAM Role
+  * IAM Policy
 
-### Challenges & Solutions
+* Understood the principle of least privilege and the importance of avoiding the root account for daily operations.
 
-* **Card verification failed:** Bank blocked international transactions → contacted bank to enable foreign payments.
-* **MFA confusion:** Initially mixed up root vs IAM user MFA → carefully followed lab instructions.
+* Installed and configured AWS CLI on the local computer.
+
+* Practiced basic AWS CLI commands to:
+
+  * Check the installed AWS CLI version
+  * Review the current CLI configuration
+  * Check the current AWS account identity
+  * Confirm the configured AWS Region
+
+* Learned the importance of AWS cost management.
+
+* Created an AWS Budget and billing alert to reduce the risk of unexpected charges.
+
+* Completed Week 1 with a basic foundation in AWS, account security, IAM, AWS Console, AWS CLI, and cost monitoring.

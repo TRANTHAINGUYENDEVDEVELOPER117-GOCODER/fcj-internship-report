@@ -1,59 +1,118 @@
 ---
 title: "Week 7 Worklog"
-date: 2026-06-20
+date: 2026-06-15
 weight: 7
 chapter: false
 pre: " <b> 1.7. </b> "
 ---
 
-### Week 7 Overview (20/06 – 26/06/2026)
+### Implementation Period
 
-In week seven, I moved to the **Security** section of [Cloud Journey – Optimize](https://cloudjourney.awsstudygroup.com/3-optimize/) — aligned with my **Cybersecurity** major at HUTECH. I practiced **IAM Permission Boundary**, **IAM Conditions for role assumption**, **AWS Security Hub**, and **AWS WAF**.
+* **Week 7:** From **2026-06-15** to **2026-06-21**.
 
-### Week 7 Objectives — Security Track
+### Week 7 Objectives
 
-* Deploy **Lab 30 – IAM Permission Boundary** to cap maximum permissions.
-* Configure **Lab 44 – IAM Role & Condition** (IP and time restrictions).
-* Enable **Lab 18 – AWS Security Hub** and review compliance findings.
-* Protect web apps with **Lab 26 – AWS WAF** (OWASP Juice Shop).
+* Understand the concept of layered security in AWS.
+* Learn how AWS WAF protects web applications from common web attacks.
+* Understand Web ACLs, rules, managed rule groups, and request filtering actions.
+* Learn the basic role of Elastic Load Balancing in distributing application traffic.
+* Understand how AWS Network Firewall protects traffic inside a VPC.
+* Learn the difference between AWS WAF, Security Groups, Network ACLs, and AWS Network Firewall.
+* Explore Amazon Inspector for vulnerability and exposure management.
+* Review security findings and identify how they can support the final AWS CloudSOC project.
 
-### Tasks Completed
+### Tasks to Be Carried Out This Week
 
-| Step | Task | Status | Link |
-| --- | --- | --- | --- |
-| 30 | Create `ec2-admin-restrict-region` boundary policy | ✅ | [Lab 30](https://000030.awsstudygroup.com/) |
-| 30 | Verify effective permissions = boundary ∩ identity policy | ✅ | [Create Policy](https://000030.awsstudygroup.com/3-createpolicy/) |
-| 44 | Restrict assume role by source IP | ✅ | [Lab 44](https://000044.awsstudygroup.com/) |
-| 44 | Restrict assume role by time window | ✅ | [IAM Condition](https://000044.awsstudygroup.com/4-configure-iam-role-with-condition/3-condition/) |
-| 18 | Enable Security Hub, review CIS/benchmark findings | ✅ | [Lab 18](https://000018.awsstudygroup.com/) |
-| 26 | Deploy OWASP Juice Shop via CloudFormation | ✅ | [Lab 26](https://000026.awsstudygroup.com/2-prepare/2.2-deploythesamplewebapp/) |
-| 26 | Web ACL + AWS Managed Rules (Core, SQLi) | ✅ | [Web ACL](https://000026.awsstudygroup.com/3-useawswaf/3.1-createswebacl/) |
-| 26 | Test Count action, cleanup resources | ✅ | [Test WAF](https://000026.awsstudygroup.com/3-useawswaf/3.4-testingnewrule/) |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| Monday | - Review the security monitoring knowledge from Week 6 <br> - Learn the concept of defense in depth <br> - Identify the protection layers in an AWS architecture <br> - Compare preventive, detective, and responsive security controls | 2026-06-15 | 2026-06-15 | <https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/welcome.html> |
+| Tuesday | - Learn about AWS WAF <br> - Understand Web ACLs, rules, rule groups, and rule priorities <br> - Learn the difference between Allow, Block, Count, CAPTCHA, and Challenge actions <br> - Review the AWS resources that can be protected by AWS WAF | 2026-06-16 | 2026-06-16 | <https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html> |
+| Wednesday | - Create an AWS WAF Web ACL <br> - Add AWS Managed Rules to the Web ACL <br> - Configure rule priority and default action <br> - Review sampled web requests and rule metrics <br> - Test request filtering when possible | 2026-06-17 | 2026-06-17 | <https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-creating.html> |
+| Thursday | - Learn about Elastic Load Balancing and Application Load Balancer <br> - Understand listeners, target groups, health checks, and traffic distribution <br> - Review how AWS WAF can be associated with an Application Load Balancer <br> - Examine the role of load balancing in improving availability | 2026-06-18 | 2026-06-18 | <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html> |
+| Friday | - Learn about AWS Network Firewall <br> - Understand firewall policies, stateless rule groups, and stateful rule groups <br> - Review the required VPC subnet and routing design <br> - Compare AWS Network Firewall with Security Groups and Network ACLs | 2026-06-19 | 2026-06-19 | <https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html> |
+| Saturday | - Learn about Amazon Inspector <br> - Enable Amazon Inspector for supported resources when appropriate <br> - Review EC2, ECR container image, and Lambda findings <br> - Examine severity, vulnerability details, affected resources, and remediation recommendations | 2026-06-20 | 2026-06-20 | <https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html> |
+| Sunday | - Compare AWS WAF, AWS Network Firewall, Security Groups, and Network ACLs <br> - Review WAF logs, firewall logs, and Inspector findings <br> - Identify which security findings can be integrated into the AWS CloudSOC workflow <br> - Review service costs, remove unnecessary resources, and complete the Week 7 worklog | 2026-06-21 | 2026-06-21 | <https://aws.amazon.com/security/> |
 
-### What I Did
+### Week 7 Achievements
 
-**Lab 30:** Created region-restricted EC2 boundary policy; attached as permissions boundary. Even with `AdministratorAccess`, effective permissions stay within the boundary.
+* Understood the concept of defense in depth and the importance of using multiple security layers in an AWS architecture.
 
-**Lab 44:** Built separate EC2/RDS admin roles; added trust policy conditions for `aws:SourceIp` and time-based access.
+* Identified three main types of security controls:
 
-**Lab 18:** Enabled Security Hub with AWS Foundational and CIS standards; reviewed aggregated security findings by severity.
+  * Preventive controls
+  * Detective controls
+  * Responsive controls
 
-**Lab 26:** Deployed Juice Shop, created Web ACL with managed rule groups, tested XSS/SQLi blocking via curl, used Count action before Block, then cleaned up all resources.
+* Understood the role of AWS WAF in protecting web applications from common attacks and unwanted requests.
 
-### Achievements
+* Learned the main components of AWS WAF, including:
 
-* Completed four security lab groups: Permission Boundary, IAM Condition, Security Hub, WAF.
-* Understood defense in depth: IAM → Security Hub → WAF.
-* Practiced least privilege and permission boundaries.
-* Learned WAF rule testing workflow (Count → Block).
+  * Web ACL
+  * Rule
+  * Rule Group
+  * Managed Rule Group
+  * Rule Priority
+  * Default Action
 
-### Challenges
+* Reviewed the main AWS WAF request actions:
 
-* Confused boundary as granting vs limiting permissions.
-* Assume role denied due to wrong `aws:SourceIp` or dynamic IP changes.
-* Security Hub findings took time to appear after enable.
-* WAF false positives — used Count action and CloudWatch metrics first.
+  * Allow
+  * Block
+  * Count
+  * CAPTCHA
+  * Challenge
 
-### Next Week
+* Created a Web ACL and added AWS Managed Rules.
 
-* Continue Cloud Journey — Reliability or Performance track per FCJ schedule.
+* Learned how rule priority affects the order in which AWS WAF evaluates incoming requests.
+
+* Reviewed sampled requests and metrics to understand how WAF rules process web traffic.
+
+* Understood the basic role of an Application Load Balancer in distributing traffic across multiple targets.
+
+* Learned the main Application Load Balancer components, including:
+
+  * Listener
+  * Listener Rule
+  * Target Group
+  * Health Check
+  * Registered Target
+
+* Understood how AWS WAF can be associated with an Application Load Balancer to protect web applications.
+
+* Learned the basic architecture and purpose of AWS Network Firewall.
+
+* Reviewed the main AWS Network Firewall components, including:
+
+  * Firewall
+  * Firewall Policy
+  * Stateless Rule Group
+  * Stateful Rule Group
+  * Firewall Endpoint
+  * Logging Configuration
+
+* Understood that AWS Network Firewall requires appropriate subnet placement and route table configuration to inspect VPC traffic.
+
+* Compared the roles of AWS security controls:
+
+  * AWS WAF protects the web application layer.
+  * AWS Network Firewall inspects network traffic inside a VPC.
+  * Security Groups control traffic at the resource or network interface level.
+  * Network ACLs control traffic at the subnet level.
+
+* Understood the role of Amazon Inspector in continuously identifying software vulnerabilities and unintended network exposure.
+
+* Reviewed Amazon Inspector findings and examined information such as:
+
+  * Finding severity
+  * Vulnerability identifier
+  * Affected resource
+  * Package information
+  * Network exposure
+  * Recommended remediation
+
+* Identified AWS WAF logs, Network Firewall logs, and Amazon Inspector findings as useful security data sources for the final AWS CloudSOC project.
+
+* Reviewed service pricing and removed unnecessary resources to reduce unexpected AWS costs.
+
+* Completed Week 7 with fundamental knowledge of AWS WAF, Elastic Load Balancing, AWS Network Firewall, Amazon Inspector, and layered cloud security.

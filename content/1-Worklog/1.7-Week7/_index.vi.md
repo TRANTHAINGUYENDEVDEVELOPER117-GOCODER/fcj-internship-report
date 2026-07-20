@@ -1,99 +1,118 @@
 ---
-title: "Worklog Tuần 7"
-date: 2026-06-20
+title: "Nhật ký công việc Tuần 7"
+date: 2026-06-15
 weight: 7
 chapter: false
 pre: " <b> 1.7. </b> "
 ---
 
-### Tổng quan tuần 7 (20/06 – 26/06/2026)
+### Thời gian thực hiện
 
-Tuần thứ bảy, em chuyển sang mục **Security** trên [Cloud Journey – Optimize](https://cloudjourney.awsstudygroup.com/3-optimize/) — phù hợp với ngành **An ninh mạng** em đang theo học tại HUTECH. Tuần này em thực hành **IAM Permission Boundary**, **IAM Conditions giới hạn assume role**, **AWS Security Hub** và **AWS WAF** — các lớp bảo vệ từ identity đến ứng dụng web.
+* **Tuần 7:** Từ ngày **2026-06-15** đến **2026-06-21**.
 
-### Mục tiêu tuần 7 — Security Track
+### Mục tiêu Tuần 7
 
-* Triển khai **Lab 30 – IAM Permission Boundary** để giới hạn quyền tối đa.
-* Cấu hình **Lab 44 – IAM Role & Condition** (giới hạn IP, thời gian khi assume role).
-* Bật và xem findings trên **Lab 18 – AWS Security Hub**.
-* Bảo vệ ứng dụng web với **Lab 26 – AWS WAF** (OWASP Juice Shop).
+* Hiểu khái niệm bảo mật nhiều lớp trên AWS.
+* Tìm hiểu cách AWS WAF bảo vệ ứng dụng web trước các cuộc tấn công phổ biến.
+* Hiểu Web ACL, Rule, Managed Rule Group và các hành động lọc request.
+* Tìm hiểu vai trò cơ bản của Elastic Load Balancing trong việc phân phối lưu lượng ứng dụng.
+* Hiểu cách AWS Network Firewall bảo vệ lưu lượng bên trong VPC.
+* Phân biệt AWS WAF, Security Group, Network ACL và AWS Network Firewall.
+* Tìm hiểu Amazon Inspector trong việc quản lý lỗ hổng và mức độ phơi nhiễm của tài nguyên.
+* Xem xét các Security Finding có thể hỗ trợ cho dự án AWS CloudSOC cuối kỳ.
 
-### Công việc đã triển khai
+### Các công việc thực hiện trong tuần
 
-| Bước | Nội dung | Trạng thái | Link |
-| --- | --- | --- | --- |
-| 30 | Tạo policy `ec2-admin-restrict-region`, gắn Permission Boundary | ✅ | [Lab 30](https://000030.awsstudygroup.com/) |
-| 30 | Verify effective permissions = intersection boundary ∩ identity policy | ✅ | [Create Policy](https://000030.awsstudygroup.com/3-createpolicy/) |
-| 44 | Tạo role EC2/RDS admin, restrict assume role theo IP | ✅ | [Lab 44](https://000044.awsstudygroup.com/) |
-| 44 | Giới hạn thời gian được phép switch role | ✅ | [IAM Condition](https://000044.awsstudygroup.com/4-configure-iam-role-with-condition/3-condition/) |
-| 18 | Enable Security Hub, xem CIS/AWS Foundational benchmarks | ✅ | [Lab 18](https://000018.awsstudygroup.com/) |
-| 26 | Deploy OWASP Juice Shop qua CloudFormation | ✅ | [Lab 26](https://000026.awsstudygroup.com/2-prepare/2.2-deploythesamplewebapp/) |
-| 26 | Tạo Web ACL + AWS Managed Rules (Core, SQLi) | ✅ | [Web ACL](https://000026.awsstudygroup.com/3-useawswaf/3.1-createswebacl/) |
-| 26 | Test rule Count, custom rule JSON, cleanup | ✅ | [Test WAF](https://000026.awsstudygroup.com/3-useawswaf/3.4-testingnewrule/) |
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
+| --- | --- | --- | --- | --- |
+| Thứ Hai | - Ôn lại kiến thức giám sát bảo mật của Tuần 6 <br> - Tìm hiểu khái niệm Defense in Depth <br> - Xác định các lớp bảo vệ trong kiến trúc AWS <br> - So sánh các biện pháp bảo mật phòng ngừa, phát hiện và phản ứng | 2026-06-15 | 2026-06-15 | <https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/welcome.html> |
+| Thứ Ba | - Tìm hiểu AWS WAF <br> - Hiểu Web ACL, Rule, Rule Group và Rule Priority <br> - Phân biệt các hành động Allow, Block, Count, CAPTCHA và Challenge <br> - Xem các tài nguyên AWS có thể được bảo vệ bằng AWS WAF | 2026-06-16 | 2026-06-16 | <https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html> |
+| Thứ Tư | - Tạo AWS WAF Web ACL <br> - Thêm AWS Managed Rules vào Web ACL <br> - Cấu hình Rule Priority và Default Action <br> - Xem Sampled Request và các chỉ số của Rule <br> - Kiểm tra khả năng lọc request khi điều kiện cho phép | 2026-06-17 | 2026-06-17 | <https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-creating.html> |
+| Thứ Năm | - Tìm hiểu Elastic Load Balancing và Application Load Balancer <br> - Hiểu Listener, Target Group, Health Check và cơ chế phân phối lưu lượng <br> - Xem cách AWS WAF được liên kết với Application Load Balancer <br> - Tìm hiểu vai trò của Load Balancer trong việc tăng tính sẵn sàng | 2026-06-18 | 2026-06-18 | <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html> |
+| Thứ Sáu | - Tìm hiểu AWS Network Firewall <br> - Hiểu Firewall Policy, Stateless Rule Group và Stateful Rule Group <br> - Xem xét yêu cầu thiết kế Subnet và định tuyến trong VPC <br> - So sánh AWS Network Firewall với Security Group và Network ACL | 2026-06-19 | 2026-06-19 | <https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html> |
+| Thứ Bảy | - Tìm hiểu Amazon Inspector <br> - Bật Amazon Inspector cho các tài nguyên được hỗ trợ khi phù hợp <br> - Xem các Finding liên quan đến EC2, ECR Container Image và Lambda <br> - Kiểm tra mức độ nghiêm trọng, lỗ hổng, tài nguyên bị ảnh hưởng và đề xuất khắc phục | 2026-06-20 | 2026-06-20 | <https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html> |
+| Chủ Nhật | - So sánh AWS WAF, AWS Network Firewall, Security Group và Network ACL <br> - Xem WAF Log, Firewall Log và Inspector Finding <br> - Xác định các nguồn dữ liệu bảo mật có thể tích hợp vào quy trình AWS CloudSOC <br> - Kiểm tra chi phí dịch vụ, xóa tài nguyên không cần thiết và hoàn thành nhật ký Tuần 7 | 2026-06-21 | 2026-06-21 | <https://aws.amazon.com/security/> |
 
-### Em đã làm được gì trong tuần
+### Kết quả đạt được trong Tuần 7
 
-**Lab 30 – IAM Permission Boundary**
-* Tạo policy JSON giới hạn user chỉ thao tác `ec2:*` trong region `ap-southeast-1`:
-  ```json
-  "Condition": { "StringEquals": { "aws:RequestedRegion": ["ap-southeast-1"] } }
-  ```
-* Gắn policy này làm **Permissions boundary** cho user EC2 Admin.
-* Dù gắn thêm policy `AdministratorAccess`, effective permissions vẫn bị **cắt** bởi boundary — ngăn privilege escalation.
-* Hiểu: boundary **không grant** quyền, chỉ đặt **trần** tối đa; effective = boundary ∩ identity policies.
+* Hiểu được khái niệm Defense in Depth và tầm quan trọng của việc sử dụng nhiều lớp bảo mật trong kiến trúc AWS.
 
-**Lab 44 – IAM Role & Condition**
-* Tạo IAM user/group admin riêng cho EC2 và RDS (least privilege thay vì full admin).
-* Cấu hình **trust policy** trên role với condition:
-  * `aws:SourceIp` — chỉ assume role từ IP văn phòng/lab.
-  * `DateGreaterThan` / `DateLessThan` — chỉ trong khung giờ làm việc.
-* Test assume role ngoài IP/giờ cho phép → `Access Denied`.
+* Xác định được ba nhóm biện pháp kiểm soát bảo mật chính:
 
-**Lab 18 – AWS Security Hub**
-* Enable Security Hub trên account, bật tiêu chuẩn **AWS Foundational Security Best Practices** và **CIS AWS Foundations**.
-* Xem dashboard tổng hợp findings từ GuardDuty, Inspector, Macie (nếu bật).
-* Phân loại finding theo severity (CRITICAL, HIGH, MEDIUM) — ưu tiên xử lý trước.
-* Chi phí lab thấp (~$1/tháng) nếu chỉ test, không simulate attack liên tục.
+  * Biện pháp phòng ngừa
+  * Biện pháp phát hiện
+  * Biện pháp phản ứng
 
-**Lab 26 – AWS WAF**
-* Deploy **OWASP Juice Shop** (app cố ý insecure) qua CloudFormation → CloudFront URL.
-* Tạo **Web ACL** `waf-workshop-juice-shop`, gắn **AWS Managed Rule groups**:
-  * `AWSManagedRulesCommonRuleSet` — chặn XSS, LFI...
-  * `AWSManagedRulesSQLiRuleSet` — chặn SQL injection.
-* Test bằng `curl`:
-  * XSS payload `<script>alert</script>` → **blocked (403)**.
-  * SQLi `' AND 1=1;` → **blocked**.
-* Tạo rule **Count** (non-terminating) để đo traffic trước khi chuyển sang Block — tránh chặn nhầm request hợp lệ.
-* Cleanup: xóa CloudFormation stack, Web ACL, Kinesis delivery stream, S3 log bucket.
+* Hiểu vai trò của AWS WAF trong việc bảo vệ ứng dụng web trước các cuộc tấn công phổ biến và request không mong muốn.
 
-### Kết quả đạt được
+* Nắm được các thành phần chính của AWS WAF, bao gồm:
 
-* Hoàn thành **4 nhóm lab bảo mật** (Permission Boundary, IAM Condition, Security Hub, WAF).
-* Hiểu mô hình **defense in depth**: IAM (identity) → Security Hub (compliance) → WAF (application layer).
-* Thực hành **least privilege** và **permission boundary** — rất sát chương trình An ninh mạng.
-* Biết test WAF rule bằng action **Count** trước khi **Block** trong production.
-* Cleanup đầy đủ sau lab WAF (stack + Web ACL + logs).
+  * Web ACL
+  * Rule
+  * Rule Group
+  * Managed Rule Group
+  * Rule Priority
+  * Default Action
 
-### Kiến thức liên quan An ninh mạng
+* Tìm hiểu các hành động xử lý request chính của AWS WAF:
 
-| Kỹ năng | Ứng dụng |
-| --- | --- |
-| Privilege escalation prevention | Permission Boundary giới hạn trần quyền dù policy rộng |
-| Conditional access | Assume role theo IP + time window |
-| Security compliance | Security Hub aggregate findings, CIS benchmark |
-| Web application firewall | WAF chặn OWASP Top 10 (XSS, SQLi) ở edge |
-| Secure SDLC | Test rule Count → Block, tránh false positive |
+  * Allow
+  * Block
+  * Count
+  * CAPTCHA
+  * Challenge
 
-### Khó khăn gặp phải
+* Tạo Web ACL và thêm AWS Managed Rules.
 
-* Permission Boundary — ban đầu nhầm boundary **grant** quyền thay vì **limit**; phải nhớ công thức intersection.
-* Assume role bị deny — condition `aws:SourceIp` sai format hoặc IP lab thay đổi (dynamic IP).
-* Security Hub enable lâu, findings mất vài phút mới hiện.
-* WAF block nhầm request hợp lệ — dùng action **Count** và CloudWatch metric `count-von-count` để đánh giá trước.
-* Juice Shop CloudFormation ~5 phút; phải đợi `CREATE_COMPLETE` mới test được.
+* Hiểu cách Rule Priority ảnh hưởng đến thứ tự AWS WAF đánh giá các request gửi đến.
 
-> **Lưu ý:** Nếu em chưa hoàn thành bước nào, hãy đổi trạng thái trong bảng trên cho đúng thực tế.
+* Xem Sampled Request và Metrics để hiểu cách WAF Rule xử lý lưu lượng web.
 
-### Chuẩn bị cho tuần 8
+* Hiểu vai trò cơ bản của Application Load Balancer trong việc phân phối lưu lượng đến nhiều Target.
 
-* Tiếp tục Cloud Journey — mục Reliability hoặc Performance tùy lộ trình FCJ.
-* Ôn lại IAM, WAF, Security Hub; chuẩn bị lab tiếp theo trên workshop.
+* Nắm được các thành phần chính của Application Load Balancer, bao gồm:
+
+  * Listener
+  * Listener Rule
+  * Target Group
+  * Health Check
+  * Registered Target
+
+* Hiểu cách AWS WAF được liên kết với Application Load Balancer để bảo vệ ứng dụng web.
+
+* Tìm hiểu kiến trúc cơ bản và mục đích sử dụng của AWS Network Firewall.
+
+* Nắm được các thành phần chính của AWS Network Firewall, bao gồm:
+
+  * Firewall
+  * Firewall Policy
+  * Stateless Rule Group
+  * Stateful Rule Group
+  * Firewall Endpoint
+  * Logging Configuration
+
+* Hiểu rằng AWS Network Firewall yêu cầu thiết kế Subnet và Route Table phù hợp để kiểm tra lưu lượng trong VPC.
+
+* Phân biệt vai trò của các biện pháp bảo mật AWS:
+
+  * AWS WAF bảo vệ ở tầng ứng dụng web.
+  * AWS Network Firewall kiểm tra lưu lượng mạng bên trong VPC.
+  * Security Group kiểm soát lưu lượng tại mức tài nguyên hoặc Network Interface.
+  * Network ACL kiểm soát lưu lượng tại mức Subnet.
+
+* Hiểu vai trò của Amazon Inspector trong việc liên tục phát hiện lỗ hổng phần mềm và mức độ phơi nhiễm mạng ngoài ý muốn.
+
+* Xem các Amazon Inspector Finding và kiểm tra các thông tin như:
+
+  * Finding Severity
+  * Vulnerability Identifier
+  * Affected Resource
+  * Package Information
+  * Network Exposure
+  * Recommended Remediation
+
+* Xác định AWS WAF Log, Network Firewall Log và Amazon Inspector Finding là các nguồn dữ liệu bảo mật hữu ích cho dự án AWS CloudSOC cuối kỳ.
+
+* Kiểm tra chi phí dịch vụ và xóa các tài nguyên không cần thiết nhằm hạn chế phát sinh chi phí ngoài dự kiến.
+
+* Hoàn thành Tuần 7 với kiến thức nền tảng về AWS WAF, Elastic Load Balancing, AWS Network Firewall, Amazon Inspector và mô hình bảo mật nhiều lớp trên AWS.

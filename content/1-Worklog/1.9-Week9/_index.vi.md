@@ -1,93 +1,138 @@
 ---
-title: "Worklog Tuần 9"
-date: 2026-07-04
+title: "Nhật ký công việc Tuần 9"
+date: 2026-06-29
 weight: 9
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
 
-# Worklog Tuần 9: AWS Backup, CloudFormation và AWS CDK
+### Thời gian thực hiện
 
-### Tổng quan tuần 9 (04/07 – 10/07/2026)
+* **Tuần 9:** Từ ngày **2026-06-29** đến **2026-07-05**.
 
-Trong tuần thứ chín, em hoàn thành nhóm nội dung thuộc phần **Optimize on AWS**, tập trung vào **khả năng khôi phục hệ thống** và **Infrastructure as Code (IaC)**. Các chủ đề chính gồm **AWS Backup**, **CloudFormation Basic/Advanced** và làm quen với **AWS CDK**.
+### Mục tiêu Tuần 9
 
-Trọng tâm của tuần này là hiểu cách doanh nghiệp giảm rủi ro mất dữ liệu, chuẩn hóa triển khai hạ tầng và kiểm soát thay đổi bằng code thay vì thao tác thủ công trên AWS Console.
+* Hiểu vai trò của AWS Step Functions trong việc điều phối quy trình phản ứng sự cố bảo mật.
+* Tìm hiểu các thành phần cơ bản của một Step Functions State Machine.
+* Sử dụng AWS Lambda để tiếp nhận, chuẩn hóa và đánh giá Security Finding.
+* Phân loại Finding dựa trên loại tài nguyên, mức độ nghiêm trọng, mã định danh tài nguyên và điều kiện phản ứng.
+* Thiết kế các nhánh xử lý riêng cho trường hợp chỉ cảnh báo, yêu cầu phê duyệt và phản ứng tự động.
+* Sử dụng Amazon DynamoDB để lưu thông tin sự cố và trạng thái của quy trình.
+* Sử dụng Amazon S3 để lưu bằng chứng bảo mật, thông tin Finding và dữ liệu điều tra.
+* Cấu hình cơ chế xử lý lỗi, thử lại và gửi thông báo khi quy trình thất bại.
+* Xây dựng quy trình phản ứng sự cố chính cho dự án AWS CloudSOC.
 
-### Mục tiêu tuần 9
+### Các công việc thực hiện trong tuần
 
-- Hiểu vai trò của **AWS Backup** trong chiến lược khôi phục sau sự cố.
-- Tạo backup vault, backup plan, rule, selection và thiết lập retention.
-- Ôn tập CloudFormation template, parameters, resources, outputs.
-- Tìm hiểu update stack, rollback, change set và drift detection.
-- Làm quen AWS CDK và so sánh CDK với CloudFormation truyền thống.
-- Cleanup tài nguyên sau lab để tránh phát sinh chi phí.
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
+| --- | --- | --- | --- | --- |
+| Thứ Hai | - Ôn lại luồng EventBridge và SNS đã xây dựng trong Tuần 8 <br> - Tìm hiểu các khái niệm cơ bản của AWS Step Functions <br> - Hiểu State Machine, State, Execution, Input, Output và Amazon States Language <br> - Xác định vai trò của Step Functions trong kiến trúc AWS CloudSOC | 2026-06-29 | 2026-06-29 | <https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html> |
+| Thứ Ba | - Tìm hiểu các loại State chính trong Step Functions <br> - Xem Task, Choice, Pass, Wait, Succeed, Fail, Parallel và Map State <br> - Sử dụng Workflow Studio để tạo một State Machine cơ bản <br> - Kiểm tra hoạt động của một Workflow đơn giản | 2026-06-30 | 2026-06-30 | <https://docs.aws.amazon.com/step-functions/latest/dg/concepts-states.html> |
+| Thứ Tư | - Tạo AWS Lambda Function để xử lý Security Finding <br> - Tiếp nhận một sự kiện mẫu từ GuardDuty hoặc Security Hub <br> - Trích xuất Finding ID, Severity, Resource Type, Resource ID, Account, Region và Title <br> - Trả dữ liệu đã chuẩn hóa về cho quy trình Step Functions | 2026-07-01 | 2026-07-01 | <https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html> |
+| Thứ Năm | - Thiết kế logic đánh giá Security Finding <br> - Thêm Choice State để phân loại Finding theo loại tài nguyên và mức độ nghiêm trọng <br> - Kiểm tra Finding có chứa EC2 Instance ID hợp lệ hay không <br> - Kiểm tra điều kiện phản ứng AutoIsolate <br> - Tạo các nhánh Alert Only, Approval Required và Automated Response | 2026-07-02 | 2026-07-02 | <https://docs.aws.amazon.com/step-functions/latest/dg/state-choice.html> |
+| Thứ Sáu | - Tạo Amazon DynamoDB Table để lưu thông tin sự cố <br> - Xác định các thuộc tính Incident ID, Finding ID, Severity, Resource ID, Status, Response Mode và Timestamp <br> - Cấu hình Workflow để tạo hoặc cập nhật Incident Record <br> - Kiểm tra dữ liệu được lưu bằng DynamoDB Console | 2026-07-03 | 2026-07-03 | <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html> |
+| Thứ Bảy | - Tạo Amazon S3 Bucket để lưu bằng chứng bảo mật <br> - Cấu hình mã hóa, Block Public Access và quyền truy cập phù hợp <br> - Lưu dữ liệu Finding gốc hoặc các file điều tra vào Bucket <br> - Tổ chức bằng chứng bằng Folder hoặc Object Prefix dựa trên Incident ID và ngày tạo | 2026-07-04 | 2026-07-04 | <https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html> |
+| Chủ Nhật | - Thêm cấu hình Retry và Catch vào Step Functions Workflow <br> - Cấu hình xử lý lỗi và gửi thông báo qua Amazon SNS <br> - Kiểm tra Workflow bằng các Finding mẫu có mức Low, Medium, High và Critical <br> - Xem Execution History, Lambda Log, DynamoDB Record và bằng chứng trong Amazon S3 <br> - Kiểm tra chi phí dịch vụ và hoàn thành nhật ký Tuần 9 | 2026-07-05 | 2026-07-05 | <https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html> |
 
-### Công việc đã thực hiện
+### Kết quả đạt được trong Tuần 9
 
-| Bước | Nội dung | Trạng thái | Link |
-| --- | --- | --- | --- |
-| 01 | AWS Backup: vault, backup plan, schedule/retention | ✅ Hoàn thành | [Cloud Journey – Optimize](https://cloudjourney.awsstudygroup.com/3-optimize/) |
-| 02 | CloudFormation Basic: template, parameters, outputs | ✅ Hoàn thành | [CF Lab](https://000037.awsstudygroup.com/3-cloudformationbasic/) |
-| 03 | CloudFormation Advanced: change set, rollback, drift detection | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 04 | AWS CDK: app, stack, construct, synth/deploy | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 05 | Cleanup stack, backup plan và tài nguyên lab | ✅ Hoàn thành | — |
+* Hiểu vai trò của AWS Step Functions trong việc phối hợp nhiều dịch vụ trong một quy trình phản ứng sự cố tự động.
 
-### Nội dung chi tiết
+* Nắm được các khái niệm chính của AWS Step Functions, bao gồm:
 
-#### AWS Backup
+  * State Machine
+  * State
+  * Execution
+  * Input
+  * Output
+  * Amazon States Language
+  * Execution History
 
-Em tìm hiểu cách AWS Backup hỗ trợ quản lý backup tập trung cho nhiều loại tài nguyên. Các khái niệm quan trọng gồm:
+* Tìm hiểu các loại State chính được sử dụng trong Step Functions:
 
-- **Backup vault:** nơi lưu trữ recovery points.
-- **Backup plan:** định nghĩa lịch backup, retention và lifecycle.
-- **Backup rule:** quy định tần suất, thời gian và cách lưu giữ.
-- **Backup selection:** xác định tài nguyên nào được đưa vào backup plan.
+  * Task
+  * Choice
+  * Pass
+  * Wait
+  * Succeed
+  * Fail
+  * Parallel
+  * Map
 
-Qua phần này, em hiểu backup không chỉ là sao lưu dữ liệu mà còn là một phần của chiến lược **business continuity** và **disaster recovery**.
+* Tạo một Step Functions State Machine cơ bản bằng Workflow Studio.
 
-#### CloudFormation
+* Tạo AWS Lambda Function để tiếp nhận và xử lý dữ liệu Security Finding.
 
-Em ôn lại cấu trúc template YAML/JSON:
+* Trích xuất các thông tin quan trọng từ GuardDuty Finding hoặc Security Hub Finding, bao gồm:
 
-- `AWSTemplateFormatVersion`
-- `Description`
-- `Parameters`
-- `Resources`
-- `Outputs`
+  * Finding ID
+  * Finding Type
+  * Severity
+  * Resource Type
+  * Resource ID
+  * EC2 Instance ID
+  * AWS Account
+  * AWS Region
+  * Finding Title
+  * Finding Description
 
-Em cũng tìm hiểu cách CloudFormation giúp triển khai hạ tầng nhất quán, dễ review và giảm lỗi cấu hình thủ công. Các nội dung nâng cao như **change set**, **rollback** và **drift detection** giúp kiểm soát rủi ro khi cập nhật stack.
+* Chuẩn hóa dữ liệu Finding trước khi chuyển đến State tiếp theo trong Workflow.
 
-#### AWS CDK
+* Thiết kế logic đánh giá Finding bằng Step Functions Choice State.
 
-AWS CDK giúp định nghĩa hạ tầng bằng ngôn ngữ lập trình, sau đó synth ra CloudFormation template. So với viết CloudFormation trực tiếp, CDK dễ tái sử dụng construct, chia module và quản lý logic phức tạp hơn.
+* Xây dựng ba nhánh phản ứng sự cố chính:
 
-Flow cơ bản:
+  * **Alert Only:** Dùng cho tài nguyên không được hỗ trợ, Finding mức Low hoặc Medium, thiếu Instance ID hoặc tài nguyên không đáp ứng điều kiện phản ứng.
+  * **Approval Required:** Dùng cho EC2 Finding mức High và cần SOC Analyst phê duyệt trước khi xử lý.
+  * **Automated Response:** Dùng cho EC2 Finding mức Critical và đáp ứng đầy đủ điều kiện phản ứng tự động.
 
-```text
-CDK App → Stack → Construct → cdk synth → CloudFormation template → cdk deploy
-```
+* Thêm các điều kiện kiểm tra:
 
-### Kết quả đạt được
+  * Resource Type
+  * EC2 Instance ID
+  * Finding Severity
+  * AutoIsolate Condition
+  * Response Mode
 
-- Hiểu vai trò của backup trong vận hành hệ thống cloud.
-- Nắm được cách CloudFormation chuẩn hóa hạ tầng và kiểm soát thay đổi.
-- Biết vì sao drift detection quan trọng khi có thao tác thủ công ngoài IaC.
-- Hiểu điểm khác biệt giữa CloudFormation và AWS CDK.
-- Cleanup tài nguyên sau lab để kiểm soát chi phí.
+* Tạo Amazon DynamoDB Table để lưu thông tin sự cố.
 
-### Liên hệ An ninh mạng
+* Xác định các thuộc tính quan trọng của Incident Record, bao gồm:
 
-Tuần 9 liên quan trực tiếp đến khả năng phục hồi sau sự cố. Trong an ninh mạng, sau khi phát hiện sự cố như mã độc, thao tác sai hoặc xóa dữ liệu ngoài ý muốn, hệ thống cần có backup đáng tin cậy để khôi phục. IaC cũng giúp giảm rủi ro cấu hình sai vì mọi thay đổi đều có thể review, version control và triển khai lại.
+  * Incident ID
+  * Finding ID
+  * Severity
+  * Resource Type
+  * Resource ID
+  * Response Mode
+  * Incident Status
+  * Created Time
+  * Updated Time
 
-### Khó khăn và bài học
+* Cấu hình Workflow để tạo mới và cập nhật Incident Record trong DynamoDB.
 
-- YAML rất nhạy với indentation, cần kiểm tra kỹ trước khi deploy.
-- Update stack có thể thay thế hoặc xóa tài nguyên nếu không đọc change set.
-- Backup plan cần được thiết kế theo RPO/RTO, không chỉ tạo cho có.
-- IaC giúp chuyên nghiệp hóa vận hành nhưng cần quy trình review rõ ràng.
+* Tạo Amazon S3 Bucket để lưu bằng chứng bảo mật và dữ liệu điều tra.
 
-### Chuẩn bị cho tuần 10
+* Cấu hình các thiết lập bảo mật cho Evidence Bucket, bao gồm:
 
-Sau khi hoàn thành tuần 9, em chuyển sang phần **Modernize Application**, tập trung vào serverless, API Gateway, Lambda, Cognito, SQS/SNS và CloudWatch/X-Ray.
+  * Block Public Access
+  * Server-side Encryption
+  * IAM Access Permission
+  * Tổ chức Object bằng Prefix
 
+* Lưu dữ liệu Finding gốc và bằng chứng bảo mật trong Amazon S3.
+
+* Thêm cấu hình Retry và Catch nhằm tăng độ tin cậy của Workflow.
+
+* Tạo nhánh xử lý lỗi để ghi nhận lỗi và gửi thông báo qua Amazon SNS.
+
+* Kiểm tra Workflow bằng các Finding có mức độ nghiêm trọng khác nhau.
+
+* Xem Step Functions Execution History để kiểm tra Input, Output, nhánh được lựa chọn và kết quả thực thi.
+
+* Xác nhận hoạt động của luồng xử lý chính trong Tuần 9:
+
+  **Security Finding → EventBridge → Step Functions → Lambda Evaluation → Choice Branch → DynamoDB/S3 → SNS Notification**
+
+* Chuẩn bị nhánh phản ứng tự động để tích hợp với AWS Systems Manager trong Tuần 10.
+
+* Hoàn thành Tuần 9 với kiến thức nền tảng về AWS Step Functions, xử lý Finding bằng Lambda, lưu thông tin sự cố bằng DynamoDB, lưu bằng chứng bằng Amazon S3 và điều phối quy trình phản ứng sự cố bảo mật.

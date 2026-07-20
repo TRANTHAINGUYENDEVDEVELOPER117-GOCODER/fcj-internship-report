@@ -16,35 +16,36 @@ https://tranthainguyendevdeveloper117-gocoder.github.io/Tran-Thai-Nguyen-fcj-int
 
 ## Tổng quan
 
-Đây là website báo cáo thực tập FCJ, ghi lại hành trình học tập, thực hành AWS và xây dựng dự án **AWS CloudSOC** trong chương trình First Cloud Journey Workforce Bootcamp. Nội dung tập trung vào worklog 12 tuần, proposal, blog kỹ thuật, sự kiện đã tham gia, workshop thực hành, phần tự đánh giá và feedback sau chương trình.
-
-## Preview
-
-![AWS CloudSOC Architecture](static/images/5-Workshop/cloudsoc-architecture.svg)
+Đây là website báo cáo thực tập FCJ của Trần Thái Nguyên trong chương trình First Cloud Journey Workforce Bootcamp 2026. Project gồm đầy đủ các phần: Worklog, Proposal, Blogs, Events, Workshop, Self-Assessment và Sharing/Feedback.
 
 ## Điểm nổi bật
 
 - Trình bày song ngữ Anh/Việt bằng Hugo.
-- Tổng hợp worklog thực tập theo từng tuần.
-- Xây dựng proposal dự án **AWS CloudSOC** theo hướng phát hiện, điều tra và phản ứng sự cố trên AWS.
-- Có workshop hướng dẫn vẽ sơ đồ kiến trúc CloudSOC bằng draw.io/diagrams.net.
-- Bổ sung blog, sự kiện, self-evaluation và feedback để thể hiện đầy đủ quá trình học tập.
+- Giao diện gọn, tập trung vào thông tin thực tập.
+- Có ảnh đại diện, thông tin sinh viên, trường, ngành, vị trí và thời gian thực tập.
+- Có Worklog 12 tuần.
+- Có Proposal dự án AWS CloudSOC.
+- Có chuỗi Blogs đã đăng về CloudSOC và incident response.
+- Có Events đã tham gia.
+- Có Workshop triển khai, kiểm thử và cleanup hệ thống CloudSOC.
+- Có Self-Assessment và Sharing/Feedback.
 
 ## What I Learned
 
-Through this internship report, I practiced building a complete technical portfolio with Hugo and GitHub Pages. I learned how to document AWS learning progress, design a CloudSOC architecture, explain security workflows, organize bilingual technical content, and present project outcomes in a clear and professional way.
+Through this internship report, I practiced building and publishing a bilingual Hugo website with GitHub Pages, documenting an AWS CloudSOC project, and organizing project materials into proposal, blog, and workshop sections.
 
 ## Cấu trúc
 
 | Mục | Nội dung |
 |-----|----------|
-| 1. Worklog | Nhật ký công việc 12 tuần |
-| 2. Proposal | Bản đề xuất dự án |
-| 3. Blogs | Bài viết AWS Study Group |
-| 4. Events | Sự kiện đã tham gia |
-| 5. Workshop | Lab AWS workshop |
-| 6. Self-evaluation | Tự đánh giá |
-| 7. Feedback | Chia sẻ & feedback |
+| Internship Report | Thông tin thực tập chính |
+| Worklog | Nhật ký thực tập 12 tuần |
+| Proposal | Bản đề xuất dự án AWS CloudSOC |
+| Blogs | Chuỗi bài viết đã đăng |
+| Events | Sự kiện đã tham gia |
+| Workshop | Hướng dẫn triển khai, kiểm thử và cleanup CloudSOC |
+| Self-Assessment | Tự đánh giá quá trình thực tập |
+| Sharing and Feedback | Chia sẻ và phản hồi sau chương trình |
 
 ## Chạy local
 

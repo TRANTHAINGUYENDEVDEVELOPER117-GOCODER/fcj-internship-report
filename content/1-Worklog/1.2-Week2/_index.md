@@ -1,64 +1,72 @@
 ---
 title: "Week 2 Worklog"
-date: 2026-05-16
+date: 2026-05-11
 weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
 
-### Week 2 Overview (05/16 – 05/22/2026)
+### Implementation Period
 
-Week 2 focused on practicing core AWS services in **Module 01 – AWS Foundation**: networking (VPC), compute (EC2), storage (S3), databases (RDS), and supporting services (CloudWatch, Route 53, CLI). This was the highest-volume lab week in the foundation phase, building an end-to-end basic AWS architecture.
+* **Week 2:** From **2026-05-11** to **2026-05-17**.
 
 ### Week 2 Objectives
 
-* Design and deploy VPC architecture with public/private subnets.
-* Operate EC2, S3, RDS and connect services together.
-* Learn AWS CLI, CloudWatch, Route 53, and Auto Scaling.
+* Understand the role of Amazon EC2 in AWS systems.
+* Learn about Amazon Machine Images, instance types, key pairs, and security groups.
+* Practice launching Linux and Windows servers on Amazon EC2.
+* Connect to EC2 instances using SSH and Remote Desktop.
+* Learn about Amazon EBS and Elastic IP addresses.
+* Become familiar with AWS Systems Manager Session Manager.
+* Practice managing the EC2 instance lifecycle and controlling costs.
 
-### Work Completed
+### Tasks to Be Carried Out This Week
 
-| Day | Detailed Tasks | Start Date | Completion Date | Reference |
+| Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| 2 (05/16) | **Lab 05 – VPC:** Created VPC, public/private subnets, IGW, Route Table, Security Group | 05/16/2026 | 05/16/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 3 (05/17) | **Lab 06–07 – EC2:** Launched Amazon Linux; SSH via key pair; attached EBS; assigned Elastic IP | 05/17/2026 | 05/17/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 4 (05/18) | **Lab 08 – IAM Roles for EC2** + **Lab 09 – Cloud9** | 05/18/2026 | 05/18/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 5 (05/19) | **Lab 10 – S3:** Static website hosting + **Lab 11 – RDS:** MySQL instance, connect from EC2 | 05/19/2026 | 05/19/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 6 (05/20) | **Lab 12 – Lightsail** + **Lab 13 – Auto Scaling** + **Lab 14 – CloudWatch** | 05/20/2026 | 05/20/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 7 (05/21) | **Lab 15 – Route 53** + **Lab 16 – AWS CLI** + **Lab 17–18 – DynamoDB & ElastiCache** | 05/21/2026 | 05/22/2026 | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+| Monday | - Review the knowledge from Week 1 <br> - Learn the basic concepts of Amazon EC2 <br> - Understand the role of virtual servers in the AWS environment <br> - Learn about instance types, AMIs, and EC2 instance states | 2026-05-11 | 2026-05-11 | <https://cloudjourney.awsstudygroup.com/> |
+| Tuesday | - Learn about key pairs and security groups <br> - Understand inbound and outbound rules <br> - Learn about public IP, private IP, and Elastic IP addresses <br> - Prepare the configuration for launching a Linux EC2 instance | 2026-05-12 | 2026-05-12 | <https://cloudjourney.awsstudygroup.com/> |
+| Wednesday | - Launch an Amazon EC2 Linux instance <br> - Select a suitable AMI and instance type <br> - Create a key pair <br> - Configure a security group for SSH access <br> - Check the operating status of the instance | 2026-05-13 | 2026-05-13 | <https://cloudjourney.awsstudygroup.com/> |
+| Thursday | - Connect to the Linux EC2 instance using SSH <br> - Practice basic Linux commands <br> - Check the public and private IP addresses <br> - Learn how to troubleshoot common SSH connection errors | 2026-05-14 | 2026-05-14 | <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html> |
+| Friday | - Launch an Amazon EC2 Windows instance <br> - Retrieve the Administrator password <br> - Connect to the Windows server using Remote Desktop <br> - Check the instance status and system information | 2026-05-15 | 2026-05-15 | <https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/connecting_to_windows_instance.html> |
+| Saturday | - Learn about Amazon EBS and root volumes <br> - Create and attach an additional EBS volume to an EC2 instance <br> - Learn about Elastic IP addresses and how to associate them with EC2 instances <br> - Learn about EBS snapshots and data backup | 2026-05-16 | 2026-05-16 | <https://cloudjourney.awsstudygroup.com/> |
+| Sunday | - Learn about AWS Systems Manager Session Manager <br> - Understand the role of IAM roles and the SSM Agent <br> - Practice connecting to an EC2 instance without opening the SSH port when the required conditions are met <br> - Stop or delete unnecessary resources <br> - Complete the Week 2 worklog | 2026-05-17 | 2026-05-17 | <https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html> |
 
-### Service Group Details
+### Week 2 Achievements
 
-#### Networking – Amazon VPC (Lab 05)
-* VPC with CIDR `10.0.0.0/16`, public and private subnets across 2 AZs.
-* Internet Gateway for public subnet; Route Table with `0.0.0.0/0` to Internet.
-* Stateful Security Groups for SSH (22) and HTTP (80).
+* Understood the role of Amazon EC2 in providing virtual servers on AWS.
 
-#### Compute – Amazon EC2 (Lab 06–07)
-* Amazon Linux 2023 AMI, `t3.micro` instance type.
-* SSH via key pair; created and mounted additional EBS volume.
-* Assigned Elastic IP for persistent public address.
+* Learned the main components of Amazon EC2, including:
 
-#### Storage & Database (Lab 10–11)
-* S3 bucket with static website hosting.
-* RDS MySQL in private subnet; Security Group allowing EC2 on port 3306.
+  * Amazon Machine Image
+  * Instance Type
+  * Key Pair
+  * Security Group
+  * Public IP
+  * Private IP
+  * Elastic IP
+  * Amazon EBS
 
-#### Operations (Lab 13–16)
-* Auto Scaling with Launch Template, ASG, and ALB.
-* CloudWatch CPU alarm and monitoring dashboard.
-* Route 53 hosted zone with A record.
-* AWS CLI: `aws configure`, `aws sts get-caller-identity`, `aws ec2 describe-instances`.
+* Successfully launched a Linux EC2 instance.
 
-### Achievements
+* Configured a security group to allow secure SSH access.
 
-* Completed **14 labs** (Lab 05 – Lab 18) in Module 01.
-* Deployed basic 3-tier architecture: **VPC → EC2 → S3/RDS**.
-* Used **IAM Roles** instead of hardcoded credentials on EC2.
-* Operated **Console** and **CLI** in parallel.
-* Set up monitoring with **CloudWatch** and DNS with **Route 53**.
+* Successfully connected to the Linux server using SSH.
 
-### Challenges & Solutions
+* Practiced basic Linux commands on the EC2 instance.
 
-* **SSH permission error on Windows:** Fixed .pem file permissions with `icacls`.
-* **RDS connection failed:** Security Group missing port 3306 from EC2 SG → updated inbound rule.
-* **NAT Gateway costs:** Deleted NAT Gateway and Elastic IP after labs to avoid billing.
+* Launched and connected to a Windows EC2 instance using Remote Desktop.
+
+* Understood the differences between public IP, private IP, and Elastic IP addresses.
+
+* Learned the role of Amazon EBS in providing storage for EC2 instances.
+
+* Practiced creating and attaching an additional EBS volume to an EC2 instance.
+
+* Understood the purpose of EBS snapshots for data backup and recovery.
+
+* Became familiar with AWS Systems Manager Session Manager and its method of accessing EC2 instances without depending entirely on SSH.
+
+* Practiced stopping, starting, and terminating EC2 instances after completing the lab.
+
+* Completed Week 2 with fundamental knowledge of Amazon EC2, SSH, Remote Desktop, EBS, Elastic IP, and AWS Systems Manager.

@@ -1,78 +1,130 @@
 ---
 title: "Workshop"
-date: 2026-07-11
+date: 2026-06-30
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Báo cáo dự án & Workshop: AWS CloudSOC
+# AWS CloudSOC: Hệ thống phát hiện mối đe dọa và phản ứng sự cố tự động trên AWS
 
-### Tổng quan
+#### Tổng quan
 
-Đề tài workshop của nhóm là **“Thiết kế và triển khai hệ thống AWS CloudSOC – Phát hiện, điều tra và phản ứng sự cố có kiểm soát trên AWS”**. Dự án mô phỏng quy trình hoạt động của một trung tâm điều hành an ninh mạng (**Security Operations Center – SOC**) trên môi trường AWS.
+Trong workshop này, chúng ta sẽ xây dựng hệ thống **AWS CloudSOC** nhằm phát hiện mối đe dọa, điều tra sự cố, phản ứng tự động, thu thập bằng chứng và gửi cảnh báo trên nền tảng Amazon Web Services (AWS).
 
-Hệ thống được thiết kế theo mô hình **event-driven**, kết hợp các dịch vụ managed/serverless của AWS với một máy chủ **Amazon EC2** dùng làm workload thử nghiệm. Mục tiêu chính là minh họa đầy đủ quy trình:
+Hệ thống được thiết kế như một mô hình **Security Operations Center trên AWS**, có khả năng phát hiện hành vi bất thường, xử lý security finding, hỗ trợ SOC Analyst phê duyệt incident, tự động cô lập EC2 nghi ngờ bị ảnh hưởng, thu thập forensic evidence, lưu trữ thông tin incident và gửi thông báo đến người vận hành bảo mật.
 
-**Detect → Investigate → Decide → Collect Evidence → Contain → Notify → Recover**
+Nguồn phát hiện chính trong workshop là **Amazon GuardDuty**. Khi một security finding được tạo, **Amazon EventBridge** sẽ nhận sự kiện và chuyển đến **AWS Step Functions** để điều phối quy trình phản ứng sự cố. Tùy theo mức độ nghiêm trọng và chế độ phản ứng, workflow có thể kích hoạt **AWS Lambda** và **AWS Systems Manager** để thu thập bằng chứng, tạo forensic snapshot, cập nhật trạng thái incident vào **Amazon DynamoDB**, lưu evidence vào **Amazon S3** và gửi cảnh báo thông qua **Amazon SNS** đến Email hoặc Slack.
 
-Đây là mô hình **Lab / Proof of Concept**, ưu tiên khả năng trình bày quy trình SOC, tối ưu chi phí và dễ mở rộng thành bản production trong tương lai.
+Workshop cũng triển khai một **SOC Dashboard** đơn giản bằng **AWS Amplify**. Dashboard giúp SOC Analyst theo dõi trạng thái incident, kiểm tra incident đang chờ xử lý và xác thực luồng phản ứng sự cố.
 
-### Thông tin dự án
+Kiến trúc của hệ thống được xây dựng theo hướng **event-driven** và **serverless-oriented**, giúp giảm độ phức tạp vận hành, tăng khả năng tự động hóa và tối ưu chi phí cho môi trường lab.
 
-| Hạng mục | Nội dung |
-| --- | --- |
-| Tên dự án | AWS CloudSOC |
-| Nhóm thực hiện | Trần Thái Nguyên, Dương Bá Đạt |
-| Trường/Lớp | HUTECH – 22DTHB1 |
-| Chuyên ngành | An ninh mạng |
-| Chương trình | AWS Vietnam FCJ Workforce Bootcamp 2026 |
-| Thời gian | Tháng 7/2026 |
-| Region chính | `ap-southeast-1` |
-| Mô hình | Lab / Proof of Concept |
+---
 
-### Thành viên & vai trò
+#### Các dịch vụ AWS chính
 
-| Thành viên | Vai trò chính |
-| --- | --- |
-| Trần Thái Nguyên | Phân tích yêu cầu SOC, thiết kế kiến trúc CloudSOC, viết báo cáo và chuẩn hóa nội dung workshop |
-| Dương Bá Đạt | Hỗ trợ nghiên cứu luồng dịch vụ AWS, review sơ đồ kiến trúc, kiểm tra logic phản ứng sự cố và checklist nộp |
+Các dịch vụ AWS chính được sử dụng trong workshop bao gồm:
 
-### Nhóm dịch vụ AWS sử dụng
+```text
+Amazon GuardDuty
+AWS Security Hub
+Amazon EventBridge
+AWS Step Functions
+AWS Lambda
+AWS Systems Manager
+Amazon EC2
+Amazon VPC
+Amazon S3
+Amazon DynamoDB
+Amazon SNS
+Amazon CloudWatch
+Amazon Detective
+AWS Config
+AWS CloudTrail
+AWS IAM
+AWS KMS
+AWS Amplify
+Amazon API Gateway
+Amazon Cognito
+```
 
-| Nhóm chức năng | Dịch vụ |
-| --- | --- |
-| Dashboard & Access | AWS Amplify, Amazon Cognito, Amazon API Gateway, AWS Lambda |
-| Incident Data | Amazon DynamoDB |
-| Logging & Evidence | AWS CloudTrail, Amazon CloudWatch, Amazon S3, Amazon EBS Snapshot |
-| Threat Detection | Amazon GuardDuty, AWS Security Hub, Amazon Detective |
-| Response Orchestration | Amazon EventBridge, AWS Step Functions |
-| Forensic Collection | AWS Systems Manager |
-| Containment | Incident Response Lambda, Security Group Isolation |
-| Alerting | Amazon SNS, Amazon Q Developer, Slack/Email/SMS |
-| Governance | AWS IAM, AWS Config, AWS KMS |
+---
 
-### Nội dung workshop
+#### Mục tiêu workshop
 
-1. [Báo cáo chi tiết dự án AWS CloudSOC](5.1-Workshop-overview/)
-2. [Kiến trúc hệ thống & luồng xử lý SOC](5.2-Prerequisite/)
-3. [Workshop vẽ sơ đồ kiến trúc CloudSOC](5.3-S3-vpc/)  
-   Gồm 6 module con: chuẩn bị công cụ, dựng layout, vẽ nhóm dịch vụ, nối luồng xử lý sự cố, export/review và bản đặc tả vẽ chi tiết.
-4. [Checklist review sơ đồ & yêu cầu nộp](5.4-S3-onprem/)
-5. [Hướng phát triển Production](5.5-Policy/)
-6. [Tài liệu tham khảo & cleanup lab](5.6-Cleanup/)
+Sau khi hoàn thành workshop này, bạn có thể:
 
-### Sản phẩm bàn giao
++ Thiết kế kiến trúc CloudSOC trên AWS.
++ Triển khai VPC lab, public subnet, route table, Internet Gateway và EC2 workload.
++ Bật các dịch vụ giám sát bảo mật như GuardDuty, Security Hub, CloudTrail, VPC Flow Logs, AWS Config và Detective.
++ Xây dựng workflow phản ứng sự cố theo mô hình event-driven bằng EventBridge và Step Functions.
++ Triển khai Incident Response Lambda để xử lý security findings.
++ Sử dụng Systems Manager để thu thập forensic evidence từ EC2.
++ Tạo EBS Snapshot phục vụ quá trình điều tra sự cố.
++ Lưu trữ incident evidence vào S3.
++ Lưu metadata và trạng thái xử lý incident vào DynamoDB.
++ Xây dựng SOC Dashboard đơn giản để giám sát và kiểm thử approval workflow.
++ Gửi cảnh báo sự cố thông qua SNS, Email và Slack.
++ Kiểm thử toàn bộ luồng phát hiện và phản ứng sự cố.
++ Dọn dẹp toàn bộ tài nguyên lab để tránh phát sinh chi phí không cần thiết.
 
-- Báo cáo dự án AWS CloudSOC bằng website Hugo.
-- Tài liệu workshop hướng dẫn vẽ sơ đồ kiến trúc CloudSOC.
-- Sơ đồ CloudSOC minh họa trực tiếp trên website bằng SVG.
-- Checklist kiểm tra trước khi nộp cho công ty.
-- Định hướng nâng cấp từ Lab/PoC lên Production.
-- Danh sách tài liệu tham khảo và cleanup checklist để tránh phát sinh chi phí AWS.
+---
 
-### Lưu ý quan trọng
+#### Luồng thực hiện workshop
 
-- Kiến trúc hiện tại **không hoàn toàn serverless** vì workload thử nghiệm vẫn chạy trên **Amazon EC2**.
-- Các thành phần như dashboard, API, workflow phản ứng sự cố, cảnh báo và điều phối chủ yếu dùng dịch vụ managed/serverless.
-- Trong môi trường production nên chuyển workload vào **Private Subnet**, bổ sung **ALB**, **NAT Gateway**, **Multi-AZ**, lifecycle policy cho evidence/snapshot và triển khai bằng **IaC** như CDK/Terraform.
+Luồng tổng quan của workshop:
+
+```text
+Thiết kế kiến trúc
+→ Chuẩn bị môi trường AWS
+→ Triển khai hệ thống CloudSOC
+→ Kiểm thử và xác thực phản ứng sự cố
+→ Giám sát dashboard và cảnh báo
+→ Dọn dẹp tài nguyên
+```
+
+Luồng phản ứng sự cố chính:
+
+```text
+GuardDuty Finding
+→ EventBridge Rule
+→ Step Functions Workflow
+→ Incident Response Lambda
+→ Systems Manager Evidence Collection
+→ EBS Forensic Snapshot
+→ S3 Evidence Storage
+→ DynamoDB Incident Update
+→ SNS Notification
+→ Email / Slack Alert
+```
+
+---
+
+#### Nội dung
+
+1. [Tổng quan workshop](5.1-Workshop-overview/)
+2. [Điều kiện tiên quyết](5.2-Prerequiste/)
+3. [Kiến trúc và workflow](5.3-Architecture-and-workflow/)
+4. [Triển khai hệ thống CloudSOC](5.4-Deploy-cloudsoc-system/)
+5. [Kiểm thử và xác thực hệ thống](5.5-Testing-and-validation/)
+6. [Dọn dẹp tài nguyên](5.6-Resource-Cleanup/)
+
+---
+
+#### Kết quả mong đợi
+
+Sau khi hoàn thành workshop, bạn sẽ có một mô hình lab **AWS CloudSOC** có khả năng:
+
++ Phát hiện security findings giả lập từ GuardDuty.
++ Tự động chuyển findings thông qua EventBridge.
++ Xử lý incident bằng Step Functions và Lambda.
++ Hỗ trợ SOC Analyst phê duyệt một số incident cần kiểm tra thủ công.
++ Tự động cô lập EC2 bằng `SG-Isolation`.
++ Thu thập forensic evidence bằng Systems Manager.
++ Tạo EBS Snapshot để phục vụ điều tra.
++ Lưu raw event và response summary vào S3.
++ Theo dõi trạng thái incident trong DynamoDB.
++ Hiển thị trạng thái incident trên SOC Dashboard.
++ Gửi cảnh báo đến Email và Slack thông qua SNS.
++ Dọn dẹp toàn bộ tài nguyên sau khi hoàn thành lab.

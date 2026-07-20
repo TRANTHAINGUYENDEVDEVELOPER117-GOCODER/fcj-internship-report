@@ -1,124 +1,39 @@
-﻿---
+---
 title: "Worklog"
-date: 2024-01-01
+date: 2026-05-05
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
 ---
 
-Worklog of **Tran Thai Nguyen** in the **First Cloud Journey Workforce Bootcamp**, following [Cloud Journey](https://cloudjourney.awsstudygroup.com/) and the [FCJ Bootcamp 2025 playlist](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i).
+This section presents my weekly worklog during the AWS learning and internship program. The worklog was completed over **12 weeks**, from **2026-05-05** to **2026-07-30**.
 
-**Internship period:** 05/09/2026 – 08/10/2026 (12 weeks)
+During this period, I studied AWS cloud fundamentals, networking, monitoring, security services, threat detection, and automated incident response. I also designed and tested an AWS Cloud Security Operations Center workflow that detects security findings, evaluates threats, sends notifications, and performs automated response actions.
 
-### Course alignment
+Each week focused on a specific topic, gradually progressing from basic AWS services to the design and implementation of a complete cloud security architecture.
 
-The 12-week worklog is aligned with the **First Cloud Journey Bootcamp 2025** playlist by AWS Study Group and the official **The First Cloud Journey** documentation:
+The weekly contents are organized as follows:
 
-| Phase | Weeks | Main focus |
-| --- | --- | --- |
-| Explore AWS Services | Week 1–2 | AWS Account, Budget, IAM, VPC, EC2, S3, RDS, CloudWatch, CLI |
-| Optimize on AWS | Week 3–9 | CloudFormation, VPC Peering, Transit Gateway, Lambda automation, monitoring, IAM/Security, Backup, KMS |
-| Modernize Application | Week 10–11 | Serverless, API Gateway, Cognito, SQS/SNS, CloudWatch/X-Ray, Docker/ECS, CI/CD |
-| Final Report | Week 12 | Wrap-up, cleanup, Proposal, Workshop, Self-evaluation, Feedback |
+**Week 1:** [Getting familiar with AWS, AWS Console, AWS CLI, Billing, Budget, and IAM basics](1.1-week1/)
 
-<div class="report-progress">
-  <div class="progress-top">
-    <div class="progress-info">
-      <i class="fas fa-chart-line"></i>
-      <div>
-        <span class="progress-title">Worklog Progress</span>
-        <span class="progress-sub">12 weeks completed · Final report ready</span>
-      </div>
-    </div>
-    <div class="progress-stats">
-      <span class="progress-percent">100%</span>
-      <span class="progress-label">Week 12 / 12</span>
-    </div>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-</div>
+**Week 2:** [Practicing Amazon EC2, EBS, Elastic IP, SSH, RDP, and Systems Manager](1.2-week2/)
 
-<h2 class="section-heading"><i class="fas fa-road"></i> 12-Week Roadmap</h2>
+**Week 3:** [Designing an Amazon VPC with public and private subnets](1.3-week3/)
 
-<div class="week-roadmap">
+**Week 4:** [Implementing Site-to-Site VPN and hybrid network connectivity](1.4-week4/)
 
-<div class="week-legend">
-  <span class="legend-item done"><i class="fas fa-check-circle"></i> Completed</span>
-</div>
+**Week 5:** [Monitoring AWS resources with Amazon CloudWatch and VPC Flow Logs](1.5-week5/)
 
-<div class="week-grid">
+**Week 6:** [Detecting security threats with AWS CloudTrail, Amazon GuardDuty, and AWS Security Hub](1.6-week6/)
 
-<a href="1.1-Week1/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 1</span><span class="week-date">05/09 – 05/15</span></div>
-  <p class="week-topic">Lab 01–04: AWS Account, Budgets, IAM</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
+**Week 7:** [Protecting AWS workloads with AWS WAF, AWS Network Firewall, and Amazon Inspector](1.7-week7/)
 
-<a href="1.2-Week2/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 2</span><span class="week-date">05/16 – 05/22</span></div>
-  <p class="week-topic">Lab 05–18: VPC, EC2, S3, RDS</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
+**Week 8:** [Building the security event and notification flow with Amazon EventBridge and Amazon SNS](1.8-week8/)
 
-<a href="1.3-Week3/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 3</span><span class="week-date">05/23 – 05/29</span></div>
-  <p class="week-topic">Lab 19: CloudFormation (02.0 & 02.1)</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
+**Week 9:** [Building an incident response workflow with AWS Step Functions, Lambda, DynamoDB, and S3](1.9-week9/)
 
-<a href="1.4-Week4/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 4</span><span class="week-date">05/30 – 06/05</span></div>
-  <p class="week-topic">Lab 19: VPC Peering (steps 03–07)</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
+**Week 10:** [Automating EC2 incident response with AWS Lambda and Systems Manager](1.10-week10/)
 
-<a href="1.5-Week5/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 5</span><span class="week-date">06/06 – 06/12</span></div>
-  <p class="week-topic">Lab 20: Transit Gateway + Systems Manager</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
+**Week 11:** [Testing the end-to-end security workflow and finalizing the AWS architecture](1.11-week11/)
 
-<a href="1.6-Week6/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 6</span><span class="week-date">06/13 – 06/19</span></div>
-  <p class="week-topic">Lab 21–25: Lambda, Resource Groups</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.7-Week7/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 7</span><span class="week-date">06/20 – 06/26</span></div>
-  <p class="week-topic">Lab 26–30: Security — IAM, WAF, Hub</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.8-Week8/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 8</span><span class="week-date">06/27 – 07/03</span></div>
-  <p class="week-topic">Lab 31–35: KMS, VPC Endpoint, GuardDuty</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.9-Week9/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 9</span><span class="week-date">07/04 – 07/10</span></div>
-  <p class="week-topic">Lab 36–40: Backup, CloudFormation, CDK</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.10-Week10/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 10</span><span class="week-date">07/11 – 07/17</span></div>
-  <p class="week-topic">Lab 41–45: Serverless — Lambda, API GW</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.11-Week11/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 11</span><span class="week-date">07/18 – 07/24</span></div>
-  <p class="week-topic">Lab 46–50: CI/CD, Docker/ECS</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-<a href="1.12-Week12/" class="week-card done">
-  <div class="week-card-header"><span class="week-num">Week 12</span><span class="week-date">07/25 – 07/31</span></div>
-  <p class="week-topic">Summary, cleanup, finalize report</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Completed</span>
-</a>
-
-</div>
-</div>
+**Week 12:** [Completing the final report, presentation, cost review, resource cleanup, and final submission](1.12-week12/)

@@ -1,73 +1,72 @@
 ---
-title: "Worklog Tuần 2"
-date: 2026-05-16
+title: "Nhật ký công việc Tuần 2"
+date: 2026-05-11
 weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
 
-### Tổng quan tuần 2 (16/05 – 22/05/2026)
+### Thời gian thực hiện
 
-Tuần thứ hai, em tiếp tục **Module 01 – AWS Foundation**, thực hành các dịch vụ cốt lõi: **VPC, EC2, S3, RDS** và một số dịch vụ hỗ trợ (CloudWatch, Route 53, AWS CLI). Đây là giai đoạn em xây dựng kiến thức nền trước khi chuyển sang Module 02.
+* **Tuần 2:** Từ ngày **2026-05-11** đến **2026-05-17**.
 
-### Mục tiêu tuần 2
+### Mục tiêu Tuần 2
 
-* Thực hành triển khai VPC, EC2, S3, RDS.
-* Kết nối các dịch vụ với nhau (EC2 ↔ S3, EC2 ↔ RDS).
-* Làm quen AWS CLI và CloudWatch.
+* Hiểu vai trò của Amazon EC2 trong hệ thống AWS.
+* Tìm hiểu Amazon Machine Image, Instance Type, Key Pair và Security Group.
+* Thực hành triển khai máy chủ Linux và Windows trên Amazon EC2.
+* Kết nối đến EC2 bằng SSH và Remote Desktop.
+* Tìm hiểu Amazon EBS và Elastic IP.
+* Làm quen với AWS Systems Manager Session Manager.
+* Thực hành quản lý vòng đời EC2 và kiểm soát chi phí.
 
-### Các lab đã thực hành
+### Các công việc thực hiện trong tuần
 
-| Lab | Nội dung | Trạng thái |
-| --- | --- | --- |
-| Lab 05 | VPC – subnet, IGW, Route Table, Security Group | ✅ |
-| Lab 06–07 | EC2 – launch instance, SSH, EBS, Elastic IP | ✅ |
-| Lab 08 | IAM Roles for EC2 | ✅ |
-| Lab 09 | AWS Cloud9 | ✅ |
-| Lab 10 | S3 – static website hosting | ✅ |
-| Lab 11 | RDS – tạo database, kết nối từ EC2 | ✅ |
-| Lab 12–13 | Lightsail, EC2 Auto Scaling | ✅ |
-| Lab 14 | CloudWatch – metric, alarm | ✅ |
-| Lab 15 | Route 53 – hosted zone, record | ✅ |
-| Lab 16 | AWS CLI – cài đặt, `aws configure` | ✅ |
-| Lab 17–18 | DynamoDB, ElastiCache cơ bản | ✅ |
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
+| --- | --- | --- | --- | --- |
+| Thứ Hai | - Ôn lại kiến thức Tuần 1 <br> - Tìm hiểu tổng quan về Amazon EC2 <br> - Hiểu vai trò của máy chủ ảo trong môi trường AWS <br> - Tìm hiểu Instance Type, AMI và trạng thái của EC2 Instance | 2026-05-11 | 2026-05-11 | <https://cloudjourney.awsstudygroup.com/> |
+| Thứ Ba | - Tìm hiểu Key Pair và Security Group <br> - Hiểu quy tắc Inbound và Outbound <br> - Tìm hiểu Public IP, Private IP và Elastic IP <br> - Chuẩn bị cấu hình để triển khai EC2 Linux | 2026-05-12 | 2026-05-12 | <https://cloudjourney.awsstudygroup.com/> |
+| Thứ Tư | - Tạo Amazon EC2 Linux Instance <br> - Chọn AMI và Instance Type phù hợp <br> - Tạo Key Pair <br> - Cấu hình Security Group cho SSH <br> - Kiểm tra trạng thái hoạt động của Instance | 2026-05-13 | 2026-05-13 | <https://cloudjourney.awsstudygroup.com/> |
+| Thứ Năm | - Kết nối đến EC2 Linux bằng SSH <br> - Thực hành một số lệnh Linux cơ bản <br> - Kiểm tra Public IP và Private IP <br> - Tìm hiểu và xử lý một số lỗi kết nối SSH thường gặp | 2026-05-14 | 2026-05-14 | <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html> |
+| Thứ Sáu | - Tạo Amazon EC2 Windows Instance <br> - Lấy mật khẩu Administrator <br> - Kết nối đến máy chủ Windows bằng Remote Desktop <br> - Kiểm tra trạng thái và thông tin hệ thống | 2026-05-15 | 2026-05-15 | <https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/connecting_to_windows_instance.html> |
+| Thứ Bảy | - Tìm hiểu Amazon EBS và Root Volume <br> - Tạo và gắn thêm EBS Volume vào EC2 <br> - Tìm hiểu Elastic IP và cách liên kết với EC2 <br> - Kiểm tra Snapshot và khả năng sao lưu dữ liệu | 2026-05-16 | 2026-05-16 | <https://cloudjourney.awsstudygroup.com/> |
+| Chủ Nhật | - Tìm hiểu AWS Systems Manager Session Manager <br> - Hiểu vai trò của IAM Role và SSM Agent <br> - Thực hành kết nối EC2 mà không cần mở cổng SSH nếu điều kiện cho phép <br> - Dừng hoặc xóa các tài nguyên không cần thiết <br> - Hoàn thành nhật ký Tuần 2 | 2026-05-17 | 2026-05-17 | <https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html> |
 
-### Em đã làm được gì trong tuần
+### Kết quả đạt được trong Tuần 2
 
-**Mạng & Compute (Lab 05–07)**
-* Tạo VPC với subnet public/private, gắn Internet Gateway.
-* Launch EC2 instance, kết nối SSH bằng key pair (.pem).
-* Gắn thêm EBS volume và gán Elastic IP.
+* Hiểu được vai trò của Amazon EC2 trong việc cung cấp máy chủ ảo trên AWS.
 
-**Storage & Database (Lab 08–11)**
-* Gán IAM Role cho EC2 để truy cập S3 an toàn.
-* Tạo S3 bucket, bật static website hosting.
-* Tạo RDS instance và kết nối từ EC2 (cấu hình Security Group port 3306).
+* Nắm được các thành phần cơ bản của EC2, bao gồm:
 
-**Vận hành (Lab 12–16)**
-* Làm quen Lightsail và Auto Scaling cơ bản.
-* Tạo CloudWatch alarm giám sát EC2.
-* Cấu hình Route 53 record.
-* Cài AWS CLI trên Windows, chạy `aws sts get-caller-identity`.
+  * Amazon Machine Image
+  * Instance Type
+  * Key Pair
+  * Security Group
+  * Public IP
+  * Private IP
+  * Elastic IP
+  * Amazon EBS
 
-**NoSQL & Cache (Lab 17–18)**
-* Tạo bảng DynamoDB và làm quen ElastiCache.
+* Tạo và khởi chạy thành công EC2 Linux Instance.
 
-### Kết quả đạt được
+* Cấu hình Security Group để cho phép kết nối SSH an toàn.
 
-* Hoàn thành các lab nền tảng **Lab 05 – Lab 18**.
-* Triển khai được luồng cơ bản: **VPC → EC2 → S3/RDS**.
-* Biết dùng song song **Console** và **CLI**.
-* Sẵn sàng chuyển sang Module 02 (Optimizing).
+* Kết nối thành công đến máy chủ Linux bằng SSH.
 
-### Khó khăn gặp phải
+* Thực hành một số lệnh Linux cơ bản trên EC2.
 
-* **SSH trên Windows:** Lỗi permission file `.pem` → dùng `icacls` chỉnh quyền.
-* **RDS không kết nối được:** Quên mở Security Group port 3306 cho EC2.
-* **Chi phí:** Nhớ xóa NAT Gateway, Elastic IP sau mỗi lab.
+* Tạo và kết nối đến EC2 Windows bằng Remote Desktop.
 
-> **Lưu ý:** Nếu em chưa hoàn thành lab nào ở bảng trên, hãy đổi trạng thái tương ứng trước khi nộp báo cáo chính thức.
+* Hiểu sự khác nhau giữa Public IP, Private IP và Elastic IP.
 
-### Chuẩn bị cho tuần 3
+* Tìm hiểu vai trò của Amazon EBS trong việc lưu trữ dữ liệu cho EC2.
 
-* Chuyển sang **Module 02**, bắt đầu **Lab 19 – VPC Peering** và CloudFormation.
+* Thực hành tạo và gắn thêm EBS Volume vào EC2 Instance.
+
+* Hiểu mục đích của EBS Snapshot trong việc sao lưu và khôi phục dữ liệu.
+
+* Làm quen với AWS Systems Manager Session Manager và phương thức truy cập EC2 không phụ thuộc hoàn toàn vào SSH.
+
+* Thực hành dừng, khởi động và xóa EC2 Instance sau khi hoàn thành bài lab.
+
+* Hoàn thành Tuần 2 với kiến thức cơ bản về EC2, SSH, Remote Desktop, EBS, Elastic IP và Systems Manager.

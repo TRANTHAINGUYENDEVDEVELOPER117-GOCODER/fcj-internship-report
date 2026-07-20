@@ -1,117 +1,143 @@
 ---
-title: "Worklog Tuần 10"
-date: 2026-07-11
+title: "Nhật ký công việc Tuần 10"
+date: 2026-07-06
 weight: 10
 chapter: false
 pre: " <b> 1.10. </b> "
 ---
 
-# Worklog Tuần 10: Serverless, API Gateway và Event-Driven Architecture
+### Thời gian thực hiện
 
-### Tổng quan tuần 10 (11/07 – 17/07/2026)
+* **Tuần 10:** Từ ngày **2026-07-06** đến **2026-07-12**.
 
-Tuần 10 đánh dấu giai đoạn chuyển từ phần **Optimize** sang **Modernize Application**. Nội dung chính tập trung vào kiến trúc **serverless** và **event-driven**, gồm AWS Lambda, Amazon API Gateway, Amazon DynamoDB, Amazon S3, Amazon Cognito, Amazon SQS/SNS, CloudWatch và AWS X-Ray.
+### Mục tiêu Tuần 10
 
-Mục tiêu của tuần này là hiểu cách xây dựng ứng dụng hiện đại mà không cần quản lý server trực tiếp, đồng thời đảm bảo API có xác thực, log, giám sát và khả năng mở rộng.
+* Hiểu quy trình phản ứng sự cố tự động đối với các cảnh báo liên quan đến Amazon EC2.
+* Sử dụng AWS Lambda để kiểm tra Finding và thực hiện các hành động phản ứng.
+* Sử dụng AWS Systems Manager để thu thập thông tin điều tra và thực thi lệnh phản ứng.
+* Tạo Quarantine Security Group để cô lập EC2 Instance đáng ngờ.
+* Kiểm tra Tag `AutoIsolate` trước khi thực hiện hành động tự động.
+* Xây dựng riêng nhánh yêu cầu phê duyệt và nhánh phản ứng tự động.
+* Lưu cấu hình ban đầu của EC2 trước khi cô lập.
+* Cập nhật trạng thái sự cố trong Amazon DynamoDB.
+* Lưu bằng chứng điều tra trong Amazon S3.
+* Xây dựng quy trình hoàn tác và khôi phục EC2 Instance đã bị cô lập.
+* Kiểm thử toàn bộ quy trình phản ứng sự cố tự động.
 
-### Mục tiêu tuần 10
+### Các công việc thực hiện trong tuần
 
-- Hiểu nguyên tắc thiết kế serverless và event-driven.
-- Xây dựng API cơ bản bằng API Gateway và Lambda.
-- Tìm hiểu cách Lambda tương tác với DynamoDB/S3.
-- Sử dụng Cognito để xác thực người dùng và bảo vệ API.
-- Tìm hiểu SQS/SNS để xử lý message bất đồng bộ.
-- Quan sát log, metric và trace bằng CloudWatch/X-Ray.
-- Cleanup tài nguyên sau khi thực hành.
+| Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
+| --- | --- | --- | --- | --- |
+| Thứ Hai | - Ôn lại Step Functions Workflow đã xây dựng trong Tuần 9 <br> - Xác định các hành động phản ứng tự động cần thiết đối với EC2 Finding <br> - Xác định điều kiện phản ứng dựa trên Severity, Resource Type, Instance ID và Tag `AutoIsolate` <br> - Xem xét các cơ chế an toàn để tránh cô lập nhầm tài nguyên | 2026-07-06 | 2026-07-06 | <https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/welcome.html> |
+| Thứ Ba | - Tạo Quarantine Security Group <br> - Cấu hình Inbound Rule và Outbound Rule hạn chế <br> - Tạo IAM Role và IAM Policy cần thiết cho Lambda và Systems Manager <br> - Áp dụng nguyên tắc đặc quyền tối thiểu cho các quyền phản ứng sự cố | 2026-07-07 | 2026-07-07 | <https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html> |
+| Thứ Tư | - Tạo Lambda Function để kiểm tra EC2 Instance bị ảnh hưởng <br> - Sử dụng EC2 API để lấy Instance State, Tag, Network Interface và Security Group <br> - Kiểm tra Tag `AutoIsolate=true` <br> - Lưu cấu hình Security Group ban đầu trong DynamoDB trước khi thực hiện cô lập | 2026-07-08 | 2026-07-08 | <https://docs.aws.amazon.com/lambda/latest/dg/with-ec2-example.html> |
+| Thứ Năm | - Tìm hiểu cách AWS Systems Manager hỗ trợ phản ứng sự cố <br> - Kiểm tra EC2 Instance đã được quản lý bởi Systems Manager hay chưa <br> - Sử dụng Run Command hoặc Automation để thu thập thông tin hệ thống và mạng <br> - Gửi kết quả điều tra và Command Output đến Amazon S3 hoặc CloudWatch Logs | 2026-07-09 | 2026-07-09 | <https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html> |
+| Thứ Sáu | - Xây dựng nhánh Approval Required cho Finding mức High <br> - Gửi yêu cầu phê duyệt đến SOC Analyst thông qua Amazon SNS <br> - Tìm hiểu Step Functions Callback Pattern sử dụng Task Token khi phù hợp <br> - Tiếp tục hoặc dừng quy trình phản ứng dựa trên quyết định của SOC Analyst | 2026-07-10 | 2026-07-10 | <https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html#connect-wait-token> |
+| Thứ Bảy | - Xây dựng nhánh Automated Response cho Finding mức Critical <br> - Gọi Lambda để thay thế Security Group ban đầu bằng Quarantine Security Group <br> - Sử dụng Systems Manager để thu thập thông tin điều tra <br> - Cập nhật trạng thái sự cố trong DynamoDB <br> - Lưu bằng chứng phản ứng trong Amazon S3 và gửi thông báo qua Amazon SNS | 2026-07-11 | 2026-07-11 | <https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html> |
+| Chủ Nhật | - Tạo Rollback Function để khôi phục Security Group ban đầu <br> - Kiểm thử các trường hợp Alert Only, Approval Required, Automated Response và Rollback <br> - Xem Step Functions Execution History, Lambda Logs, Systems Manager Output, DynamoDB Record và bằng chứng trong Amazon S3 <br> - Kiểm tra chi phí dịch vụ và hoàn thành nhật ký Tuần 10 | 2026-07-12 | 2026-07-12 | <https://docs.aws.amazon.com/step-functions/latest/dg/concepts-view-execution-details.html> |
 
-### Công việc đã thực hiện
+### Kết quả đạt được trong Tuần 10
 
-| Bước | Nội dung | Trạng thái | Nguồn |
-| --- | --- | --- | --- |
-| 01 | Lambda tương tác DynamoDB/S3 | ✅ Hoàn thành | [Cloud Journey – Modernize](https://cloudjourney.awsstudygroup.com/4-modernize/) |
-| 02 | API Gateway REST API tích hợp Lambda | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 03 | Cognito User Pool và API Authorizer | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 04 | SQS/SNS xử lý message bất đồng bộ | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 05 | CloudWatch Logs và X-Ray tracing | ✅ Hoàn thành | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 06 | Cleanup tài nguyên serverless | ✅ Hoàn thành | — |
+* Hiểu được các giai đoạn chính của quy trình phản ứng sự cố EC2 tự động:
 
-### Nội dung chi tiết
+  * Kiểm tra Finding
+  * Xác minh tài nguyên
+  * Đánh giá điều kiện phản ứng
+  * Phê duyệt của SOC Analyst
+  * Cô lập tài nguyên
+  * Thu thập dữ liệu điều tra
+  * Gửi thông báo
+  * Khôi phục và hoàn tác
 
-#### AWS Lambda
+* Xác định các điều kiện cần thiết trước khi thực hiện cô lập tự động:
 
-Em tìm hiểu cách Lambda chạy code theo sự kiện mà không cần quản lý máy chủ. Lambda có thể được kích hoạt bởi nhiều nguồn như API Gateway, S3 event, DynamoDB stream hoặc SQS.
+  * Tài nguyên bị ảnh hưởng phải là Amazon EC2 Instance.
+  * Finding phải chứa EC2 Instance ID hợp lệ.
+  * Severity phải đáp ứng ngưỡng phản ứng đã cấu hình.
+  * EC2 Instance phải có Tag `AutoIsolate=true`.
+  * Response Mode phải cho phép thực hiện hành động tự động.
 
-Các điểm quan trọng:
+* Tạo Quarantine Security Group để cô lập EC2 Instance đáng ngờ.
 
-- Lambda cần IAM execution role phù hợp.
-- Không nên cấp quyền quá rộng cho Lambda.
-- Cần theo dõi timeout, memory, retry và error handling.
-- Log của Lambda được ghi vào CloudWatch Logs.
+* Cấu hình các Security Group Rule hạn chế nhằm giảm khả năng giao tiếp mạng của EC2 trong thời gian xảy ra sự cố.
 
-#### Amazon API Gateway
+* Tạo IAM Role và IAM Policy cho:
 
-API Gateway đóng vai trò public endpoint cho ứng dụng serverless. Em tìm hiểu cách:
+  * AWS Lambda
+  * AWS Step Functions
+  * AWS Systems Manager
+  * Amazon DynamoDB
+  * Amazon S3
+  * Amazon SNS
 
-- Tạo REST API hoặc HTTP API.
-- Tích hợp API Gateway với Lambda.
-- Thiết kế resource/method.
-- Kiểm tra request/response.
-- Bảo vệ API bằng authorizer.
+* Áp dụng nguyên tắc đặc quyền tối thiểu cho các thành phần phản ứng tự động.
 
-API Gateway giúp tách frontend/client khỏi backend Lambda, đồng thời hỗ trợ throttling, logging và authorization.
+* Tạo Lambda Function để lấy thông tin EC2, bao gồm:
 
-#### Amazon Cognito
+  * Instance ID
+  * Instance State
+  * Instance Tag
+  * VPC ID
+  * Subnet ID
+  * Network Interface ID
+  * Security Group ID hiện tại
 
-Cognito được sử dụng để xác thực người dùng. Sau khi đăng nhập thành công, Cognito cấp token để client gọi API. API Gateway có thể dùng Cognito Authorizer để kiểm tra token trước khi cho request đi tiếp.
+* Xây dựng cơ chế kiểm tra Tag `AutoIsolate`.
 
-Luồng cơ bản:
+* Lưu cấu hình Security Group ban đầu của EC2 trong DynamoDB trước khi cô lập.
 
-```text
-User → Cognito Sign In → JWT Token → API Gateway Authorizer → Lambda
-```
+* Kiểm tra EC2 Instance có được đăng ký là Systems Manager Managed Node hay không.
 
-#### SQS/SNS
+* Sử dụng AWS Systems Manager Run Command hoặc Automation để thu thập thông tin điều tra, bao gồm:
 
-Em tìm hiểu cách SQS và SNS giúp xử lý message bất đồng bộ:
+  * Các Process đang chạy
+  * Các kết nối mạng đang hoạt động
+  * Người dùng đang đăng nhập
+  * Thông tin hệ thống
+  * Cấu hình mạng
+  * Các sự kiện hệ thống gần đây
 
-- **SNS:** publish/subscribe, gửi thông báo đến nhiều subscriber.
-- **SQS:** queue message để worker xử lý dần.
-- Kết hợp SNS + SQS giúp giảm coupling giữa các thành phần.
+* Gửi kết quả thực thi lệnh điều tra đến Amazon S3 hoặc CloudWatch Logs.
 
-Kiến trúc này phù hợp cho các tác vụ không cần xử lý đồng bộ ngay lập tức, ví dụ gửi email, xử lý ảnh, ghi log hoặc trigger workflow phụ.
+* Xây dựng nhánh Approval Required cho Finding mức High.
 
-#### CloudWatch và X-Ray
+* Gửi yêu cầu phê duyệt đến SOC Analyst thông qua Amazon SNS.
 
-CloudWatch hỗ trợ xem logs, metrics và alarms. X-Ray giúp trace request qua nhiều thành phần, đặc biệt hữu ích khi debug kiến trúc serverless nhiều service.
+* Hiểu cách Step Functions Callback Pattern và Task Token được sử dụng để tạm dừng Workflow cho đến khi nhận được quyết định phê duyệt.
 
-### Kết quả đạt được
+* Xây dựng nhánh Automated Response cho Finding mức Critical.
 
-- Hiểu cách xây dựng API serverless bằng API Gateway + Lambda.
-- Biết cách dùng Cognito để bảo vệ API.
-- Nắm được vai trò của SQS/SNS trong xử lý bất đồng bộ.
-- Biết theo dõi Lambda logs và lỗi bằng CloudWatch.
-- Hiểu cách serverless giúp giảm vận hành server nhưng vẫn cần kiểm soát IAM, logging và chi phí.
+* Tạo Lambda Response Function để thay thế Security Group hiện tại bằng Quarantine Security Group.
 
-### Liên hệ An ninh mạng
+* Cập nhật Incident Record trong DynamoDB với các thông tin như:
 
-Serverless không có nghĩa là không cần bảo mật. Các rủi ro chính gồm:
+  * Response Status
+  * Approval Status
+  * Isolation Time
+  * Original Security Groups
+  * Quarantine Security Group
+  * Systems Manager Command ID
+  * Last Updated Time
 
-- Lambda execution role cấp quyền quá rộng.
-- API Gateway thiếu authorizer hoặc throttling.
-- Token Cognito cấu hình sai.
-- Message queue chứa dữ liệu nhạy cảm.
-- Log vô tình ghi thông tin bí mật.
+* Lưu bằng chứng phản ứng sự cố và kết quả điều tra trong Amazon S3.
 
-Vì vậy, cần áp dụng least privilege, input validation, API authentication, encryption và logging có kiểm soát.
+* Gửi thông báo kết quả phản ứng bảo mật thông qua Amazon SNS.
 
-### Khó khăn và bài học
+* Tạo Rollback Function để khôi phục Security Group ban đầu của EC2.
 
-- Debug serverless khó hơn ứng dụng truyền thống vì request đi qua nhiều service.
-- IAM permission cho Lambda cần được cấp đúng và đủ.
-- Cần cleanup API, Lambda, queue và log group để tránh phát sinh chi phí.
-- Observability là bắt buộc khi thiết kế ứng dụng serverless.
+* Kiểm thử các trường hợp phản ứng chính:
 
-### Chuẩn bị cho tuần 11
+  * **Alert Only:** Finding chỉ tạo cảnh báo mà không thay đổi tài nguyên.
+  * **Approval Required:** Workflow chờ phê duyệt trước khi cô lập tài nguyên.
+  * **Automated Response:** Finding mức Critical tự động kích hoạt quá trình cô lập EC2.
+  * **Rollback:** Khôi phục Security Group ban đầu sau khi hoàn tất điều tra.
 
-Sau khi hoàn thành phần serverless, em chuyển sang **DevOps & Containers**, tập trung vào Docker, Amazon ECS, CodeBuild và CodePipeline.
+* Xem Step Functions Execution History để kiểm tra từng State và kết quả phản ứng.
 
+* Xem Lambda Logs và Systems Manager Command Output để kiểm tra và xử lý lỗi.
+
+* Xác nhận hoạt động của luồng phản ứng tự động trong Tuần 10:
+
+  **Security Finding → EventBridge → Step Functions → Lambda Validation → Approval hoặc Automatic Isolation → Systems Manager Investigation → DynamoDB/S3 → SNS Notification**
+
+* Hoàn thành Tuần 10 với kiến thức thực hành về cô lập EC2 tự động, phê duyệt của SOC Analyst, điều tra bằng AWS Systems Manager, theo dõi sự cố, lưu bằng chứng và khôi phục tài nguyên.

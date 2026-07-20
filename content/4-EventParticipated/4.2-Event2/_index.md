@@ -1,34 +1,88 @@
 ---
-title: "Cloud Journey Lab Sessions"
-date: 2026-07-02
+title: "Event 2: FCAJ Community Day"
+date: 2026-05-23
 weight: 2
 chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-# AWS Study Group Lab Sessions / Cloud Journey Workshops
-
 ### Event Information
 
-| Item | Details |
-| --- | --- |
-| Date | 05/2026 – 07/2026 |
-| Format | Online + self-paced labs |
-| Role | Attendee and practitioner |
-| Learning source | [The First Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
+* **Event Name:** FCAJ Community Day
+* **Date & Time:** 09:00 - 12:00, May 23, 2026
+* **Location:** 26th Floor, Bitexco Tower, 02 Hai Trieu Street, Saigon Ward, Ho Chi Minh City
+* **Role:** Attendee
 
-### Main content
+### Event Purpose
 
-- Practiced **Explore AWS Services** labs: AWS Account, IAM, VPC, EC2, S3, RDS, CloudWatch, CLI.
-- Practiced **Optimizing the system**: CloudFormation, VPC Peering, Transit Gateway, Lambda automation, Grafana, IAM tag-based access.
-- Practiced **Security track**: Permission Boundary, IAM Conditions, Security Hub, AWS WAF, KMS, GuardDuty, Secrets Manager.
-- Practiced **Modernize**: Lambda, API Gateway, Cognito, SQS/SNS, CloudWatch/X-Ray, Docker, ECS, CI/CD.
+FCAJ Community Day was organized to share knowledge, practical experience, and new technology trends related to Generative AI, Cloud Computing, and modern systems on AWS.
 
-### Lessons learned
+The event also helped participants learn more about AI Agents, enterprise-grade systems, performance optimization, security, and AI implementation processes in real business environments.
 
-These lab sessions helped me build a practical workflow: read requirements → implement → test → document errors → clean up. Each issue I encountered, such as missing IAM permissions, wrong Security Group rules, routing mistakes, or local port conflicts, helped me become more systematic in troubleshooting.
+### Speakers and Presentation Groups
 
-### Value for the report
+* Vy Lam – Senior Business Systems Analyst, VPBank
+* Duc Dao – Solution Architect, Cloud Kinetics
+* Team VIB – UTMorpho Project at LotusHacks 2026
+* Nguyen Tuan Thinh – DevOps Engineer, First Cloud AI Journey
+* Pham Ng Hai Anh – AWS Community Builder, G-AsiaPacific Vietnam
+* Tinh Truong – Platform Engineer, GoTymeX
 
-The lab sessions are the foundation for my 12-week worklog, proposal, and workshop. Therefore, the current report follows the course path: Foundation → Optimize → Modernize → Final Report.
+### Main Contents
 
+#### Enterprise-Grade Multi-Agent System – The Case of Startup Credit Scoring
+
+This presentation focused on the application of Multi-Agent AI systems in startup credit scoring. It explained the difference between Single-Agent and Multi-Agent systems and introduced the “Virtual Credit Committee” model, where multiple AI agents take different roles such as financial analysis, market analysis, team evaluation, and risk assessment.
+
+#### Non-Determinism of “Deterministic” LLM Settings
+
+This session explained why Large Language Models may still produce different outputs even when temperature is set to 0. The content covered token generation, temperature, top-p, top-k, and the effect of floating-point arithmetic on GPUs.
+
+#### UTMorpho – Building From Idea to Reality
+
+Team VIB shared the process of building the UTMorpho project at LotusHacks 2026 within 36 hours. The project focused on using AI to generate user interfaces and allowing users to edit the interface directly on a canvas using the WYSIWYG model.
+
+#### CloudFront-Foundational – From Edge to Origin
+
+This presentation introduced Amazon CloudFront and its key features related to CDN, security, and system performance optimization. The content included Edge Network, DDoS mitigation, HTTP/3, compression, caching strategies, and CloudFront pricing.
+
+#### Automate Any Business Process Using Amazon Quick Suite
+
+This session introduced Amazon Quick Suite and how AI Agents can be used to automate business processes.
+
+#### Context Is Everything – GenAIOps Essential for Generative Applications
+
+This presentation emphasized the importance of context in Generative AI and explained why context systems are essential for building generative applications.
+
+### Lessons Learned
+
+After joining the event, I learned several important lessons:
+
+* I understood more about Multi-Agent AI architecture in enterprise environments.
+* I learned about the operating mechanism and limitations of Large Language Models.
+* I gained more knowledge about Amazon CloudFront, CDN, and Edge Network.
+* I learned about context systems and the importance of GenAIOps.
+* I gained a better understanding of enterprise-grade system design thinking.
+
+### Application to My Work
+
+The knowledge from this event can be applied to my internship and personal projects in several ways:
+
+* Continue learning about AI Agents and Multi-Agent systems.
+* Apply scalable architecture thinking to personal projects.
+* Learn how to use Amazon CloudFront for web applications.
+* Improve the way I build context and prompts when using AI tools.
+* Understand how cloud and AI systems are designed for real production environments.
+
+### Event Experience
+
+Participating in FCAJ Community Day was a useful and practical experience for me. The event helped me access new knowledge about AI, Cloud Computing, and modern AWS technologies.
+
+The speakers shared practical experience from real businesses and projects, which helped me better understand how AI and cloud systems are implemented in production environments.
+
+In addition, I also had the opportunity to connect and exchange ideas with people in the technology industry. This helped me better understand career directions in AI and Cloud Computing.
+
+### Event Images
+![Event 23/05](/images/event23-05.png)
+
+Overall, FCAJ Community Day not only helped me gain technical knowledge but also gave me a clearer view of current technology trends, especially Generative AI and modern cloud systems.

@@ -1,160 +1,39 @@
-﻿---
+---
 title: "Nhật ký công việc"
-date: 2024-01-01
+date: 2026-05-05
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
 ---
 
-Nhật ký công việc của **Trần Thái Nguyên** trong chương trình **First Cloud Journey Workforce Bootcamp**, thực hiện trên [Cloud Journey](https://cloudjourney.awsstudygroup.com/) và playlist [FCJ Bootcamp 2025](https://www.youtube.com/playlist?list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i).
+Phần này trình bày nhật ký công việc hàng tuần của tôi trong chương trình học AWS và thực tập. Nhật ký được thực hiện trong vòng **12 tuần**, từ ngày **2026-05-05** đến **2026-07-30**.
 
-**Thời gian thực tập:** 09/05/2026 – 10/08/2026 (12 tuần)
+Trong thời gian này, tôi đã tìm hiểu các kiến thức nền tảng về AWS Cloud, mạng, giám sát, bảo mật, phát hiện mối đe dọa và phản ứng sự cố tự động. Tôi cũng thiết kế và kiểm thử một quy trình AWS Cloud Security Operations Center có khả năng phát hiện cảnh báo, đánh giá mối đe dọa, gửi thông báo và thực hiện các hành động phản ứng tự động.
 
-### Bám sát lộ trình khóa học
+Mỗi tuần tập trung vào một chủ đề cụ thể, từ các dịch vụ AWS cơ bản đến thiết kế và triển khai một kiến trúc bảo mật cloud hoàn chỉnh.
 
-Nội dung 12 tuần được xây dựng dựa trên khóa **First Cloud Journey Bootcamp 2025** của AWS Study Group và tài liệu **The First Cloud Journey**:
+Nội dung các tuần được sắp xếp như sau:
 
-| Giai đoạn | Tuần | Nội dung chính |
-| --- | --- | --- |
-| Explore AWS Services | Tuần 1–2 | AWS Account, Budget, IAM, VPC, EC2, S3, RDS, CloudWatch, CLI |
-| Optimize on AWS | Tuần 3–9 | CloudFormation, VPC Peering, Transit Gateway, Lambda automation, monitoring, IAM/Security, Backup, KMS |
-| Modernize Application | Tuần 10–11 | Serverless, API Gateway, Cognito, SQS/SNS, CloudWatch/X-Ray, Docker/ECS, CI/CD |
-| Final Report | Tuần 12 | Tổng kết, cleanup, Proposal, Workshop, Self-evaluation, Feedback |
+**Tuần 1:** [Làm quen với AWS, AWS Console, AWS CLI, Billing, Budget và IAM cơ bản](1.1-week1/)
 
-<div class="report-progress">
-  <div class="progress-top">
-    <div class="progress-info">
-      <i class="fas fa-chart-line"></i>
-      <div>
-        <span class="progress-title">Tiến độ Worklog</span>
-        <span class="progress-sub">12 tuần hoàn thành · Báo cáo đã sẵn sàng nộp</span>
-      </div>
-    </div>
-    <div class="progress-stats">
-      <span class="progress-percent">100%</span>
-      <span class="progress-label">Tuần 12 / 12</span>
-    </div>
-  </div>
-  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-</div>
+**Tuần 2:** [Thực hành Amazon EC2, EBS, Elastic IP, SSH, RDP và Systems Manager](1.2-week2/)
 
-<h2 class="section-heading"><i class="fas fa-road"></i> Lộ trình 12 tuần</h2>
+**Tuần 3:** [Thiết kế Amazon VPC với public subnet và private subnet](1.3-week3/)
 
-<div class="week-roadmap">
+**Tuần 4:** [Triển khai Site-to-Site VPN và kết nối mạng hybrid](1.4-week4/)
 
-<div class="week-legend">
-  <span class="legend-item done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</div>
+**Tuần 5:** [Giám sát tài nguyên AWS bằng Amazon CloudWatch và VPC Flow Logs](1.5-week5/)
 
-<div class="week-grid">
+**Tuần 6:** [Phát hiện mối đe dọa bằng AWS CloudTrail, Amazon GuardDuty và AWS Security Hub](1.6-week6/)
 
-<a href="1.1-Week1/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 1</span>
-    <span class="week-date">09/05 – 15/05</span>
-  </div>
-  <p class="week-topic">Lab 01–04: AWS Account, Budgets, IAM</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
+**Tuần 7:** [Bảo vệ hệ thống bằng AWS WAF, AWS Network Firewall và Amazon Inspector](1.7-week7/)
 
-<a href="1.2-Week2/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 2</span>
-    <span class="week-date">16/05 – 22/05</span>
-  </div>
-  <p class="week-topic">Lab 05–18: VPC, EC2, S3, RDS</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
+**Tuần 8:** [Xây dựng luồng sự kiện và cảnh báo bằng Amazon EventBridge và Amazon SNS](1.8-week8/)
 
-<a href="1.3-Week3/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 3</span>
-    <span class="week-date">23/05 – 29/05</span>
-  </div>
-  <p class="week-topic">Lab 19: CloudFormation (02.0 & 02.1)</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
+**Tuần 9:** [Xây dựng quy trình xử lý sự cố với AWS Step Functions, Lambda, DynamoDB và S3](1.9-week9/)
 
-<a href="1.4-Week4/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 4</span>
-    <span class="week-date">30/05 – 05/06</span>
-  </div>
-  <p class="week-topic">Lab 19: VPC Peering (bước 03–07)</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
+**Tuần 10:** [Tự động phản ứng sự cố EC2 bằng AWS Lambda và Systems Manager](1.10-week10/)
 
-<a href="1.5-Week5/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 5</span>
-    <span class="week-date">06/06 – 12/06</span>
-  </div>
-  <p class="week-topic">Lab 20: Transit Gateway + Systems Manager</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
+**Tuần 11:** [Kiểm thử toàn bộ quy trình bảo mật và hoàn thiện kiến trúc AWS](1.11-week11/)
 
-<a href="1.6-Week6/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 6</span>
-    <span class="week-date">13/06 – 19/06</span>
-  </div>
-  <p class="week-topic">Lab 21–25: Lambda, Resource Groups</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.7-Week7/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 7</span>
-    <span class="week-date">20/06 – 26/06</span>
-  </div>
-  <p class="week-topic">Lab 26–30: Security — IAM, WAF, Hub</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.8-Week8/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 8</span>
-    <span class="week-date">27/06 – 03/07</span>
-  </div>
-  <p class="week-topic">Lab 31–35: KMS, VPC Endpoint, GuardDuty</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.9-Week9/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 9</span>
-    <span class="week-date">04/07 – 10/07</span>
-  </div>
-  <p class="week-topic">Lab 36–40: Backup, CloudFormation, CDK</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.10-Week10/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 10</span>
-    <span class="week-date">11/07 – 17/07</span>
-  </div>
-  <p class="week-topic">Lab 41–45: Serverless — Lambda, API GW</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.11-Week11/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 11</span>
-    <span class="week-date">18/07 – 24/07</span>
-  </div>
-  <p class="week-topic">Lab 46–50: CI/CD, Docker/ECS</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-<a href="1.12-Week12/" class="week-card done">
-  <div class="week-card-header">
-    <span class="week-num">Tuần 12</span>
-    <span class="week-date">25/07 – 31/07</span>
-  </div>
-  <p class="week-topic">Tổng kết, cleanup, hoàn thiện báo cáo</p>
-  <span class="week-badge done"><i class="fas fa-check-circle"></i> Hoàn thành</span>
-</a>
-
-</div>
-</div>
+**Tuần 12:** [Hoàn thành báo cáo, bài thuyết trình, kiểm tra chi phí, dọn dẹp tài nguyên và nộp kết quả](1.12-week12/)

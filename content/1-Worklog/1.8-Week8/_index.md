@@ -1,63 +1,104 @@
 ---
 title: "Week 8 Worklog"
-date: 2026-06-27
+date: 2026-06-22
 weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-### Week 8 Overview (06/27 – 07/03/2026)
 
-In week eight, I continued the security track with a focus on **data protection** and **threat detection**: encryption with **AWS KMS**, private S3 connectivity with **VPC Endpoints**, **S3 security best practices**, enabling **GuardDuty**, and safer secret handling with **Secrets Manager**.
+### Implementation Period
+
+* **Week 8:** From **2026-06-22** to **2026-06-28**.
 
 ### Week 8 Objectives
 
-* Practice **KMS** to understand key management and encrypt/decrypt basics.
-* Use **VPC Endpoints** to access S3 privately (reduce Internet exposure).
-* Apply **S3 Security Best Practices**: block public access, bucket policy, encryption.
-* Enable **GuardDuty** and review findings/severity.
-* Store credentials in **Secrets Manager** instead of hardcoding.
+* Understand the concept of event-driven architecture on AWS.
+* Learn how Amazon EventBridge receives and routes security events.
+* Create EventBridge rules for Amazon GuardDuty and AWS Security Hub findings.
+* Learn how Amazon SNS sends security notifications to administrators.
+* Configure an SNS topic and email subscription.
+* Build a basic security event and notification workflow.
+* Filter security findings based on source, resource type, and severity.
+* Prepare the event-processing foundation for the automated AWS CloudSOC response workflow.
 
-### Tasks Completed
+### Tasks to Be Carried Out This Week
 
-| Item | Task | Status | Reference |
-| --- | --- | --- | --- |
-| 01 | KMS: create key, test encrypt/decrypt | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 02 | S3 Gateway VPC Endpoint + routing | ✅ | [S3 Endpoint Lab](https://000069.awsstudygroup.com/) |
-| 03 | S3 security hardening (BPA, policy, encryption) | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 04 | GuardDuty: enable + review findings | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 05 | Secrets Manager: create secret + basic permissions | ✅ | [Cloud Journey](https://cloudjourney.awsstudygroup.com/) |
-| 06 | Cleanup and cost check | ✅ | — |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| Monday | - Review the layered security services studied in Week 7 <br> - Learn the basic concepts of event-driven architecture <br> - Understand events, event sources, event buses, rules, and targets <br> - Identify the role of Amazon EventBridge in the AWS CloudSOC architecture | 2026-06-22 | 2026-06-22 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html> |
+| Tuesday | - Learn about Amazon EventBridge Event Bus <br> - Review the structure of an AWS service event <br> - Identify fields such as source, detail-type, account, Region, time, resources, and detail <br> - Review example GuardDuty and Security Hub events | 2026-06-23 | 2026-06-23 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events-structure.html> |
+| Wednesday | - Create an Amazon SNS topic for security notifications <br> - Create an email subscription <br> - Confirm the SNS subscription through email <br> - Publish a test message and verify that the notification is received | 2026-06-24 | 2026-06-24 | <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html> |
+| Thursday | - Create an EventBridge rule for Amazon GuardDuty findings <br> - Configure an event pattern using the GuardDuty event source <br> - Add Amazon SNS as the target <br> - Test the rule using a sample finding or test event | 2026-06-25 | 2026-06-25 | <https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings_eventbridge.html> |
+| Friday | - Create an EventBridge rule for AWS Security Hub findings <br> - Filter findings based on workflow status, severity, or resource type <br> - Add Amazon SNS as the notification target <br> - Review the notification message received by email | 2026-06-26 | 2026-06-26 | <https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe-integration.html> |
+| Saturday | - Review EventBridge event patterns <br> - Create separate rules for Low, Medium, High, and Critical findings when required <br> - Test filtering by EC2 resource type and severity <br> - Verify that only matching security findings are sent to the SNS topic | 2026-06-27 | 2026-06-27 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html> |
+| Sunday | - Review IAM permissions for EventBridge and Amazon SNS <br> - Check EventBridge rule metrics and invocation results <br> - Review retry behavior and failed event handling concepts <br> - Check service costs and remove unnecessary test resources <br> - Complete the Week 8 worklog | 2026-06-28 | 2026-06-28 | <https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html> |
 
-### What I Did
+### Week 8 Achievements
 
-**KMS**
-* Created a customer managed key and learned the difference between key policy and IAM policy.
-* Performed a simple encrypt/decrypt flow to understand KMS usage permissions.
+* Understood the concept of event-driven architecture and its role in automating cloud security operations.
 
-**VPC Endpoint for S3**
-* Created a Gateway VPC Endpoint for S3 and attached it to the correct route table.
-* Noted how endpoint policies and bucket policies must align to avoid unexpected denies.
+* Learned the main components of Amazon EventBridge, including:
 
-**S3 Security**
-* Enabled Block Public Access.
-* Reviewed bucket policies for least privilege.
-* Enabled default encryption and verified object encryption on upload.
+  * Event
+  * Event Source
+  * Event Bus
+  * Event Pattern
+  * Rule
+  * Target
 
-**GuardDuty**
-* Enabled GuardDuty and learned severity-based triage.
-* Documented findings workflow: triage → validate → remediate.
+* Understood how AWS services publish events to the default EventBridge Event Bus.
 
-**Secrets Manager**
-* Stored demo credentials as a secret and controlled access with least privilege.
+* Reviewed the basic structure of an AWS event and identified important fields, including:
 
-### Achievements
+  * Source
+  * Detail Type
+  * AWS Account
+  * AWS Region
+  * Event Time
+  * Resources
+  * Event Detail
 
-* Built a security baseline around encryption, private connectivity, threat detection, and secret hygiene.
-* Reduced attack surface by removing public paths and unsafe credential storage.
+* Understood how Amazon GuardDuty findings can be delivered to Amazon EventBridge.
 
-### Challenges
+* Understood how AWS Security Hub findings can be routed through Amazon EventBridge.
 
-* Policy confusion (KMS key policy vs IAM policy) required checking both layers.
-* Endpoint worked but S3 access was denied until bucket policy/endpoint policy were aligned.
-* GuardDuty findings may take time to appear after enabling.
+* Created an Amazon SNS topic for security notifications.
 
+* Created and confirmed an email subscription for the SNS topic.
+
+* Published a test SNS message and verified that the email notification was received.
+
+* Created an EventBridge rule for Amazon GuardDuty findings.
+
+* Configured Amazon SNS as the target of the EventBridge rule.
+
+* Created an EventBridge rule for AWS Security Hub findings.
+
+* Practiced filtering security findings using event pattern fields such as:
+
+  * Security service source
+  * Finding severity
+  * Resource type
+  * AWS account
+  * AWS Region
+  * Workflow status
+
+* Reviewed the differences between Low, Medium, High, and Critical security findings.
+
+* Tested the notification flow using sample security findings or test events.
+
+* Verified the basic security notification workflow:
+
+  **GuardDuty or Security Hub → Amazon EventBridge → Amazon SNS → Email Notification**
+
+* Reviewed IAM permissions required for EventBridge to publish messages to an SNS topic.
+
+* Learned about EventBridge retry behavior and dead-letter queues for failed event delivery.
+
+* Reviewed EventBridge metrics to check successful and failed target invocations.
+
+* Identified Amazon EventBridge as the central event-routing service for the final AWS CloudSOC project.
+
+* Prepared the event-processing foundation required for AWS Step Functions and Lambda integration in the following weeks.
+
+* Completed Week 8 with fundamental knowledge of Amazon EventBridge, Amazon SNS, security event filtering, and automated security notifications.

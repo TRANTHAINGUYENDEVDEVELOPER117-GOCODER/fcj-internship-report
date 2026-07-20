@@ -1,62 +1,82 @@
 ---
-title: "Feedback"
-date: 2026-07-02
+title: "Sharing and Feedback"
+date: 2026-05-04
 weight: 7
 chapter: false
 pre: " <b> 7. </b> "
 ---
 
-<div class="section-intro">
-Personal feedback after completing the 12-week <strong>First Cloud AI Journey (FCJ)</strong> program, with suggestions to make the program even more effective for students and AWS beginners.
-</div>
+This section presents my personal sharing and feedback after participating in the **First Cloud AI Journey (FCAJ)** program. During the internship, I had the opportunity to learn AWS cloud computing, practice hands-on labs, join events, and improve my understanding of cloud architecture, AI, and DevOps-related topics.
 
-### 1. Learning environment
+### Overall Evaluation
 
-FCJ provides a clear and practical learning environment for IT students. The content is structured from AWS foundation, optimization, security, backup, serverless, containers, and CI/CD. This modular structure makes the program easier to follow and helps learners track progress week by week.
+**1. Learning Environment**  
+The learning environment in First Cloud AI Journey was open, friendly, and supportive. The program provided a clear learning direction and encouraged participants to learn through practice. I was able to study AWS services step by step, from basic cloud concepts to serverless architecture and system design.
 
-The combination of YouTube playlist, Cloud Journey documentation, and hands-on labs is very useful. It helps learners understand the theory and immediately apply it in the AWS Console.
+The environment also helped me become more familiar with self-learning, technical documentation, and weekly progress reporting.
 
-### 2. Mentor and community support
+**2. Support from Mentor / Team Admin**  
+The mentors and team admins provided helpful guidance during the learning process. When I encountered difficulties, I could review documents, ask questions, and learn from available workshops and community resources.
 
-The mentors, admins, and AWS Study Group community provide valuable materials, especially step-by-step labs with screenshots. When facing issues such as IAM permission errors, Security Group configuration mistakes, CloudFormation stack failures, Hugo server port conflicts, or website build errors, I was able to use the materials and community resources to debug them.
+The support helped me better understand AWS services and how to apply them in practical labs. I also appreciated the way the program encouraged learners to solve problems by themselves instead of only following instructions.
 
-I appreciate that the program does not only teach learners to follow instructions, but also encourages them to read errors, identify causes, and fix problems systematically.
+**3. Relevance of Work to Academic Major**  
+The program was highly relevant to my major in Information Technology and Cybersecurity. Many topics were connected to what I need to learn for my future career, such as cloud computing, networking, security, monitoring, authentication, and system architecture.
 
-### 3. Relevance to Cyber Security
+Through the program, I gained more practical knowledge about AWS services such as IAM, EC2, VPC, S3, Lambda, API Gateway, DynamoDB, Cognito, CloudWatch, Amplify, and CloudFront.
 
-The program is highly relevant to **Cyber Security** students. Topics such as IAM, Permission Boundary, Security Hub, WAF, GuardDuty, KMS, S3 Security, logging, and monitoring helped me understand how security is implemented in a cloud environment.
+**4. Learning & Skill Development Opportunities**  
+During the program, I had the opportunity to develop both technical and soft skills. Technically, I learned how to use AWS Console, AWS CLI, and different AWS services to build and manage cloud resources.
 
-Through the AWS CloudSOC project, I connected these topics into a SOC workflow: detect, investigate, approve, collect evidence, isolate resources, and notify stakeholders. This is especially valuable for my cloud security direction.
+I also improved my ability to write weekly worklogs, summarize learning outcomes, create architecture diagrams, and explain technical concepts clearly. In addition, the events helped me learn more about AI, DevOps, serverless architecture, and real-world cloud career paths.
 
-### 4. Skills gained
+**5. Community Culture & Team Spirit**  
+The FCAJ community created a positive learning atmosphere. The program connected learners with people who are interested in AWS, cloud computing, AI, and DevOps.
 
-After the program, I improved:
+Through community events and sharing sessions, I was able to listen to real experiences from speakers and community members. These activities helped me gain motivation and understand that continuous learning is very important in the technology field.
 
-- AWS self-learning skills through official documentation and guided videos.
-- Hands-on lab skills, configuration checking, and resource cleanup.
-- Technical reporting with Markdown and Hugo.
-- Cloud architecture communication through Proposal and Workshop sections.
-- Ability to connect AWS services with practical security requirements.
+**6. Program Structure and Benefits**  
+The 12-week structure was useful because it helped me learn AWS step by step. Each week focused on a specific topic, making it easier to follow the learning roadmap and track progress.
 
-### 5. Suggestions
-
-I suggest adding:
-
-- A checklist at the end of each module: resources to clean up, screenshots to capture, common errors, and review questions.
-- An official mapping between the YouTube playlist and Cloud Journey labs by week.
-- A standard worklog template for students.
-- A dedicated guide for deploying the Hugo website to GitHub Pages.
-- A final mini project lab, such as a cloud security baseline or incident response workflow.
-
-### 6. Overall evaluation
-
-FCJ is a practical program for students who want to follow cloud, DevOps, or cloud security paths. It helps learners understand AWS from fundamentals to application modernization while improving self-learning and technical communication skills.
-
-For me, the program increased my confidence in working with AWS and helped me better understand the role of cloud security in enterprise environments. It is an important foundation for continuing into SOC, DevSecOps, Infrastructure as Code, and cloud security engineering.
+The program also provided opportunities to participate in events, workshops, and hands-on labs. These activities helped me connect theory with practice and better understand how AWS services are used in real projects.
 
 ---
 
-### Appreciation
+### Additional Questions
 
-I would like to thank the admins, mentors, AWS Study Group community, and First Cloud Journey program for providing useful materials, learning guidance, and a practical training environment. The knowledge and experience from this program will support my future study, internship, and career development in Cyber Security and Cloud Security.
+**What did you find most satisfying during your internship?**  
+The most satisfying part of the internship was that I could learn AWS through a clear weekly roadmap. I started from basic cloud concepts and gradually learned more advanced topics such as VPC, serverless architecture, authentication, monitoring, and architecture design.
 
+I also found it useful to participate in FCAJ events, where I learned more about AI, DevOps, AWS community programs, and real-world technology trends.
+
+**What do you think the program should improve for future interns?**  
+I think the program could provide more beginner-friendly step-by-step labs for students who are new to AWS. Some AWS services can be difficult at first, especially VPC, IAM permissions, Lambda integration, and deployment.
+
+It would also be helpful to have more sample reports, sample architecture diagrams, and troubleshooting guides for common errors.
+
+**If recommending to a friend, would you suggest they join this program? Why or why not?**  
+Yes, I would recommend this program to friends who want to learn AWS, cloud computing, AI, or DevOps.
+
+The reason is that the program provides a practical learning path, useful resources, and opportunities to join community events. It is suitable for students who want to build a basic foundation in cloud computing and understand how AWS services are used in real-world systems.
+
+---
+
+### Suggestions & Expectations
+
+**Suggestions to improve the internship experience**
+
+* Provide more detailed beginner labs for important services such as IAM, VPC, Lambda, and API Gateway.
+* Add more troubleshooting examples for common AWS errors.
+* Provide more sample architecture diagrams using official AWS icons.
+* Organize more sharing sessions about career paths such as Cloud Engineer, DevOps Engineer, Solutions Architect, and Security Engineer.
+* Create more small group activities so participants can discuss and learn together.
+
+**Would you like to continue this program in the future?**
+
+Yes, I would like to continue learning with FCAJ in the future. After completing this program, I want to continue improving my AWS skills and learn more about DevOps, cloud security, serverless applications, and AI-related cloud services.
+
+**Other Comments**
+
+Overall, First Cloud AI Journey was a valuable learning experience for me. The program helped me build a basic foundation in AWS and gave me a clearer direction for my future learning path.
+
+Although I still need to improve my technical skills, discipline, and confidence in explaining technical topics, this program gave me more motivation to continue learning Cloud Computing, DevOps, Cybersecurity, and AI technologies.

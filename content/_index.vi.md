@@ -16,7 +16,7 @@ aliases:
 <div class="hero-profile">
 
 <div class="profile-avatar">
-  <img src="/images/avatar.svg" alt="Trần Thái Nguyên">
+  <img src="/images/avatar.png" alt="Trần Thái Nguyên">
 </div>
 
 <div class="profile-details">
@@ -54,6 +54,13 @@ aliases:
   <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
 </div>
 
+<h2 class="section-heading"><i class="fas fa-file-alt"></i> Internship Report</h2>
+
+<div class="report-summary-card">
+  <p>Báo cáo này tổng hợp quá trình thực tập trong chương trình <strong>First Cloud Journey Workforce Bootcamp 2026</strong>, bao gồm nhật ký công việc, đề xuất dự án, blog, sự kiện, workshop, tự đánh giá và phản hồi.</p>
+  <p>Nội dung dự án tập trung vào <strong>AWS CloudSOC</strong>, mô hình phát hiện, điều tra và phản ứng sự cố bảo mật trên AWS.</p>
+</div>
+
 <h2 class="section-heading"><i class="fas fa-folder-open"></i> Nội dung báo cáo</h2>
 
 <ul class="report-sections">
@@ -61,8 +68,8 @@ aliases:
   <a href="1-Worklog/" class="section-card">
     <div class="card-icon-wrap worklog"><i class="fas fa-clipboard-list"></i></div>
     <div class="card-body">
-      <span class="card-title">Worklog — Nhật ký công việc</span>
-      <span class="card-desc">Ghi chép công việc hàng tuần, lab AWS và kết quả thực hành.</span>
+      <span class="card-title">Worklog</span>
+      <span class="card-desc">Nhật ký thực tập theo tuần, tiến độ học AWS và kết quả thực hành.</span>
       <span class="status-badge progress">Tuần 12 / 12</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
@@ -73,7 +80,7 @@ aliases:
     <div class="card-icon-wrap proposal"><i class="fas fa-file-alt"></i></div>
     <div class="card-body">
       <span class="card-title">Proposal — Bản đề xuất</span>
-      <span class="card-desc">Đề xuất dự án nhóm AWS CloudSOC, phạm vi, kiến trúc và sản phẩm bàn giao.</span>
+      <span class="card-desc">Đề xuất hệ thống AWS CloudSOC, phạm vi, kiến trúc và sản phẩm bàn giao.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
@@ -84,7 +91,7 @@ aliases:
     <div class="card-icon-wrap blogs"><i class="fas fa-newspaper"></i></div>
     <div class="card-body">
       <span class="card-title">Blogs đã đăng</span>
-      <span class="card-desc">Bài viết kỹ thuật về AWS AI, Big Data, Redshift và vận hành cloud.</span>
+      <span class="card-desc">Chuỗi bài viết về Proof of Concept, incident response và bài học AWS CloudSOC.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
@@ -95,7 +102,7 @@ aliases:
     <div class="card-icon-wrap events"><i class="fas fa-calendar-check"></i></div>
     <div class="card-body">
       <span class="card-title">Events đã tham gia</span>
-      <span class="card-desc">Kick-off, buổi học playlist, workshop/lab AWS Study Group.</span>
+      <span class="card-desc">Các sự kiện AWS, AI, Cloud Computing và hoạt động cộng đồng đã tham gia.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
@@ -106,7 +113,7 @@ aliases:
     <div class="card-icon-wrap workshop"><i class="fas fa-tools"></i></div>
     <div class="card-body">
       <span class="card-title">Workshop</span>
-      <span class="card-desc">Workshop AWS CloudSOC: kiến trúc SOC, luồng response và hướng dẫn vẽ sơ đồ.</span>
+      <span class="card-desc">Workshop triển khai AWS CloudSOC: kiến trúc, deployment, kiểm thử và cleanup.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
@@ -116,19 +123,19 @@ aliases:
   <a href="6-Self-evaluation/" class="section-card">
     <div class="card-icon-wrap eval"><i class="fas fa-star"></i></div>
     <div class="card-body">
-      <span class="card-title">Tự đánh giá</span>
-      <span class="card-desc">Đánh giá năng lực, kỹ năng và đóng góp thực tập.</span>
+      <span class="card-title">Self-Assessment</span>
+      <span class="card-desc">Tự đánh giá năng lực, kỹ năng, thái độ học tập và đóng góp trong chương trình.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>
   </a>
 </li>
 <li>
-  <a href="7-Feedback/" class="section-card full-width">
+  <a href="7-Feedback/" class="section-card">
     <div class="card-icon-wrap feedback"><i class="fas fa-comments"></i></div>
     <div class="card-body">
-      <span class="card-title">Chia sẻ & Feedback</span>
-      <span class="card-desc">Ý kiến về chương trình FCJ, mentor và trải nghiệm thực tập.</span>
+      <span class="card-title">Sharing and Feedback</span>
+      <span class="card-desc">Chia sẻ cảm nhận, phản hồi về chương trình FCJ, mentor và trải nghiệm học tập.</span>
       <span class="status-badge done">Hoàn thành</span>
     </div>
     <i class="fas fa-chevron-right card-arrow"></i>

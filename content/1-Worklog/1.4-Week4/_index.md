@@ -1,64 +1,78 @@
 ---
 title: "Week 4 Worklog"
-date: 2026-05-30
+date: 2026-05-25
 weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
 ---
 
-### Week 4 Overview (05/30 – 06/05/2026)
+### Implementation Period
 
-Week 4 completed **Lab 19 – Setting up VPC Peering** (steps 03–07). After initializing 2 VPCs via CloudFormation in Week 3, this week focused on **network connectivity configuration**: Network ACL, VPC Peering Connection, Route Tables, Cross-Peer DNS, and resource cleanup. This lab is particularly relevant to my **Cyber Security** major as it covers network segmentation, traffic control, and subnet-level security.
+* **Week 4:** From **2026-05-25** to **2026-05-31**.
 
 ### Week 4 Objectives
 
-* Configure **Network ACL** to control inter-VPC traffic.
-* Create and activate **VPC Peering Connection** between My VPC and HG VPC.
-* Configure **Route Tables** for cross-VPC routing.
-* Enable **Cross-Peer DNS** for private IP hostname resolution.
-* **Cleanup** all resources to avoid unnecessary charges.
+* Understand the hybrid network connectivity model between an on-premises environment and AWS.
+* Learn how AWS Site-to-Site VPN works.
+* Understand the roles of Customer Gateway, Virtual Private Gateway, and VPN Connection.
+* Practice creating the components required for a VPN connection.
+* Configure route tables to direct network traffic through the VPN.
+* Check VPN tunnel status and network connectivity.
+* Learn about the security, availability, and cost considerations of AWS Site-to-Site VPN.
 
-### Work Completed
+### Tasks to Be Carried Out This Week
 
-| Day | Detailed Tasks | Start Date | Completion Date | Status | Reference |
-| --- | --- | --- | --- | --- | --- |
-| 2 (05/30) | **Lab 19 – 03:** Updated HG VPC NACL Rule 100 Source → `172.31.0.0/16` | 05/30/2026 | 05/30/2026 | ✅ | [Step 03](https://000019.awsstudygroup.com/3-updatenetworkacl/) |
-| 3 (05/31) | **Lab 19 – 04:** Created VPC Peering; Accepted request; status Active | 05/31/2026 | 05/31/2026 | ✅ | [Step 04](https://000019.awsstudygroup.com/4-vpcpeering/) |
-| 4 (06/01) | **Lab 19 – 05:** Added routes `10.10.0.0/16` and `172.31.0.0/16` to both route tables | 06/01/2026 | 06/01/2026 | ✅ | [Step 05](https://000019.awsstudygroup.com/5-routetable/) |
-| 5 (06/02) | **Lab 19 – 06:** Enabled Cross-Peer DNS; enabled DNS hostnames on both VPCs | 06/02/2026 | 06/02/2026 | ✅ | [Step 06](https://000019.awsstudygroup.com/6-crosspeerdns/) |
-| 6 (06/03) | Verified connectivity: ping private IP and public DNS between EC2 instances | 06/03/2026 | 06/03/2026 | ✅ | [Lab 19](https://000019.awsstudygroup.com/) |
-| 7 (06/04) | **Lab 19 – 07:** Cleanup – deleted peering, terminated EC2, deleted CloudFormation stacks | 06/04/2026 | 06/05/2026 | ✅ | [Step 07](https://000019.awsstudygroup.com/7-cleanup/) |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| Monday | - Review the Amazon VPC knowledge from Week 3 <br> - Learn about Hybrid Cloud and connectivity between on-premises networks and AWS <br> - Explore common use cases for AWS Site-to-Site VPN | 2026-05-25 | 2026-05-25 | <https://cloudjourney.awsstudygroup.com/> |
+| Tuesday | - Learn about AWS Site-to-Site VPN architecture <br> - Understand the roles of Customer Gateway, Virtual Private Gateway, and VPN Connection <br> - Learn about public IP addresses, Autonomous System Numbers, and the Border Gateway Protocol | 2026-05-26 | 2026-05-26 | <https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html> |
+| Wednesday | - Create a Virtual Private Gateway <br> - Attach the Virtual Private Gateway to the VPC <br> - Create a Customer Gateway representing the on-premises network device <br> - Review the configuration information of both gateways | 2026-05-27 | 2026-05-27 | <https://docs.aws.amazon.com/vpn/latest/s2svpn/SetUpVPNConnections.html> |
+| Thursday | - Create an AWS Site-to-Site VPN Connection <br> - Select static or dynamic routing <br> - Download the VPN configuration file for the Customer Gateway device <br> - Review the configuration details of the two VPN tunnels | 2026-05-28 | 2026-05-28 | <https://docs.aws.amazon.com/vpn/latest/s2svpn/SetUpVPNConnections.html> |
+| Friday | - Configure the route table to direct traffic to the on-premises network through the Virtual Private Gateway <br> - Check the VPC and on-premises CIDR blocks to prevent address overlap <br> - Review Security Group and Network ACL rules for traffic passing through the VPN | 2026-05-29 | 2026-05-29 | <https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html> |
+| Saturday | - Check the status of both VPN tunnels <br> - Test connectivity between the simulated on-premises network and an EC2 instance in the VPC when possible <br> - Review tunnel information, routes, and related logs <br> - Troubleshoot common configuration issues | 2026-05-30 | 2026-05-30 | <https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-cloudwatch-vpn.html> |
+| Sunday | - Learn about high availability using two VPN tunnels <br> - Learn how to monitor the VPN connection with Amazon CloudWatch <br> - Review AWS Site-to-Site VPN pricing <br> - Delete unused resources and complete the Week 4 worklog | 2026-05-31 | 2026-05-31 | <https://aws.amazon.com/vpn/pricing/> |
 
-### Step-by-Step Summary
+### Week 4 Achievements
 
-**Step 03 – Network ACL:** Restricted HG VPC inbound traffic to My VPC CIDR only. Verified Internet ping to HG VPC public IP failed.
+* Understood the concept of Hybrid Cloud and the need to connect on-premises systems with AWS.
 
-**Step 04 – VPC Peering:** Created peering between My VPC (`172.31.0.0/16`) and HG VPC (`10.10.0.0/16`); accepted request; status became Active.
+* Learned the main components of AWS Site-to-Site VPN, including:
 
-**Step 05 – Route Tables:** Added bidirectional routes via peering connection. Private IP ping from My VPC EC2 to HG VPC EC2 succeeded.
+  * Customer Gateway
+  * Virtual Private Gateway
+  * VPN Connection
+  * VPN Tunnel
+  * Route Table
+  * Static Routing
+  * Dynamic Routing
+  * Border Gateway Protocol
 
-**Step 06 – Cross-Peer DNS:** Enabled Requester and Accepter DNS resolution. Public DNS ping resolved to private IP successfully.
+* Understood the role of the Customer Gateway in representing the network device on the on-premises side.
 
-**Step 07 – Cleanup:** Deleted peering → terminated EC2 → deleted CloudFormation stacks. Verified Billing Dashboard shows no running resources.
+* Understood the role of the Virtual Private Gateway in connecting a VPC to an external network.
 
-### Achievements
+* Created and attached a Virtual Private Gateway to an Amazon VPC.
 
-* Completed **Lab 19** steps 03–07 – full VPC Peering lab finished.
-* Understood **Security Group** (stateful, instance) vs **Network ACL** (stateless, subnet).
-* Configured **VPC Peering** with private connectivity over AWS backbone.
-* Enabled **Cross-Peer DNS** for secure cross-VPC hostname resolution.
-* Practiced proper **cleanup** procedures to avoid post-lab charges.
+* Created a Customer Gateway using suitable network information.
 
-### Cyber Security Skills Gained
+* Created an AWS Site-to-Site VPN Connection.
 
-| Skill | Application |
-| --- | --- |
-| Network segmentation | VPC isolation, NACL and SG traffic control |
-| Defense in depth | Combined NACL + Security Group layers |
-| Private connectivity | VPC Peering instead of Internet exposure |
-| DNS security | Cross-Peer DNS prevents public IP traffic leak |
+* Reviewed the configuration of the two VPN tunnels provided by AWS.
 
-### Week 5 Plan
+* Configured route tables to direct traffic between the VPC and the on-premises network.
 
-* Start **Lab 20 – AWS Transit Gateway** for multi-VPC connectivity.
-* Continue the **Optimizing** track on [Cloud Journey](https://cloudjourney.awsstudygroup.com/3-optimize/).
+* Understood the importance of avoiding overlapping CIDR blocks.
+
+* Checked the VPN tunnel status and other connection-related information.
+
+* Understood the basic differences between static routing and dynamic routing with BGP.
+
+* Learned the roles of Security Groups and Network ACLs in controlling traffic through the VPN.
+
+* Understood how two VPN tunnels improve connection availability.
+
+* Learned how to monitor AWS Site-to-Site VPN using Amazon CloudWatch.
+
+* Reviewed and deleted unused VPN resources to reduce unnecessary costs.
+
+* Completed Week 4 with fundamental knowledge of hybrid connectivity, AWS Site-to-Site VPN, routing, availability, and VPN monitoring.

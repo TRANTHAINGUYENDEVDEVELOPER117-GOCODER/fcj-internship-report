@@ -1,48 +1,120 @@
 ---
 title: "Workshop"
-date: 2026-07-11
+date: 2026-06-30
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Project Report & Workshop: AWS CloudSOC
+# AWS CloudSOC: Automated Threat Detection and Incident Response on AWS
 
-This workshop presents **AWS CloudSOC – controlled incident detection, investigation, and response on AWS**. The project simulates a Security Operations Center workflow using AWS managed and serverless services with an EC2 workload for lab traffic.
+#### Overview
 
-The core workflow is:
+In this workshop, we will build an **AWS CloudSOC** system for automated threat detection, investigation, incident response, evidence collection, and alerting on Amazon Web Services (AWS).
+
+The system is designed as a cloud-based Security Operations Center lab that can detect suspicious activities, process security findings, support SOC Analyst approval, automatically isolate a suspected EC2 instance, collect forensic evidence, store incident records, and send notifications to security operators.
+
+The main detection source in this workshop is **Amazon GuardDuty**. When a security finding is generated, **Amazon EventBridge** routes the event to **AWS Step Functions**, which controls the incident response workflow. Depending on the severity and response mode, the workflow can trigger **AWS Lambda** and **AWS Systems Manager** to collect evidence, create forensic snapshots, update incident status in **Amazon DynamoDB**, store evidence in **Amazon S3**, and send alerts through **Amazon SNS** to Email or Slack.
+
+This workshop also includes a simple **SOC Dashboard** hosted with **AWS Amplify**. The dashboard helps SOC Analysts monitor incident status, review pending incidents, and validate the response workflow.
+
+The architecture follows an event-driven and serverless-oriented approach to reduce operational complexity, improve automation, and support cost optimization for a lab environment.
+
+#### Main AWS Services
+
+The main AWS services used in this workshop include:
 
 ```text
-Detect → Investigate → Decide → Collect Evidence → Contain → Notify → Recover
+Amazon GuardDuty
+AWS Security Hub
+Amazon EventBridge
+AWS Step Functions
+AWS Lambda
+AWS Systems Manager
+Amazon EC2
+Amazon VPC
+Amazon S3
+Amazon DynamoDB
+Amazon SNS
+Amazon CloudWatch
+Amazon Detective
+AWS Config
+AWS CloudTrail
+AWS IAM
+AWS KMS
+AWS Amplify
+Amazon API Gateway
+Amazon Cognito
 ```
 
-### Project information
+#### Workshop Goals
 
-| Item | Detail |
-| --- | --- |
-| Project | AWS CloudSOC |
-| Team members | Tran Thai Nguyen, Duong Ba Dat |
-| University/Class | HUTECH – 22DTHB1 |
-| Major | Cybersecurity |
-| Program | AWS Vietnam FCJ Workforce Bootcamp 2026 |
-| Date | July 2026 |
-| Main Region | `ap-southeast-1` |
-| Model | Lab / Proof of Concept |
+After completing this workshop, you will be able to:
 
-### Team roles
++ Design a CloudSOC architecture on AWS.
++ Deploy a lab VPC, public subnet, route table, Internet Gateway, and EC2 workload.
++ Enable security monitoring services such as GuardDuty, Security Hub, CloudTrail, VPC Flow Logs, AWS Config, and Detective.
++ Build an event-driven incident response workflow using EventBridge and Step Functions.
++ Implement an Incident Response Lambda function to process findings.
++ Use Systems Manager to collect forensic evidence from EC2.
++ Create an EBS snapshot for forensic investigation.
++ Store incident evidence in S3.
++ Store incident metadata and response status in DynamoDB.
++ Build a simple SOC Dashboard for monitoring and approval validation.
++ Send incident notifications through SNS, Email, and Slack.
++ Validate the full detection and response workflow.
++ Clean up all lab resources to avoid unnecessary costs.
 
-| Member | Main role |
-| --- | --- |
-| Tran Thai Nguyen | Requirements analysis, CloudSOC architecture design, report writing, Hugo website completion |
-| Duong Ba Dat | AWS service research support, SOC workflow review, architecture diagram validation, submission checklist review |
+#### Workshop Flow
 
-### Workshop content
+The overall workflow of this workshop is:
 
-1. [Detailed AWS CloudSOC project report](5.1-Workshop-overview/)
-2. [System architecture and SOC workflow](5.2-Prerequisite/)
-3. [CloudSOC architecture diagram workshop](5.3-S3-vpc/)  
-   Includes six submodules: tools, canvas layout, AWS service groups, incident flows, export/review, and a detailed drawing specification.
-4. [Diagram review checklist and submission requirements](5.4-S3-onprem/)
-5. [Production improvement roadmap](5.5-Policy/)
-6. [References and lab cleanup](5.6-Cleanup/)
+```text
+Design Architecture
+→ Prepare AWS Environment
+→ Deploy CloudSOC System
+→ Test and Validate Incident Response
+→ Monitor Dashboard and Alerts
+→ Clean Up Resources
+```
 
+The main incident response flow is:
+
+```text
+GuardDuty Finding
+→ EventBridge Rule
+→ Step Functions Workflow
+→ Incident Response Lambda
+→ Systems Manager Evidence Collection
+→ EBS Forensic Snapshot
+→ S3 Evidence Storage
+→ DynamoDB Incident Update
+→ SNS Notification
+→ Email / Slack Alert
+```
+
+#### Content
+
+1. [Workshop Overview](5.1-Workshop-overview/)
+2. [Prerequisites](5.2-Prerequiste/)
+3. [Architecture and Workflow](5.3-Architecture-and-workflow/)
+4. [Deploy CloudSOC System](5.4-Deploy-cloudsoc-system/)
+5. [Testing and Validation](5.5-Testing-and-validation/)
+6. [Resource Cleanup](5.6-Resource-Cleanup/)
+
+#### Expected Final Result
+
+At the end of this workshop, you will have a working AWS CloudSOC lab that can:
+
++ Detect simulated security findings from GuardDuty.
++ Route findings automatically through EventBridge.
++ Process incidents using Step Functions and Lambda.
++ Support SOC Analyst approval for selected incidents.
++ Automatically isolate an EC2 instance using `SG-Isolation`.
++ Collect forensic evidence using Systems Manager.
++ Create EBS snapshots for investigation.
++ Store raw events and response summaries in S3.
++ Track incident status in DynamoDB.
++ Display incident status on the SOC Dashboard.
++ Send alerts to Email and Slack through SNS.
++ Clean up all deployed resources after the lab.
