@@ -55,7 +55,7 @@ Hệ thống được thiết kế theo mô hình **event-driven**, kết hợp 
 ### Nội dung workshop
 
 1. [Báo cáo chi tiết dự án AWS CloudSOC](5.1-Workshop-overview/)
-2. [Kiến trúc hệ thống & luồng xử lý SOC](5.2-Prerequiste/)
+2. [Kiến trúc hệ thống & luồng xử lý SOC](5.2-Prerequisite/)
 3. [Workshop vẽ sơ đồ kiến trúc CloudSOC](5.3-S3-vpc/)  
    Gồm 6 module con: chuẩn bị công cụ, dựng layout, vẽ nhóm dịch vụ, nối luồng xử lý sự cố, export/review và bản đặc tả vẽ chi tiết.
 4. [Checklist review sơ đồ & yêu cầu nộp](5.4-S3-onprem/)

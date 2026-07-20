@@ -6,13 +6,33 @@ Báo cáo thực tập FCJ — Trần Thái Nguyên
 **Chương trình:** First Cloud Journey Workforce Bootcamp — Amazon Web Services Viet Nam  
 **Thời gian:** 09/05/2026 – 10/08/2026
 
-## Xem báo cáo online
+## Demo
 
-Sau khi deploy GitHub Pages, link báo cáo:
+Xem báo cáo online tại:
 
 ```
-https://<GITHUB_USERNAME>.github.io/TRANTHAINGUYEN-fcj-internship-report/vi/
+https://tranthainguyendevdeveloper117-gocoder.github.io/Tran-Thai-Nguyen-fcj-internship-report/vi/
 ```
+
+## Tổng quan
+
+Đây là website báo cáo thực tập FCJ, ghi lại hành trình học tập, thực hành AWS và xây dựng dự án **AWS CloudSOC** trong chương trình First Cloud Journey Workforce Bootcamp. Nội dung tập trung vào worklog 12 tuần, proposal, blog kỹ thuật, sự kiện đã tham gia, workshop thực hành, phần tự đánh giá và feedback sau chương trình.
+
+## Preview
+
+![AWS CloudSOC Architecture](static/images/5-Workshop/cloudsoc-architecture.svg)
+
+## Điểm nổi bật
+
+- Trình bày song ngữ Anh/Việt bằng Hugo.
+- Tổng hợp worklog thực tập theo từng tuần.
+- Xây dựng proposal dự án **AWS CloudSOC** theo hướng phát hiện, điều tra và phản ứng sự cố trên AWS.
+- Có workshop hướng dẫn vẽ sơ đồ kiến trúc CloudSOC bằng draw.io/diagrams.net.
+- Bổ sung blog, sự kiện, self-evaluation và feedback để thể hiện đầy đủ quá trình học tập.
+
+## What I Learned
+
+Through this internship report, I practiced building a complete technical portfolio with Hugo and GitHub Pages. I learned how to document AWS learning progress, design a CloudSOC architecture, explain security workflows, organize bilingual technical content, and present project outcomes in a clear and professional way.
 
 ## Cấu trúc
 

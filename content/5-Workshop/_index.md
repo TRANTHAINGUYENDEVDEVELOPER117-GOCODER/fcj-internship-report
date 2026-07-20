@@ -39,7 +39,7 @@ Detect → Investigate → Decide → Collect Evidence → Contain → Notify �
 ### Workshop content
 
 1. [Detailed AWS CloudSOC project report](5.1-Workshop-overview/)
-2. [System architecture and SOC workflow](5.2-Prerequiste/)
+2. [System architecture and SOC workflow](5.2-Prerequisite/)
 3. [CloudSOC architecture diagram workshop](5.3-S3-vpc/)  
    Includes six submodules: tools, canvas layout, AWS service groups, incident flows, export/review, and a detailed drawing specification.
 4. [Diagram review checklist and submission requirements](5.4-S3-onprem/)
