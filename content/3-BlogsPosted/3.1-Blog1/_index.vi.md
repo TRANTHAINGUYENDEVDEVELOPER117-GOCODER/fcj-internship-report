@@ -40,7 +40,7 @@ Thông qua luồng này, hệ thống có thể phát hiện security finding, x
 
 Dưới đây là diagram tổng quan kiến trúc hệ thống mà nhóm đã xây dựng:
 
-![AWS CloudSOC Architecture](/images/2-Proposal/cloudsoc-architecture.png)
+![AWS CloudSOC Architecture](/images/3-BlogsPosted/3.1-Blog1/blog1-overview-architecture.png)
 
 Sơ đồ thể hiện các thành phần chính của hệ thống như:
 

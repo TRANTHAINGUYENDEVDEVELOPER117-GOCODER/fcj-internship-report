@@ -28,7 +28,7 @@ Hệ thống sử dụng nhiều dịch vụ AWS Security và Serverless để p
 
 Dưới đây là diagram tổng quan kiến trúc đầy đủ của hệ thống:
 
-![AWS CloudSOC Full Architecture](/images/2-Proposal/cloudsoc-architecture.png)
+![AWS CloudSOC Full Architecture](/images/3-BlogsPosted/3.3-Blog3/blog3-conclusion-architecture.png)
 
 ---
 

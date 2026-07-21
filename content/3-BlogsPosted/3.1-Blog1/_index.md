@@ -40,7 +40,7 @@ Through this workflow, the system can detect security findings, process incident
 
 The following diagram shows the overall architecture that our team built:
 
-![AWS CloudSOC Architecture](/images/2-Proposal/cloudsoc-architecture.png)
+![AWS CloudSOC Architecture](/images/3-BlogsPosted/3.1-Blog1/blog1-overview-architecture.png)
 
 The architecture includes the main components of the system, such as:
 

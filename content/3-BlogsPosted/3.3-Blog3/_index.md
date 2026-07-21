@@ -28,7 +28,7 @@ The system combines AWS Security and serverless-oriented services to detect secu
 
 The following diagram shows the complete architecture of the system:
 
-![AWS CloudSOC Full Architecture](/images/2-Proposal/cloudsoc-architecture.png)
+![AWS CloudSOC Full Architecture](/images/3-BlogsPosted/3.3-Blog3/blog3-conclusion-architecture.png)
 
 ---
 
