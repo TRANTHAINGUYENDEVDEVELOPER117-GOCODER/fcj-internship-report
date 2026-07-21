@@ -28,7 +28,7 @@ https://github.com/TRANTHAINGUYENDEVDEVELOPER117-GOCODER/fcj-internship-report.g
 
 1. Đăng nhập https://github.com
 2. Nhấn **New repository**
-3. Đặt tên repository: `fcj-internship-report`
+3. Đặt tên repository: `fcj-internship-report`  
 4. Chọn **Public**
 5. **Không** tick "Add README" (đã có sẵn trong project)
 6. Nhấn **Create repository**
