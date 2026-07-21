@@ -18,13 +18,13 @@ The overall workflow is:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge
-â†’ Step Functions
-â†’ Approval Required
-â†’ DynamoDB Incident Table
-â†’ SOC Dashboard
-â†’ Approve / Reject
-â†’ Update Incident Status
+→ EventBridge
+→ Step Functions
+→ Approval Required
+→ DynamoDB Incident Table
+→ SOC Dashboard
+→ Approve / Reject
+→ Update Incident Status
 ```
 
 In this section, the focus is on validating the incident status transition from `Pending` to `Approved` or `Rejected`.
@@ -53,11 +53,11 @@ The testing flow includes the following steps:
 
 ```text
 Step Functions
-â†’ Approval Required Branch
-â†’ DynamoDB Incident Table
-â†’ SOC Dashboard
-â†’ SOC Analyst Approval
-â†’ DynamoDB Status Update
+→ Approval Required Branch
+→ DynamoDB Incident Table
+→ SOC Dashboard
+→ SOC Analyst Approval
+→ DynamoDB Status Update
 ```
 
 In this test, an incident is placed into a pending approval state. The SOC Analyst then reviews the incident on the dashboard and updates the response decision.
@@ -157,10 +157,10 @@ The processing flow is:
 
 ```text
 SOC Analyst
-â†’ Click Approve
-â†’ API Gateway
-â†’ Dashboard API Lambda
-â†’ DynamoDB Incident Table
+→ Click Approve
+→ API Gateway
+→ Dashboard API Lambda
+→ DynamoDB Incident Table
 ```
 
 After the request is processed successfully, the approval status of the incident is updated.
@@ -227,10 +227,10 @@ Reject processing flow:
 
 ```text
 SOC Analyst
-â†’ Click Reject
-â†’ API Gateway
-â†’ Dashboard API Lambda
-â†’ DynamoDB Incident Table
+→ Click Reject
+→ API Gateway
+→ Dashboard API Lambda
+→ DynamoDB Incident Table
 ```
 
 After the incident is rejected, the expected status is:

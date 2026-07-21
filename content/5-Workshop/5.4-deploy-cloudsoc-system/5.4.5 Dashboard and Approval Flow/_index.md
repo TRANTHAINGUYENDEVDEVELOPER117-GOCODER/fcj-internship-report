@@ -38,12 +38,12 @@ The main workflow is:
 
 ```text
 SOC Analyst
-â†’ Amplify Hosting Dashboard
-â†’ Amazon Cognito Login
-â†’ API Gateway
-â†’ Dashboard API Lambda
-â†’ DynamoDB Incident Table
-â†’ Step Functions Approval Decision
+→ Amplify Hosting Dashboard
+→ Amazon Cognito Login
+→ API Gateway
+→ Dashboard API Lambda
+→ DynamoDB Incident Table
+→ Step Functions Approval Decision
 ```
 
 In this architecture, the dashboard does not access DynamoDB or S3 directly. All frontend requests go through API Gateway and Lambda to enforce access control and centralize backend logic.
@@ -74,7 +74,7 @@ DynamoDB is used to store incident information created by the CloudSOC workflow.
 Open **Amazon DynamoDB** and choose:
 
 ```text
-Tables â†’ Create table
+Tables → Create table
 ```
 
 Configure the table:
@@ -139,7 +139,7 @@ To test the dashboard before integrating the real response Lambda, you can manua
 Go to:
 
 ```text
-DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
+DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
 ```
 
 Choose:
@@ -202,7 +202,7 @@ Amazon Cognito is used to authenticate SOC Analysts before they access the dashb
 Open **Amazon Cognito** and choose:
 
 ```text
-User pools â†’ Create user pool
+User pools → Create user pool
 ```
 
 Recommended configuration:
@@ -232,7 +232,7 @@ In the Cognito User Pool, create a user for the SOC Analyst.
 Go to:
 
 ```text
-Cognito â†’ User pools â†’ cloudsoc-analyst-user-pool â†’ Users â†’ Create user
+Cognito → User pools → cloudsoc-analyst-user-pool → Users → Create user
 ```
 
 Enter the following information:
@@ -260,7 +260,7 @@ The Dashboard API Lambda needs permission to read and update the DynamoDB Incide
 Open **IAM** and choose:
 
 ```text
-Roles â†’ Create role
+Roles → Create role
 ```
 
 Configure the role:
@@ -372,7 +372,7 @@ The Lambda function cloudsoc-dashboard-api-lambda is created successfully.
 In the Lambda function, open:
 
 ```text
-Configuration â†’ Environment variables
+Configuration → Environment variables
 ```
 
 Add the following environment variables:
@@ -401,7 +401,7 @@ Create API
 Choose:
 
 ```text
-HTTP API â†’ Build
+HTTP API → Build
 ```
 
 Configure the API:
@@ -457,7 +457,7 @@ To protect the dashboard API, create a Cognito Authorizer in API Gateway.
 Go to:
 
 ```text
-API Gateway â†’ cloudsoc-dashboard-api â†’ Authorization â†’ Create authorizer
+API Gateway → cloudsoc-dashboard-api → Authorization → Create authorizer
 ```
 
 Configure the authorizer:
@@ -603,7 +603,7 @@ After approving or rejecting an incident, return to DynamoDB and verify the item
 Go to:
 
 ```text
-DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
+DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
 ```
 
 Check the following fields:
@@ -640,11 +640,11 @@ The general approval flow is:
 
 ```text
 Step Functions
-â†’ Create Pending Incident in DynamoDB
-â†’ SOC Analyst opens Dashboard
-â†’ Analyst Approves or Rejects
-â†’ Dashboard Lambda updates DynamoDB
-â†’ Step Functions continues the response path
+→ Create Pending Incident in DynamoDB
+→ SOC Analyst opens Dashboard
+→ Analyst Approves or Rejects
+→ Dashboard Lambda updates DynamoDB
+→ Step Functions continues the response path
 ```
 
 For the lab environment, the approval flow can be tested by updating DynamoDB first. In the next section, real response actions such as evidence collection, EBS snapshot creation, and EC2 isolation will be implemented.

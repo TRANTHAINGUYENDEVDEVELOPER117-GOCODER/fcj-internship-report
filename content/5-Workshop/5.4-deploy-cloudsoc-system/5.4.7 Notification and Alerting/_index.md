@@ -16,16 +16,16 @@ The main notification flow in this section is:
 
 ```text
 Incident Response Lambda
-â†’ Amazon SNS Topic
-â†’ Email / SMS / Slack
+→ Amazon SNS Topic
+→ Email / SMS / Slack
 ```
 
 In addition, CloudWatch Alarm can send alerts when the Lambda function fails:
 
 ```text
 CloudWatch Alarm
-â†’ Amazon SNS Topic
-â†’ Email / SMS / Slack
+→ Amazon SNS Topic
+→ Email / SMS / Slack
 ```
 
 ---
@@ -54,17 +54,17 @@ The main notification workflow is:
 
 ```text
 Incident Response Lambda
-â†’ Amazon SNS
-â†’ Email / SMS / Slack
+→ Amazon SNS
+→ Email / SMS / Slack
 ```
 
 The error alerting workflow is:
 
 ```text
 CloudWatch Metrics
-â†’ CloudWatch Alarm
-â†’ Amazon SNS
-â†’ Email / SMS / Slack
+→ CloudWatch Alarm
+→ Amazon SNS
+→ Email / SMS / Slack
 ```
 
 In this architecture, Amazon SNS acts as the central notification distribution service. Lambda publishes incident response results to SNS, while CloudWatch Alarm sends alerts when Lambda errors occur.
@@ -92,7 +92,7 @@ In this architecture, Amazon SNS acts as the central notification distribution s
 Go to:
 
 ```text
-Amazon SNS â†’ Topics â†’ Create topic
+Amazon SNS → Topics → Create topic
 ```
 
 Configure the topic:
@@ -225,13 +225,13 @@ The Incident Response Lambda needs permission to publish messages to the SNS top
 Go to:
 
 ```text
-IAM â†’ Roles â†’ CloudSOC-Incident-Response-Lambda-Role
+IAM → Roles → CloudSOC-Incident-Response-Lambda-Role
 ```
 
 Choose:
 
 ```text
-Add permissions â†’ Create inline policy
+Add permissions → Create inline policy
 ```
 
 Open the:
@@ -279,8 +279,8 @@ The Incident Response Lambda Role can publish messages to SNS.
 Go to:
 
 ```text
-Lambda â†’ cloudsoc-incident-response-lambda
-â†’ Configuration â†’ Environment variables â†’ Edit
+Lambda → cloudsoc-incident-response-lambda
+→ Configuration → Environment variables → Edit
 ```
 
 Add the following environment variable:
@@ -446,13 +446,13 @@ CloudWatch Alarm helps notify the SOC Analyst when the Incident Response Lambda 
 Go to:
 
 ```text
-CloudWatch â†’ Alarms â†’ All alarms â†’ Create alarm
+CloudWatch → Alarms → All alarms → Create alarm
 ```
 
 Select the metric:
 
 ```text
-Lambda â†’ By Function Name â†’ cloudsoc-incident-response-lambda â†’ Errors
+Lambda → By Function Name → cloudsoc-incident-response-lambda → Errors
 ```
 
 Configure the metric condition:
@@ -541,18 +541,18 @@ The integration flow is:
 
 ```text
 Amazon SNS
-â†’ Amazon Q Developer in chat applications
-â†’ Slack Channel
+→ Amazon Q Developer in chat applications
+→ Slack Channel
 ```
 
 General configuration steps:
 
 ```text
 Amazon Q Developer in chat applications
-â†’ Configure Slack workspace
-â†’ Configure Slack channel
-â†’ Subscribe SNS topic
-â†’ Test notification
+→ Configure Slack workspace
+→ Configure Slack channel
+→ Subscribe SNS topic
+→ Test notification
 ```
 
 Expected result:
@@ -574,7 +574,7 @@ Incident alerts are delivered to the Slack channel used by the SOC team.
 Go to:
 
 ```text
-DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
+DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
 ```
 
 Find the latest incident.
@@ -634,12 +634,12 @@ The complete workflow after this section is:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge
-â†’ Step Functions
-â†’ Incident Response Lambda
-â†’ Forensics / Snapshot / Isolation
-â†’ SNS Notification
-â†’ SOC Analyst
+→ EventBridge
+→ Step Functions
+→ Incident Response Lambda
+→ Forensics / Snapshot / Isolation
+→ SNS Notification
+→ SOC Analyst
 ```
 
 ---

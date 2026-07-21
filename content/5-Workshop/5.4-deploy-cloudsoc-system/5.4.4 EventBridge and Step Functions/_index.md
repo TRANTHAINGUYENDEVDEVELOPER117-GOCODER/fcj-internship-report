@@ -37,10 +37,10 @@ The main processing flow is:
 
 ```text
 Amazon GuardDuty Finding
-â†’ Amazon EventBridge Rule
-â†’ AWS Step Functions State Machine
-â†’ Evaluate Finding
-â†’ Alert Only / Approval Required / Auto Response
+→ Amazon EventBridge Rule
+→ AWS Step Functions State Machine
+→ Evaluate Finding
+→ Alert Only / Approval Required / Auto Response
 ```
 
 In this architecture, GuardDuty acts as the threat detection source. EventBridge acts as the event router that sends findings to Step Functions. Step Functions acts as the incident response orchestrator.
@@ -72,7 +72,7 @@ AWS Step Functions needs an IAM Role to run the workflow and call other AWS serv
 Open the **IAM** service and choose:
 
 ```text
-Roles â†’ Create role
+Roles → Create role
 ```
 
 Configure the role:
@@ -115,7 +115,7 @@ CloudWatch Logs is used to store Step Functions execution logs. This helps verif
 Open the **Amazon CloudWatch** service and choose:
 
 ```text
-Logs â†’ Log groups â†’ Create log group
+Logs → Log groups → Create log group
 ```
 
 Enter the log group name:
@@ -143,7 +143,7 @@ The CloudWatch Log Group for Step Functions is created successfully.
 Open the **AWS Step Functions** service and choose:
 
 ```text
-State machines â†’ Create state machine
+State machines → Create state machine
 ```
 
 Choose:
@@ -422,7 +422,7 @@ Amazon EventBridge needs permission to start the Step Functions execution.
 Open the **IAM** service and choose:
 
 ```text
-Roles â†’ Create role
+Roles → Create role
 ```
 
 Configure the role:
@@ -463,7 +463,7 @@ EventBridge has permission to trigger the Step Functions State Machine.
 Open the **Amazon EventBridge** service and choose:
 
 ```text
-Rules â†’ Create rule
+Rules → Create rule
 ```
 
 Configure the rule:
@@ -555,7 +555,7 @@ The EventBridge rule is created with Step Functions as the target.
 After creating the rule, verify it:
 
 ```text
-EventBridge â†’ Rules â†’ cloudsoc-guardduty-finding-rule
+EventBridge → Rules → cloudsoc-guardduty-finding-rule
 ```
 
 Check the following information:
@@ -580,7 +580,7 @@ If you generated sample findings in GuardDuty, EventBridge can receive the event
 Check:
 
 ```text
-Step Functions â†’ State machines â†’ cloudsoc-incident-response-workflow â†’ Executions
+Step Functions → State machines → cloudsoc-incident-response-workflow → Executions
 ```
 
 If EventBridge successfully triggered the workflow, a new execution will appear.

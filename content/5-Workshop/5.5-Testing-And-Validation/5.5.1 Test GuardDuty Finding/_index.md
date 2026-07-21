@@ -16,9 +16,9 @@ A GuardDuty Finding is the starting point of the incident response flow:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge
-â†’ Step Functions
-â†’ Incident Response Workflow
+→ EventBridge
+→ Step Functions
+→ Incident Response Workflow
 ```
 
 In section 5.5.1, the focus is on generating and reviewing GuardDuty findings in the GuardDuty console. Workflow execution, approval testing, auto isolation, dashboard validation, and alert delivery will be tested in the following sections.
@@ -47,12 +47,12 @@ The testing flow includes the following steps:
 
 ```text
 SOC Analyst
-â†’ GuardDuty Console
-â†’ Generate Sample Findings
-â†’ View Finding Details
-â†’ Confirm Finding Information
-â†’ Check EventBridge Rule
-â†’ Check Step Functions Execution
+→ GuardDuty Console
+→ Generate Sample Findings
+→ View Finding Details
+→ Confirm Finding Information
+→ Check EventBridge Rule
+→ Check Step Functions Execution
 ```
 
 In this test, **GuardDuty sample findings** are used. This is a safe way to validate the lab without performing real attack activities against the EC2 instance.

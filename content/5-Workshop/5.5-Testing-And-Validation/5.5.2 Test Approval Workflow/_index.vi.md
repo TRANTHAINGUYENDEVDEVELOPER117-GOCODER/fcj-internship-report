@@ -1,84 +1,84 @@
 ---
-title : "Kiá»ƒm thá»­ Approval Workflow"
+title : "Kiểm thử Approval Workflow"
 date : 2026-07-01
 weight : 2
 chapter : false
 pre : " <b> 5.5.2. </b> "
 ---
 
-#### Kiá»ƒm thá»­ Approval Workflow
+#### Kiểm thử Approval Workflow
 
-Trong pháº§n nÃ y, chÃºng ta sáº½ kiá»ƒm thá»­ luá»“ng **Approval Workflow** cá»§a há»‡ thá»‘ng AWS CloudSOC.
+Trong phần này, chúng ta sẽ kiểm thử luồng **Approval Workflow** của hệ thống AWS CloudSOC.
 
-Má»¥c tiÃªu cá»§a bÃ i kiá»ƒm thá»­ lÃ  xÃ¡c nháº­n ráº±ng khi má»™t security finding cÃ³ má»©c Ä‘á»™ nghiÃªm trá»ng cao nhÆ°ng cáº§n sá»± xÃ¡c nháº­n cá»§a SOC Analyst, há»‡ thá»‘ng cÃ³ thá»ƒ Ä‘Æ°a incident vÃ o tráº¡ng thÃ¡i chá» phÃª duyá»‡t. Sau Ä‘Ã³, SOC Analyst cÃ³ thá»ƒ xem incident trÃªn dashboard vÃ  chá»n **Approve** hoáº·c **Reject**.
+Mục tiêu của bài kiểm thử là xác nhận rằng khi một security finding có mức độ nghiêm trọng cao nhưng cần sự xác nhận của SOC Analyst, hệ thống có thể đưa incident vào trạng thái chờ phê duyệt. Sau đó, SOC Analyst có thể xem incident trên dashboard và chọn **Approve** hoặc **Reject**.
 
-Approval Workflow giÃºp trÃ¡nh viá»‡c há»‡ thá»‘ng tá»± Ä‘á»™ng cÃ´ láº­p EC2 trong má»i trÆ°á»ng há»£p. Thay vÃ o Ä‘Ã³, cÃ¡c sá»± cá»‘ cáº§n Ä‘Ã¡nh giÃ¡ thÃªm sáº½ Ä‘Æ°á»£c chuyá»ƒn sang tráº¡ng thÃ¡i chá» phÃª duyá»‡t.
+Approval Workflow giúp tránh việc hệ thống tự động cô lập EC2 trong mọi trường hợp. Thay vào đó, các sự cố cần đánh giá thêm sẽ được chuyển sang trạng thái chờ phê duyệt.
 
-Luá»“ng tá»•ng quan:
+Luồng tổng quan:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge
-â†’ Step Functions
-â†’ Approval Required
-â†’ DynamoDB Incident Table
-â†’ SOC Dashboard
-â†’ Approve / Reject
-â†’ Update Incident Status
+→ EventBridge
+→ Step Functions
+→ Approval Required
+→ DynamoDB Incident Table
+→ SOC Dashboard
+→ Approve / Reject
+→ Update Incident Status
 ```
 
-Trong pháº§n nÃ y, trá»ng tÃ¢m lÃ  kiá»ƒm tra quÃ¡ trÃ¬nh chuyá»ƒn Ä‘á»•i tráº¡ng thÃ¡i cá»§a incident tá»« `Pending` sang `Approved` hoáº·c `Rejected`.
+Trong phần này, trọng tâm là kiểm tra quá trình chuyển đổi trạng thái của incident từ `Pending` sang `Approved` hoặc `Rejected`.
 
 ---
 
-#### Má»¥c tiÃªu kiá»ƒm thá»­
+#### Mục tiêu kiểm thử
 
-Sau khi hoÃ n thÃ nh pháº§n nÃ y, chÃºng ta cÃ³ thá»ƒ xÃ¡c nháº­n ráº±ng:
+Sau khi hoàn thành phần này, chúng ta có thể xác nhận rằng:
 
-+ Incident cÃ³ thá»ƒ Ä‘Æ°á»£c táº¡o vá»›i tráº¡ng thÃ¡i chá» phÃª duyá»‡t.
-+ Dashboard cÃ³ thá»ƒ hiá»ƒn thá»‹ incident cáº§n SOC Analyst xá»­ lÃ½.
-+ SOC Analyst cÃ³ thá»ƒ chá»n **Approve** hoáº·c **Reject** trÃªn dashboard.
-+ Tráº¡ng thÃ¡i approval Ä‘Æ°á»£c cáº­p nháº­t trong DynamoDB.
-+ Approval Workflow hoáº¡t Ä‘á»™ng nhÆ° má»™t bÆ°á»›c kiá»ƒm soÃ¡t trÆ°á»›c khi thá»±c hiá»‡n pháº£n á»©ng tá»± Ä‘á»™ng.
++ Incident có thể được tạo với trạng thái chờ phê duyệt.
++ Dashboard có thể hiển thị incident cần SOC Analyst xử lý.
++ SOC Analyst có thể chọn **Approve** hoặc **Reject** trên dashboard.
++ Trạng thái approval được cập nhật trong DynamoDB.
++ Approval Workflow hoạt động như một bước kiểm soát trước khi thực hiện phản ứng tự động.
 
 ---
 
-#### Kiáº¿n trÃºc kiá»ƒm thá»­
+#### Kiến trúc kiểm thử
 
-SÆ¡ Ä‘á»“ dÆ°á»›i Ä‘Ã¢y mÃ´ táº£ luá»“ng kiá»ƒm thá»­ Approval Workflow.
+Sơ đồ dưới đây mô tả luồng kiểm thử Approval Workflow.
 
 ![Test Approval Workflow Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/test-approval-workflow-flow.png)
 
-Luá»“ng kiá»ƒm thá»­ gá»“m cÃ¡c bÆ°á»›c chÃ­nh:
+Luồng kiểm thử gồm các bước chính:
 
 ```text
 Step Functions
-â†’ Approval Required Branch
-â†’ DynamoDB Incident Table
-â†’ SOC Dashboard
-â†’ SOC Analyst Approval
-â†’ DynamoDB Status Update
+→ Approval Required Branch
+→ DynamoDB Incident Table
+→ SOC Dashboard
+→ SOC Analyst Approval
+→ DynamoDB Status Update
 ```
 
-Trong bÃ i kiá»ƒm thá»­ nÃ y, incident sáº½ Ä‘Æ°á»£c Ä‘Æ°a vÃ o tráº¡ng thÃ¡i cáº§n phÃª duyá»‡t. Sau Ä‘Ã³, SOC Analyst kiá»ƒm tra thÃ´ng tin trÃªn dashboard vÃ  cáº­p nháº­t quyáº¿t Ä‘á»‹nh xá»­ lÃ½.
+Trong bài kiểm thử này, incident sẽ được đưa vào trạng thái cần phê duyệt. Sau đó, SOC Analyst kiểm tra thông tin trên dashboard và cập nhật quyết định xử lý.
 
 ---
 
-#### BÆ°á»›c 1: Kiá»ƒm tra nhÃ¡nh Approval Required
+#### Bước 1: Kiểm tra nhánh Approval Required
 
-Trong Step Functions workflow, nhÃ¡nh `Approval Required` Ä‘Æ°á»£c sá»­ dá»¥ng cho cÃ¡c finding cÃ³ má»©c Ä‘á»™ nghiÃªm trá»ng cao nhÆ°ng chÆ°a Ä‘á»§ Ä‘iá»u kiá»‡n Ä‘á»ƒ thá»±c hiá»‡n pháº£n á»©ng tá»± Ä‘á»™ng ngay láº­p tá»©c.
+Trong Step Functions workflow, nhánh `Approval Required` được sử dụng cho các finding có mức độ nghiêm trọng cao nhưng chưa đủ điều kiện để thực hiện phản ứng tự động ngay lập tức.
 
 ![Step Functions Approval Branch](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/stepfunctions-approval-branch.png)
 
-NhÃ¡nh nÃ y giÃºp há»‡ thá»‘ng tÃ¡ch biá»‡t giá»¯a ba loáº¡i pháº£n á»©ng:
+Nhánh này giúp hệ thống tách biệt giữa ba loại phản ứng:
 
-| NhÃ¡nh xá»­ lÃ½ | Ã nghÄ©a |
+| Nhánh xử lý | Ý nghĩa |
 |---|---|
-| Alert Only | Chá»‰ gá»­i cáº£nh bÃ¡o, khÃ´ng thá»±c hiá»‡n hÃ nh Ä‘á»™ng cÃ´ láº­p |
-| Approval Required | Cáº§n SOC Analyst phÃª duyá»‡t trÆ°á»›c khi xá»­ lÃ½ |
-| Auto Response | Tá»± Ä‘á»™ng xá»­ lÃ½ khi finding Ä‘á»§ Ä‘iá»u kiá»‡n |
+| Alert Only | Chỉ gửi cảnh báo, không thực hiện hành động cô lập |
+| Approval Required | Cần SOC Analyst phê duyệt trước khi xử lý |
+| Auto Response | Tự động xử lý khi finding đủ điều kiện |
 
-Trong bÃ i kiá»ƒm thá»­ nÃ y, chÃºng ta táº­p trung vÃ o nhÃ¡nh:
+Trong bài kiểm thử này, chúng ta tập trung vào nhánh:
 
 ```text
 Approval Required
@@ -86,11 +86,11 @@ Approval Required
 
 ---
 
-#### BÆ°á»›c 2: Táº¡o incident á»Ÿ tráº¡ng thÃ¡i Pending
+#### Bước 2: Tạo incident ở trạng thái Pending
 
-Má»™t incident máº«u Ä‘Æ°á»£c táº¡o trong DynamoDB Ä‘á»ƒ mÃ´ phá»ng finding cáº§n phÃª duyá»‡t.
+Một incident mẫu được tạo trong DynamoDB để mô phỏng finding cần phê duyệt.
 
-Incident nÃ y cÃ³ tráº¡ng thÃ¡i ban Ä‘áº§u lÃ :
+Incident này có trạng thái ban đầu là:
 
 ```text
 approvalStatus = Pending
@@ -100,7 +100,7 @@ responseMode = ApprovalRequired
 
 ![Pending Incident in DynamoDB](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/incident-pending-in-dynamodb.png)
 
-VÃ­ dá»¥ dá»¯ liá»‡u incident:
+Ví dụ dữ liệu incident:
 
 | Field | Example |
 |---|---|
@@ -112,17 +112,17 @@ VÃ­ dá»¥ dá»¯ liá»‡u incident:
 | approvalStatus | Pending |
 | incidentStatus | WaitingApproval |
 
-Tráº¡ng thÃ¡i `Pending` cho biáº¿t incident Ä‘ang chá» SOC Analyst xem xÃ©t trÆ°á»›c khi thá»±c hiá»‡n hÃ nh Ä‘á»™ng tiáº¿p theo.
+Trạng thái `Pending` cho biết incident đang chờ SOC Analyst xem xét trước khi thực hiện hành động tiếp theo.
 
 ---
 
-#### BÆ°á»›c 3: Kiá»ƒm tra incident trÃªn SOC Dashboard
+#### Bước 3: Kiểm tra incident trên SOC Dashboard
 
-Sau khi incident Ä‘Æ°á»£c ghi vÃ o DynamoDB, dashboard sáº½ Ä‘á»c dá»¯ liá»‡u tá»« Incident Table vÃ  hiá»ƒn thá»‹ incident cho SOC Analyst.
+Sau khi incident được ghi vào DynamoDB, dashboard sẽ đọc dữ liệu từ Incident Table và hiển thị incident cho SOC Analyst.
 
 ![Dashboard Pending Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-pending-incident.png)
 
-Dashboard hiá»ƒn thá»‹ cÃ¡c thÃ´ng tin chÃ­nh cá»§a incident, bao gá»“m:
+Dashboard hiển thị các thông tin chính của incident, bao gồm:
 
 ```text
 Incident ID
@@ -134,113 +134,113 @@ Approval Status
 Incident Status
 ```
 
-á»ž tráº¡ng thÃ¡i ban Ä‘áº§u, dashboard hiá»ƒn thá»‹:
+Ở trạng thái ban đầu, dashboard hiển thị:
 
 ```text
 Approval Status: Pending
 Incident Status: WaitingApproval
 ```
 
-Äiá»u nÃ y xÃ¡c nháº­n ráº±ng dashboard Ä‘Ã£ Ä‘á»c Ä‘Ãºng dá»¯ liá»‡u incident tá»« DynamoDB.
+Điều này xác nhận rằng dashboard đã đọc đúng dữ liệu incident từ DynamoDB.
 
 ---
 
-#### BÆ°á»›c 4: SOC Analyst thá»±c hiá»‡n Approve
+#### Bước 4: SOC Analyst thực hiện Approve
 
-SOC Analyst kiá»ƒm tra ná»™i dung incident vÃ  chá»n hÃ nh Ä‘á»™ng **Approve** trÃªn dashboard.
+SOC Analyst kiểm tra nội dung incident và chọn hành động **Approve** trên dashboard.
 
 ![Dashboard Approve Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-approve-action.png)
 
-Khi chá»n **Approve**, dashboard gá»­i request Ä‘áº¿n backend API Ä‘á»ƒ cáº­p nháº­t tráº¡ng thÃ¡i incident.
+Khi chọn **Approve**, dashboard gửi request đến backend API để cập nhật trạng thái incident.
 
-Luá»“ng xá»­ lÃ½:
+Luồng xử lý:
 
 ```text
 SOC Analyst
-â†’ Click Approve
-â†’ API Gateway
-â†’ Dashboard API Lambda
-â†’ DynamoDB Incident Table
+→ Click Approve
+→ API Gateway
+→ Dashboard API Lambda
+→ DynamoDB Incident Table
 ```
 
-Sau khi xá»­ lÃ½ thÃ nh cÃ´ng, approval status cá»§a incident sáº½ Ä‘Æ°á»£c cáº­p nháº­t.
+Sau khi xử lý thành công, approval status của incident sẽ được cập nhật.
 
 ---
 
-#### BÆ°á»›c 5: Kiá»ƒm tra DynamoDB sau khi Approve
+#### Bước 5: Kiểm tra DynamoDB sau khi Approve
 
-Sau khi SOC Analyst chá»n **Approve**, DynamoDB Ä‘Æ°á»£c kiá»ƒm tra Ä‘á»ƒ xÃ¡c nháº­n tráº¡ng thÃ¡i Ä‘Ã£ Ä‘Æ°á»£c cáº­p nháº­t.
+Sau khi SOC Analyst chọn **Approve**, DynamoDB được kiểm tra để xác nhận trạng thái đã được cập nhật.
 
 ![DynamoDB Approval Updated](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dynamodb-approval-updated.png)
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
 approvalStatus = Approved
 incidentStatus = Approved
 ```
 
-Hoáº·c trong má»™t sá»‘ thiáº¿t káº¿ workflow:
+Hoặc trong một số thiết kế workflow:
 
 ```text
 approvalStatus = Approved
 incidentStatus = InProgress
 ```
 
-Tráº¡ng thÃ¡i `Approved` xÃ¡c nháº­n ráº±ng SOC Analyst Ä‘Ã£ cho phÃ©p incident tiáº¿p tá»¥c Ä‘i vÃ o bÆ°á»›c xá»­ lÃ½ tiáº¿p theo.
+Trạng thái `Approved` xác nhận rằng SOC Analyst đã cho phép incident tiếp tục đi vào bước xử lý tiếp theo.
 
 ---
 
-#### BÆ°á»›c 6: Kiá»ƒm tra dashboard sau khi cáº­p nháº­t
+#### Bước 6: Kiểm tra dashboard sau khi cập nhật
 
-Sau khi DynamoDB Ä‘Æ°á»£c cáº­p nháº­t, dashboard sáº½ hiá»ƒn thá»‹ tráº¡ng thÃ¡i má»›i cá»§a incident.
+Sau khi DynamoDB được cập nhật, dashboard sẽ hiển thị trạng thái mới của incident.
 
 ![Dashboard Approved Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-approved-status.png)
 
-Dashboard lÃºc nÃ y thá»ƒ hiá»‡n ráº±ng incident Ä‘Ã£ Ä‘Æ°á»£c phÃª duyá»‡t.
+Dashboard lúc này thể hiện rằng incident đã được phê duyệt.
 
-VÃ­ dá»¥ tráº¡ng thÃ¡i hiá»ƒn thá»‹:
+Ví dụ trạng thái hiển thị:
 
 ```text
 Approval Status: Approved
 Incident Status: Approved
 ```
 
-Hoáº·c:
+Hoặc:
 
 ```text
 Approval Status: Approved
 Incident Status: InProgress
 ```
 
-Káº¿t quáº£ nÃ y xÃ¡c nháº­n ráº±ng approval workflow Ä‘Ã£ hoáº¡t Ä‘á»™ng Ä‘Ãºng tá»« giao diá»‡n dashboard Ä‘áº¿n DynamoDB.
+Kết quả này xác nhận rằng approval workflow đã hoạt động đúng từ giao diện dashboard đến DynamoDB.
 
 ---
 
-#### BÆ°á»›c 7: Kiá»ƒm thá»­ Reject Workflow
+#### Bước 7: Kiểm thử Reject Workflow
 
-NgoÃ i hÃ nh Ä‘á»™ng **Approve**, SOC Analyst cÅ©ng cÃ³ thá»ƒ chá»n **Reject** náº¿u incident khÃ´ng Ä‘á»§ Ä‘iá»u kiá»‡n Ä‘á»ƒ tiáº¿p tá»¥c xá»­ lÃ½.
+Ngoài hành động **Approve**, SOC Analyst cũng có thể chọn **Reject** nếu incident không đủ điều kiện để tiếp tục xử lý.
 
 ![Dashboard Reject Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-reject-action.png)
 
-Luá»“ng xá»­ lÃ½ Reject:
+Luồng xử lý Reject:
 
 ```text
 SOC Analyst
-â†’ Click Reject
-â†’ API Gateway
-â†’ Dashboard API Lambda
-â†’ DynamoDB Incident Table
+→ Click Reject
+→ API Gateway
+→ Dashboard API Lambda
+→ DynamoDB Incident Table
 ```
 
-Sau khi Reject, tráº¡ng thÃ¡i mong Ä‘á»£i lÃ :
+Sau khi Reject, trạng thái mong đợi là:
 
 ```text
 approvalStatus = Rejected
 incidentStatus = Closed
 ```
 
-Hoáº·c:
+Hoặc:
 
 ```text
 approvalStatus = Rejected
@@ -249,50 +249,50 @@ incidentStatus = Rejected
 
 ![DynamoDB Rejected Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dynamodb-rejected-status.png)
 
-Tráº¡ng thÃ¡i `Rejected` xÃ¡c nháº­n ráº±ng incident khÃ´ng tiáº¿p tá»¥c Ä‘i vÃ o bÆ°á»›c auto response.
+Trạng thái `Rejected` xác nhận rằng incident không tiếp tục đi vào bước auto response.
 
 ---
 
-#### Káº¿t quáº£ mong Ä‘á»£i
+#### Kết quả mong đợi
 
-Sau khi hoÃ n thÃ nh pháº§n nÃ y, cÃ¡c káº¿t quáº£ mong Ä‘á»£i gá»“m:
+Sau khi hoàn thành phần này, các kết quả mong đợi gồm:
 
-| ThÃ nh pháº§n | Káº¿t quáº£ mong Ä‘á»£i |
+| Thành phần | Kết quả mong đợi |
 |---|---|
-| Step Functions | CÃ³ nhÃ¡nh `Approval Required` |
-| DynamoDB | CÃ³ incident á»Ÿ tráº¡ng thÃ¡i `Pending` |
-| Dashboard | Hiá»ƒn thá»‹ incident cáº§n phÃª duyá»‡t |
-| Approve action | Cáº­p nháº­t `approvalStatus` sang `Approved` |
-| Reject action | Cáº­p nháº­t `approvalStatus` sang `Rejected` |
-| Incident status | Thay Ä‘á»•i theo quyáº¿t Ä‘á»‹nh cá»§a SOC Analyst |
+| Step Functions | Có nhánh `Approval Required` |
+| DynamoDB | Có incident ở trạng thái `Pending` |
+| Dashboard | Hiển thị incident cần phê duyệt |
+| Approve action | Cập nhật `approvalStatus` sang `Approved` |
+| Reject action | Cập nhật `approvalStatus` sang `Rejected` |
+| Incident status | Thay đổi theo quyết định của SOC Analyst |
 
 ---
 
-#### Báº±ng chá»©ng kiá»ƒm thá»­
+#### Bằng chứng kiểm thử
 
-CÃ¡c báº±ng chá»©ng kiá»ƒm thá»­ trong pháº§n nÃ y bao gá»“m nhá»¯ng hÃ¬nh áº£nh sau:
+Các bằng chứng kiểm thử trong phần này bao gồm những hình ảnh sau:
 
-| STT | HÃ¬nh áº£nh | Má»¥c Ä‘Ã­ch |
+| STT | Hình ảnh | Mục đích |
 |---|---|---|
-| 1 | Approval workflow diagram | MÃ´ táº£ luá»“ng kiá»ƒm thá»­ Approval Workflow |
-| 2 | Step Functions approval branch | XÃ¡c nháº­n workflow cÃ³ nhÃ¡nh Approval Required |
-| 3 | Pending incident in DynamoDB | XÃ¡c nháº­n incident Ä‘ang chá» phÃª duyá»‡t |
-| 4 | Dashboard pending incident | XÃ¡c nháº­n dashboard hiá»ƒn thá»‹ incident |
-| 5 | Dashboard approve action | XÃ¡c nháº­n SOC Analyst cÃ³ thá»ƒ chá»n Approve |
-| 6 | DynamoDB approval updated | XÃ¡c nháº­n tráº¡ng thÃ¡i Ä‘Æ°á»£c cáº­p nháº­t sau Approve |
-| 7 | Dashboard approved status | XÃ¡c nháº­n dashboard hiá»ƒn thá»‹ tráº¡ng thÃ¡i má»›i |
-| 8 | Dashboard reject action | XÃ¡c nháº­n SOC Analyst cÃ³ thá»ƒ chá»n Reject |
-| 9 | DynamoDB rejected status | XÃ¡c nháº­n tráº¡ng thÃ¡i Ä‘Æ°á»£c cáº­p nháº­t sau Reject |
+| 1 | Approval workflow diagram | Mô tả luồng kiểm thử Approval Workflow |
+| 2 | Step Functions approval branch | Xác nhận workflow có nhánh Approval Required |
+| 3 | Pending incident in DynamoDB | Xác nhận incident đang chờ phê duyệt |
+| 4 | Dashboard pending incident | Xác nhận dashboard hiển thị incident |
+| 5 | Dashboard approve action | Xác nhận SOC Analyst có thể chọn Approve |
+| 6 | DynamoDB approval updated | Xác nhận trạng thái được cập nhật sau Approve |
+| 7 | Dashboard approved status | Xác nhận dashboard hiển thị trạng thái mới |
+| 8 | Dashboard reject action | Xác nhận SOC Analyst có thể chọn Reject |
+| 9 | DynamoDB rejected status | Xác nhận trạng thái được cập nhật sau Reject |
 
 ---
 
-#### Ghi chÃº
+#### Ghi chú
 
-Approval Workflow Ä‘Ã³ng vai trÃ² lÃ  lá»›p kiá»ƒm soÃ¡t giá»¯a phÃ¡t hiá»‡n má»‘i Ä‘e dá»a vÃ  pháº£n á»©ng tá»± Ä‘á»™ng.
+Approval Workflow đóng vai trò là lớp kiểm soát giữa phát hiện mối đe dọa và phản ứng tự động.
 
-Trong mÃ´i trÆ°á»ng thá»±c táº¿, khÃ´ng pháº£i má»i finding Ä‘á»u nÃªn Ä‘Æ°á»£c xá»­ lÃ½ tá»± Ä‘á»™ng. Má»™t sá»‘ finding cÃ³ thá»ƒ lÃ  false positive hoáº·c cáº§n SOC Analyst Ä‘Ã¡nh giÃ¡ thÃªm trÆ°á»›c khi cÃ´ láº­p workload.
+Trong môi trường thực tế, không phải mọi finding đều nên được xử lý tự động. Một số finding có thể là false positive hoặc cần SOC Analyst đánh giá thêm trước khi cô lập workload.
 
-Trong lab nÃ y, Approval Workflow giÃºp mÃ´ phá»ng quy trÃ¬nh ra quyáº¿t Ä‘á»‹nh cá»§a SOC Analyst trÆ°á»›c khi há»‡ thá»‘ng thá»±c hiá»‡n cÃ¡c bÆ°á»›c response máº¡nh hÆ¡n nhÆ°:
+Trong lab này, Approval Workflow giúp mô phỏng quy trình ra quyết định của SOC Analyst trước khi hệ thống thực hiện các bước response mạnh hơn như:
 
 ```text
 Collect Evidence
@@ -301,7 +301,7 @@ Apply SG-Isolation
 Send Notification
 ```
 
-CÃ¡c hÃ nh Ä‘á»™ng pháº£n á»©ng tá»± Ä‘á»™ng nÃ y sáº½ Ä‘Æ°á»£c kiá»ƒm thá»­ trong pháº§n tiáº¿p theo:
+Các hành động phản ứng tự động này sẽ được kiểm thử trong phần tiếp theo:
 
 ```text
 5.5.3 Test Auto Isolation
@@ -309,10 +309,10 @@ CÃ¡c hÃ nh Ä‘á»™ng pháº£n á»©ng tá»± Ä‘á»™ng nÃ y s
 
 ---
 
-#### HoÃ n thÃ nh
+#### Hoàn thành
 
-Báº¡n Ä‘Ã£ hoÃ n thÃ nh pháº§n kiá»ƒm thá»­ Approval Workflow.
+Bạn đã hoàn thành phần kiểm thử Approval Workflow.
 
-Káº¿t quáº£ cá»§a pháº§n nÃ y xÃ¡c nháº­n ráº±ng há»‡ thá»‘ng CloudSOC cÃ³ thá»ƒ Ä‘Æ°a incident vÃ o tráº¡ng thÃ¡i chá» phÃª duyá»‡t, hiá»ƒn thá»‹ incident trÃªn dashboard vÃ  cáº­p nháº­t quyáº¿t Ä‘á»‹nh xá»­ lÃ½ cá»§a SOC Analyst vÃ o DynamoDB.
+Kết quả của phần này xác nhận rằng hệ thống CloudSOC có thể đưa incident vào trạng thái chờ phê duyệt, hiển thị incident trên dashboard và cập nhật quyết định xử lý của SOC Analyst vào DynamoDB.
 
-Approval Workflow giÃºp há»‡ thá»‘ng pháº£n á»©ng sá»± cá»‘ an toÃ n hÆ¡n, trÃ¡nh viá»‡c tá»± Ä‘á»™ng cÃ´ láº­p tÃ i nguyÃªn khi chÆ°a cÃ³ Ä‘á»§ thÃ´ng tin xÃ¡c nháº­n.
+Approval Workflow giúp hệ thống phản ứng sự cố an toàn hơn, tránh việc tự động cô lập tài nguyên khi chưa có đủ thông tin xác nhận.

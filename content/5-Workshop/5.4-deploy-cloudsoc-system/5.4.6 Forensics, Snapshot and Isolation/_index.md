@@ -13,7 +13,7 @@ In this section, you will implement the **Forensics, Snapshot and Isolation** la
 In the previous sections, GuardDuty detected a finding, EventBridge triggered Step Functions, and the dashboard supported analyst approval. In this section, you will implement the actual response actions:
 
 ```text
-Collect Evidence â†’ Create EBS Snapshot â†’ Apply SG-Isolation â†’ Update Incident Status
+Collect Evidence → Create EBS Snapshot → Apply SG-Isolation → Update Incident Status
 ```
 
 ---
@@ -42,12 +42,12 @@ The main workflow is:
 
 ```text
 Step Functions
-â†’ Incident Response Lambda
-â†’ Systems Manager Run Command
-â†’ S3 Evidence Bucket
-â†’ EBS Forensic Snapshot
-â†’ Replace EC2 Security Group with SG-Isolation
-â†’ Update DynamoDB Incident Table
+→ Incident Response Lambda
+→ Systems Manager Run Command
+→ S3 Evidence Bucket
+→ EBS Forensic Snapshot
+→ Replace EC2 Security Group with SG-Isolation
+→ Update DynamoDB Incident Table
 ```
 
 In this architecture, Lambda orchestrates the response actions. Systems Manager collects information from the EC2 instance, EBS Snapshot preserves the volume state, S3 stores evidence, and Security Group Isolation helps isolate the EC2 instance from unwanted traffic.
@@ -78,7 +78,7 @@ Before implementing automated response, verify the current workload EC2 instance
 Go to:
 
 ```text
-EC2 â†’ Instances â†’ cloudsoc-workload-ec2
+EC2 → Instances → cloudsoc-workload-ec2
 ```
 
 Check the following information:
@@ -108,7 +108,7 @@ The `SG-Isolation` security group is used to isolate the EC2 instance when an in
 Go to:
 
 ```text
-EC2 â†’ Security Groups â†’ SG-Isolation
+EC2 → Security Groups → SG-Isolation
 ```
 
 Verify:
@@ -144,7 +144,7 @@ The Lambda function needs permissions to:
 Go to:
 
 ```text
-IAM â†’ Roles â†’ Create role
+IAM → Roles → Create role
 ```
 
 Configure the role:
@@ -225,7 +225,7 @@ The IAM Role for the Incident Response Lambda is created successfully.
 Go to:
 
 ```text
-AWS Lambda â†’ Create function
+AWS Lambda → Create function
 ```
 
 Configure the function:
@@ -252,7 +252,7 @@ The Lambda function cloudsoc-incident-response-lambda is created successfully.
 In the Lambda function, open:
 
 ```text
-Configuration â†’ Environment variables â†’ Edit
+Configuration → Environment variables → Edit
 ```
 
 Add the following environment variables:
@@ -522,7 +522,7 @@ The Incident Response Lambda is deployed successfully.
 In Lambda, choose:
 
 ```text
-Test â†’ Create new event
+Test → Create new event
 ```
 
 Set the event name:
@@ -600,7 +600,7 @@ Lambda runs successfully and starts the evidence collection, snapshot, and EC2 i
 After Lambda runs, go to:
 
 ```text
-Systems Manager â†’ Run Command â†’ Command history
+Systems Manager → Run Command → Command history
 ```
 
 Find the latest command created by Lambda.
@@ -628,7 +628,7 @@ SSM Run Command runs successfully on the workload EC2 instance.
 Go to the evidence bucket:
 
 ```text
-S3 â†’ cloudsoc-evidence-<account-id>
+S3 → cloudsoc-evidence-<account-id>
 ```
 
 Check the following prefixes:
@@ -662,7 +662,7 @@ Evidence and forensic output are stored in the S3 Evidence Bucket.
 Go to:
 
 ```text
-EC2 â†’ Elastic Block Store â†’ Snapshots
+EC2 → Elastic Block Store → Snapshots
 ```
 
 Find the snapshot with the following tags:
@@ -689,7 +689,7 @@ An EBS Snapshot for forensic investigation is created successfully.
 Go to:
 
 ```text
-EC2 â†’ Instances â†’ cloudsoc-workload-ec2 â†’ Security
+EC2 → Instances → cloudsoc-workload-ec2 → Security
 ```
 
 Check the current Security Group.
@@ -721,7 +721,7 @@ The EC2 instance is replaced with SG-Isolation.
 Go to:
 
 ```text
-DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
+DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
 ```
 
 Find the incident created or updated by Lambda.
@@ -755,9 +755,9 @@ The desired workflow is:
 
 ```text
 Evaluate Finding
-â†’ Auto Response
-â†’ Incident Response Lambda
-â†’ End
+→ Auto Response
+→ Incident Response Lambda
+→ End
 ```
 
 In Step Functions Workflow Studio, replace the state:
@@ -795,7 +795,7 @@ After testing, restore the EC2 instance to its original Security Group to avoid 
 Go to:
 
 ```text
-EC2 â†’ Instances â†’ cloudsoc-workload-ec2 â†’ Actions â†’ Security â†’ Change security groups
+EC2 → Instances → cloudsoc-workload-ec2 → Actions → Security → Change security groups
 ```
 
 Change:

@@ -16,17 +16,17 @@ The overall workflow is:
 
 ```text
 Incident Response Lambda
-â†’ DynamoDB Incident Table
-â†’ SOC Dashboard
+→ DynamoDB Incident Table
+→ SOC Dashboard
 
 Incident Response Lambda
-â†’ Amazon SNS
-â†’ Email / Slack
-â†’ SOC Analyst
+→ Amazon SNS
+→ Email / Slack
+→ SOC Analyst
 
 CloudWatch Alarm
-â†’ Amazon SNS
-â†’ Email / Slack
+→ Amazon SNS
+→ Email / Slack
 ```
 
 This test validates that the dashboard and alerting layer work correctly after an incident is processed.
@@ -58,16 +58,16 @@ The testing flow has two main validation paths:
 ```text
 Dashboard Validation:
 DynamoDB Incident Table
-â†’ Dashboard API Lambda
-â†’ API Gateway
-â†’ Amplify Dashboard
-â†’ SOC Analyst
+→ Dashboard API Lambda
+→ API Gateway
+→ Amplify Dashboard
+→ SOC Analyst
 
 Alert Validation:
 Incident Response Lambda / CloudWatch Alarm
-â†’ Amazon SNS
-â†’ Email / Slack
-â†’ SOC Analyst
+→ Amazon SNS
+→ Email / Slack
+→ SOC Analyst
 ```
 
 ---
@@ -262,9 +262,9 @@ The error alert flow is:
 
 ```text
 CloudWatch Alarm
-â†’ Amazon SNS
-â†’ Email / Slack
-â†’ SOC Analyst
+→ Amazon SNS
+→ Email / Slack
+→ SOC Analyst
 ```
 
 ![CloudWatch Alarm Notification](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/cloudwatch-alarm-notification.png)

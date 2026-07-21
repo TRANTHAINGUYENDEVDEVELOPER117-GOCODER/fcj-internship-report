@@ -37,13 +37,13 @@ The following diagram illustrates the Logging and Evidence Storage layer in the 
 The main logging and evidence flow is:
 
 ```text
-CloudTrail â†’ S3 Audit Logs
-CloudTrail â†’ CloudWatch Logs
-VPC Flow Logs â†’ CloudWatch Logs
-Systems Manager â†’ S3 Evidence Bucket
-Incident Response Lambda â†’ S3 Evidence Bucket
-Incident Response Lambda â†’ CloudWatch Logs
-KMS â†’ S3 Encryption
+CloudTrail → S3 Audit Logs
+CloudTrail → CloudWatch Logs
+VPC Flow Logs → CloudWatch Logs
+Systems Manager → S3 Evidence Bucket
+Incident Response Lambda → S3 Evidence Bucket
+Incident Response Lambda → CloudWatch Logs
+KMS → S3 Encryption
 ```
 
 ---
@@ -72,7 +72,7 @@ You can use the following configuration values for this workshop:
 Open the **Amazon S3** service and choose:
 
 ```text
-Buckets â†’ Create bucket
+Buckets → Create bucket
 ```
 
 Configure the bucket as follows:
@@ -107,7 +107,7 @@ Next, create a second bucket to store incident evidence and forensic output.
 In Amazon S3, choose:
 
 ```text
-Buckets â†’ Create bucket
+Buckets → Create bucket
 ```
 
 Configure the bucket as follows:
@@ -181,7 +181,7 @@ AWS KMS is used to encrypt sensitive data in S3 if required. In a lab environmen
 Open the **AWS KMS** service and choose:
 
 ```text
-Customer managed keys â†’ Create key
+Customer managed keys → Create key
 ```
 
 Configure the key:
@@ -217,7 +217,7 @@ AWS CloudTrail is used to record management events in the AWS account. These eve
 Open the **AWS CloudTrail** service and choose:
 
 ```text
-Trails â†’ Create trail
+Trails → Create trail
 ```
 
 Configure the trail:
@@ -289,7 +289,7 @@ CloudTrail log files appear in the S3 audit logs bucket.
 Open the **Amazon CloudWatch** service and choose:
 
 ```text
-Logs â†’ Log groups â†’ Create log group
+Logs → Log groups → Create log group
 ```
 
 Configure the log group:
@@ -318,7 +318,7 @@ VPC Flow Logs are used to capture metadata about network traffic in the VPC. In 
 Open the **VPC** service and choose:
 
 ```text
-Your VPCs â†’ cloudsoc-vpc â†’ Flow logs
+Your VPCs → cloudsoc-vpc → Flow logs
 ```
 
 Choose:
@@ -355,7 +355,7 @@ VPC Flow Logs are enabled for cloudsoc-vpc and sent to CloudWatch Logs.
 After enabling VPC Flow Logs, wait a few minutes and open:
 
 ```text
-CloudWatch â†’ Logs â†’ Log groups
+CloudWatch → Logs → Log groups
 ```
 
 Select the log group:
@@ -416,11 +416,11 @@ Example incident-based evidence structure:
 
 ```text
 incidents/
-â””â”€â”€ finding-id/
-    â”œâ”€â”€ finding.json
-    â”œâ”€â”€ response-result.json
-    â”œâ”€â”€ isolation-status.json
-    â””â”€â”€ snapshot-metadata.json
+└── finding-id/
+    ├── finding.json
+    ├── response-result.json
+    ├── isolation-status.json
+    └── snapshot-metadata.json
 ```
 
 Expected result:

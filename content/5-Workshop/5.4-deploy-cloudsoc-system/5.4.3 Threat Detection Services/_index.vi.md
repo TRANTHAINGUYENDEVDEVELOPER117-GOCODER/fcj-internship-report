@@ -8,58 +8,58 @@ pre : " <b> 5.4.3. </b> "
 
 #### Threat Detection Services
 
-Trong pháº§n nÃ y, chÃºng ta sáº½ báº­t vÃ  cáº¥u hÃ¬nh cÃ¡c dá»‹ch vá»¥ phÃ¡t hiá»‡n má»‘i Ä‘e dá»a cho há»‡ thá»‘ng **AWS CloudSOC**. ÄÃ¢y lÃ  lá»›p chá»‹u trÃ¡ch nhiá»‡m phÃ¡t hiá»‡n hÃ nh vi Ä‘Ã¡ng ngá», táº­p trung security findings vÃ  há»— trá»£ SOC Analyst trong quÃ¡ trÃ¬nh Ä‘iá»u tra sá»± cá»‘.
+Trong phần này, chúng ta sẽ bật và cấu hình các dịch vụ phát hiện mối đe dọa cho hệ thống **AWS CloudSOC**. Đây là lớp chịu trách nhiệm phát hiện hành vi đáng ngờ, tập trung security findings và hỗ trợ SOC Analyst trong quá trình điều tra sự cố.
 
-CÃ¡c dá»‹ch vá»¥ chÃ­nh Ä‘Æ°á»£c sá»­ dá»¥ng trong pháº§n nÃ y gá»“m:
+Các dịch vụ chính được sử dụng trong phần này gồm:
 
 + Amazon GuardDuty
 + AWS Security Hub
 + Amazon Detective
 + AWS Config
 
-Trong kiáº¿n trÃºc CloudSOC, Amazon GuardDuty Ä‘Ã³ng vai trÃ² lÃ  dá»‹ch vá»¥ phÃ¡t hiá»‡n má»‘i Ä‘e dá»a chÃ­nh. Khi GuardDuty phÃ¡t hiá»‡n hÃ nh vi báº¥t thÆ°á»ng, finding sáº½ Ä‘Æ°á»£c gá»­i Ä‘áº¿n Security Hub, Detective vÃ  EventBridge Ä‘á»ƒ phá»¥c vá»¥ phÃ¢n tÃ­ch vÃ  kÃ­ch hoáº¡t workflow pháº£n á»©ng sá»± cá»‘.
+Trong kiến trúc CloudSOC, Amazon GuardDuty đóng vai trò là dịch vụ phát hiện mối đe dọa chính. Khi GuardDuty phát hiện hành vi bất thường, finding sẽ được gửi đến Security Hub, Detective và EventBridge để phục vụ phân tích và kích hoạt workflow phản ứng sự cố.
 
 ---
 
-#### Má»¥c tiÃªu
+#### Mục tiêu
 
-Sau khi hoÃ n thÃ nh pháº§n nÃ y, báº¡n sáº½ cÃ³:
+Sau khi hoàn thành phần này, bạn sẽ có:
 
-+ Amazon GuardDuty Ä‘Æ°á»£c báº­t trong Region `ap-southeast-1`.
-+ AWS Security Hub Ä‘Æ°á»£c báº­t Ä‘á»ƒ táº­p trung security findings.
-+ Amazon Detective Ä‘Æ°á»£c báº­t Ä‘á»ƒ há»— trá»£ Ä‘iá»u tra finding.
-+ AWS Config Ä‘Æ°á»£c báº­t Ä‘á»ƒ theo dÃµi thay Ä‘á»•i cáº¥u hÃ¬nh tÃ i nguyÃªn.
-+ GuardDuty findings sáºµn sÃ ng Ä‘á»ƒ gá»­i sang EventBridge trong pháº§n tiáº¿p theo.
-+ SOC Analyst cÃ³ thá»ƒ xem finding trong GuardDuty, Security Hub vÃ  Detective.
++ Amazon GuardDuty được bật trong Region `ap-southeast-1`.
++ AWS Security Hub được bật để tập trung security findings.
++ Amazon Detective được bật để hỗ trợ điều tra finding.
++ AWS Config được bật để theo dõi thay đổi cấu hình tài nguyên.
++ GuardDuty findings sẵn sàng để gửi sang EventBridge trong phần tiếp theo.
++ SOC Analyst có thể xem finding trong GuardDuty, Security Hub và Detective.
 
 ---
 
-#### Kiáº¿n trÃºc Threat Detection Services
+#### Kiến trúc Threat Detection Services
 
-SÆ¡ Ä‘á»“ sau minh há»a lá»›p Threat Detection Services trong há»‡ thá»‘ng AWS CloudSOC.
+Sơ đồ sau minh họa lớp Threat Detection Services trong hệ thống AWS CloudSOC.
 
 ![Threat Detection Services Architecture](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/threat-detection-architecture.png)
 
-Luá»“ng phÃ¡t hiá»‡n má»‘i Ä‘e dá»a chÃ­nh:
+Luồng phát hiện mối đe dọa chính:
 
 ```text
 AWS Telemetry
-â†’ Amazon GuardDuty
-â†’ AWS Security Hub
-â†’ Amazon Detective
-â†’ Amazon EventBridge
-â†’ Step Functions Response Workflow
+→ Amazon GuardDuty
+→ AWS Security Hub
+→ Amazon Detective
+→ Amazon EventBridge
+→ Step Functions Response Workflow
 ```
 
-Amazon GuardDuty phÃ¢n tÃ­ch cÃ¡c nguá»“n telemetry do AWS quáº£n lÃ½ nhÆ° CloudTrail management events, VPC Flow Logs vÃ  DNS logs. Khi phÃ¡t hiá»‡n hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá», GuardDuty táº¡o ra security finding. Finding nÃ y sáº½ Ä‘Æ°á»£c sá»­ dá»¥ng á»Ÿ cÃ¡c pháº§n sau Ä‘á»ƒ kÃ­ch hoáº¡t EventBridge vÃ  Step Functions.
+Amazon GuardDuty phân tích các nguồn telemetry do AWS quản lý như CloudTrail management events, VPC Flow Logs và DNS logs. Khi phát hiện hoạt động đáng ngờ, GuardDuty tạo ra security finding. Finding này sẽ được sử dụng ở các phần sau để kích hoạt EventBridge và Step Functions.
 
 ---
 
-#### ThÃ´ng tin cáº¥u hÃ¬nh Ä‘á» xuáº¥t
+#### Thông tin cấu hình đề xuất
 
-Báº¡n cÃ³ thá»ƒ sá»­ dá»¥ng cÃ¡c thÃ´ng tin cáº¥u hÃ¬nh sau cho workshop:
+Bạn có thể sử dụng các thông tin cấu hình sau cho workshop:
 
-| ThÃ nh pháº§n | GiÃ¡ trá»‹ Ä‘á» xuáº¥t |
+| Thành phần | Giá trị đề xuất |
 |---|---|
 | Region | `ap-southeast-1` |
 | GuardDuty | Enabled |
@@ -67,212 +67,212 @@ Báº¡n cÃ³ thá»ƒ sá»­ dá»¥ng cÃ¡c thÃ´ng tin cáº¥u hÃ¬nh s
 | Detective | Enabled |
 | AWS Config | Enabled |
 | Config Recorder | Record all supported resources |
-| Config Delivery Channel | S3 bucket hoáº·c bucket máº·c Ä‘á»‹nh |
+| Config Delivery Channel | S3 bucket hoặc bucket mặc định |
 | Main Finding Source | Amazon GuardDuty |
 | Finding Target | EventBridge Rule |
 
 ---
 
-#### BÆ°á»›c 1: Báº­t Amazon GuardDuty
+#### Bước 1: Bật Amazon GuardDuty
 
-Má»Ÿ dá»‹ch vá»¥ **Amazon GuardDuty** trong AWS Management Console.
+Mở dịch vụ **Amazon GuardDuty** trong AWS Management Console.
 
-Chá»n:
+Chọn:
 
 ```text
-GuardDuty â†’ Get started
+GuardDuty → Get started
 ```
 
-Sau Ä‘Ã³ chá»n:
+Sau đó chọn:
 
 ```text
 Enable GuardDuty
 ```
 
-GuardDuty sáº½ báº¯t Ä‘áº§u phÃ¢n tÃ­ch cÃ¡c nguá»“n dá»¯ liá»‡u báº£o máº­t trong AWS account Ä‘á»ƒ phÃ¡t hiá»‡n hÃ nh vi Ä‘Ã¡ng ngá».
+GuardDuty sẽ bắt đầu phân tích các nguồn dữ liệu bảo mật trong AWS account để phát hiện hành vi đáng ngờ.
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-Amazon GuardDuty Ä‘Æ°á»£c báº­t thÃ nh cÃ´ng trong Region ap-southeast-1.
+Amazon GuardDuty được bật thành công trong Region ap-southeast-1.
 ```
 
 ![Enable GuardDuty](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-guardduty.png)
 
 ---
 
-#### BÆ°á»›c 2: Kiá»ƒm tra tráº¡ng thÃ¡i GuardDuty
+#### Bước 2: Kiểm tra trạng thái GuardDuty
 
-Sau khi báº­t GuardDuty, kiá»ƒm tra dashboard cá»§a GuardDuty.
+Sau khi bật GuardDuty, kiểm tra dashboard của GuardDuty.
 
-VÃ o:
+Vào:
 
 ```text
-GuardDuty â†’ Summary
+GuardDuty → Summary
 ```
 
-Hoáº·c:
+Hoặc:
 
 ```text
-GuardDuty â†’ Findings
+GuardDuty → Findings
 ```
 
-á»ž thá»i Ä‘iá»ƒm má»›i báº­t, cÃ³ thá»ƒ chÆ°a cÃ³ finding tháº­t. Äiá»u nÃ y lÃ  bÃ¬nh thÆ°á»ng vÃ¬ GuardDuty cáº§n cÃ³ dá»¯ liá»‡u hoáº¡t Ä‘á»™ng Ä‘á»ƒ phÃ¢n tÃ­ch.
+Ở thời điểm mới bật, có thể chưa có finding thật. Điều này là bình thường vì GuardDuty cần có dữ liệu hoạt động để phân tích.
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-GuardDuty status Ä‘ang hoáº¡t Ä‘á»™ng.
-GuardDuty Findings page cÃ³ thá»ƒ truy cáº­p Ä‘Æ°á»£c.
+GuardDuty status đang hoạt động.
+GuardDuty Findings page có thể truy cập được.
 ```
 
 ![GuardDuty Dashboard](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/guardduty-dashboard.png)
 
 ---
 
-#### BÆ°á»›c 3: Táº¡o GuardDuty Sample Findings
+#### Bước 3: Tạo GuardDuty Sample Findings
 
-Äá»ƒ kiá»ƒm tra giao diá»‡n vÃ  chuáº©n bá»‹ dá»¯ liá»‡u cho pháº§n EventBridge, báº¡n cÃ³ thá»ƒ táº¡o sample findings trong GuardDuty.
+Để kiểm tra giao diện và chuẩn bị dữ liệu cho phần EventBridge, bạn có thể tạo sample findings trong GuardDuty.
 
-VÃ o:
+Vào:
 
 ```text
-GuardDuty â†’ Settings
+GuardDuty → Settings
 ```
 
-TÃ¬m pháº§n:
+Tìm phần:
 
 ```text
 Sample findings
 ```
 
-Chá»n:
+Chọn:
 
 ```text
 Generate sample findings
 ```
 
-Sau khi táº¡o sample findings, quay láº¡i:
+Sau khi tạo sample findings, quay lại:
 
 ```text
-GuardDuty â†’ Findings
+GuardDuty → Findings
 ```
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-CÃ¡c sample findings xuáº¥t hiá»‡n trong GuardDuty Findings.
+Các sample findings xuất hiện trong GuardDuty Findings.
 ```
 
 ![GuardDuty Sample Findings](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/guardduty-sample-findings.png)
 
-> **LÆ°u Ã½:** Sample findings chá»‰ dÃ¹ng Ä‘á»ƒ kiá»ƒm tra giao diá»‡n vÃ  luá»“ng xá»­ lÃ½. Trong pháº§n Testing and Validation, chÃºng ta sáº½ kiá»ƒm thá»­ workflow vá»›i finding phÃ¹ há»£p hÆ¡n.
+> **Lưu ý:** Sample findings chỉ dùng để kiểm tra giao diện và luồng xử lý. Trong phần Testing and Validation, chúng ta sẽ kiểm thử workflow với finding phù hợp hơn.
 
 ---
 
-#### BÆ°á»›c 4: Báº­t AWS Security Hub
+#### Bước 4: Bật AWS Security Hub
 
-AWS Security Hub Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ táº­p trung security findings tá»« nhiá»u dá»‹ch vá»¥ AWS. Trong workshop nÃ y, Security Hub nháº­n findings tá»« GuardDuty vÃ  hiá»ƒn thá»‹ chÃºng á»Ÿ má»™t nÆ¡i táº­p trung.
+AWS Security Hub được sử dụng để tập trung security findings từ nhiều dịch vụ AWS. Trong workshop này, Security Hub nhận findings từ GuardDuty và hiển thị chúng ở một nơi tập trung.
 
-Má»Ÿ dá»‹ch vá»¥ **AWS Security Hub**.
+Mở dịch vụ **AWS Security Hub**.
 
-Chá»n:
+Chọn:
 
 ```text
-Security Hub â†’ Go to Security Hub
+Security Hub → Go to Security Hub
 ```
 
-Náº¿u láº§n Ä‘áº§u sá»­ dá»¥ng, chá»n:
+Nếu lần đầu sử dụng, chọn:
 
 ```text
 Enable Security Hub
 ```
 
-Trong quÃ¡ trÃ¬nh báº­t Security Hub, báº¡n cÃ³ thá»ƒ giá»¯ cáº¥u hÃ¬nh máº·c Ä‘á»‹nh cho mÃ´i trÆ°á»ng lab.
+Trong quá trình bật Security Hub, bạn có thể giữ cấu hình mặc định cho môi trường lab.
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-AWS Security Hub Ä‘Æ°á»£c báº­t thÃ nh cÃ´ng.
+AWS Security Hub được bật thành công.
 ```
 
 ![Enable Security Hub](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-security-hub.png)
 
 ---
 
-#### BÆ°á»›c 5: Kiá»ƒm tra Findings trong Security Hub
+#### Bước 5: Kiểm tra Findings trong Security Hub
 
-Sau khi báº­t Security Hub, vÃ o:
+Sau khi bật Security Hub, vào:
 
 ```text
-Security Hub â†’ Findings
+Security Hub → Findings
 ```
 
-Náº¿u GuardDuty Ä‘Ã£ táº¡o sample findings hoáº·c cÃ³ finding tháº­t, cÃ¡c finding nÃ y cÃ³ thá»ƒ xuáº¥t hiá»‡n trong Security Hub sau má»™t khoáº£ng thá»i gian ngáº¯n.
+Nếu GuardDuty đã tạo sample findings hoặc có finding thật, các finding này có thể xuất hiện trong Security Hub sau một khoảng thời gian ngắn.
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-Security Hub cÃ³ thá»ƒ hiá»ƒn thá»‹ findings tá»« GuardDuty.
+Security Hub có thể hiển thị findings từ GuardDuty.
 ```
 
 ![Security Hub Findings](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/security-hub-findings.png)
 
-Security Hub giÃºp SOC Analyst:
+Security Hub giúp SOC Analyst:
 
-+ Xem security findings táº­p trung.
-+ Lá»c findings theo severity.
-+ Kiá»ƒm tra tráº¡ng thÃ¡i finding.
-+ Theo dÃµi compliance vÃ  security posture.
-+ Káº¿t há»£p findings tá»« nhiá»u dá»‹ch vá»¥ báº£o máº­t AWS.
++ Xem security findings tập trung.
++ Lọc findings theo severity.
++ Kiểm tra trạng thái finding.
++ Theo dõi compliance và security posture.
++ Kết hợp findings từ nhiều dịch vụ bảo mật AWS.
 
 ---
 
-#### BÆ°á»›c 6: Báº­t Amazon Detective
+#### Bước 6: Bật Amazon Detective
 
-Amazon Detective há»— trá»£ SOC Analyst Ä‘iá»u tra sÃ¢u hÆ¡n cÃ¡c hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá». Detective giÃºp phÃ¢n tÃ­ch má»‘i quan há»‡ giá»¯a tÃ i nguyÃªn, API calls, network activity vÃ  findings.
+Amazon Detective hỗ trợ SOC Analyst điều tra sâu hơn các hoạt động đáng ngờ. Detective giúp phân tích mối quan hệ giữa tài nguyên, API calls, network activity và findings.
 
-Má»Ÿ dá»‹ch vá»¥ **Amazon Detective**.
+Mở dịch vụ **Amazon Detective**.
 
-Chá»n:
+Chọn:
 
 ```text
-Detective â†’ Get started
+Detective → Get started
 ```
 
-Sau Ä‘Ã³ chá»n:
+Sau đó chọn:
 
 ```text
 Enable Detective
 ```
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-Amazon Detective Ä‘Æ°á»£c báº­t thÃ nh cÃ´ng.
+Amazon Detective được bật thành công.
 ```
 
 ![Enable Detective](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-detective.png)
 
 ---
 
-#### BÆ°á»›c 7: Kiá»ƒm tra Detective Investigation
+#### Bước 7: Kiểm tra Detective Investigation
 
-Sau khi báº­t Detective, dá»¯ liá»‡u cÃ³ thá»ƒ cáº§n má»™t khoáº£ng thá»i gian Ä‘á»ƒ Ä‘Æ°á»£c thu tháº­p vÃ  hiá»ƒn thá»‹.
+Sau khi bật Detective, dữ liệu có thể cần một khoảng thời gian để được thu thập và hiển thị.
 
-VÃ o:
-
-```text
-Detective â†’ Search
-```
-
-Hoáº·c:
+Vào:
 
 ```text
-Detective â†’ Investigations
+Detective → Search
 ```
 
-SOC Analyst cÃ³ thá»ƒ sá»­ dá»¥ng Detective Ä‘á»ƒ Ä‘iá»u tra cÃ¡c Ä‘á»‘i tÆ°á»£ng nhÆ°:
+Hoặc:
+
+```text
+Detective → Investigations
+```
+
+SOC Analyst có thể sử dụng Detective để điều tra các đối tượng như:
 
 + AWS Account
 + IAM Role
@@ -280,132 +280,132 @@ SOC Analyst cÃ³ thá»ƒ sá»­ dá»¥ng Detective Ä‘á»ƒ Ä‘iá»u
 + IP address
 + GuardDuty finding
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-Detective Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ há»— trá»£ Ä‘iá»u tra security findings.
+Detective đã sẵn sàng để hỗ trợ điều tra security findings.
 ```
 
 ![Detective Investigation](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/detective-investigation.png)
 
 ---
 
-#### BÆ°á»›c 8: Báº­t AWS Config
+#### Bước 8: Bật AWS Config
 
-AWS Config Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ theo dÃµi thay Ä‘á»•i cáº¥u hÃ¬nh cá»§a tÃ i nguyÃªn AWS. Trong CloudSOC, AWS Config giÃºp ghi nháº­n sá»± thay Ä‘á»•i cá»§a EC2, Security Group vÃ  cÃ¡c tÃ i nguyÃªn liÃªn quan.
+AWS Config được sử dụng để theo dõi thay đổi cấu hình của tài nguyên AWS. Trong CloudSOC, AWS Config giúp ghi nhận sự thay đổi của EC2, Security Group và các tài nguyên liên quan.
 
-Má»Ÿ dá»‹ch vá»¥ **AWS Config**.
+Mở dịch vụ **AWS Config**.
 
-Chá»n:
+Chọn:
 
 ```text
-AWS Config â†’ Get started
+AWS Config → Get started
 ```
 
-Cáº¥u hÃ¬nh cÆ¡ báº£n:
+Cấu hình cơ bản:
 
-| Má»¥c | GiÃ¡ trá»‹ |
+| Mục | Giá trị |
 |---|---|
 | Resource types to record | Record all supported resources |
 | AWS Config role | Create AWS Config service-linked role |
 | Delivery method | Amazon S3 bucket |
-| S3 bucket | Táº¡o má»›i hoáº·c chá»n bucket cÃ³ sáºµn |
+| S3 bucket | Tạo mới hoặc chọn bucket có sẵn |
 | Frequency | Continuous recording |
 
-Sau Ä‘Ã³ chá»n:
+Sau đó chọn:
 
 ```text
 Confirm
 ```
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-AWS Config Ä‘Æ°á»£c báº­t vÃ  báº¯t Ä‘áº§u ghi nháº­n thay Ä‘á»•i cáº¥u hÃ¬nh tÃ i nguyÃªn.
+AWS Config được bật và bắt đầu ghi nhận thay đổi cấu hình tài nguyên.
 ```
 
 ![Enable AWS Config](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-aws-config.png)
 
 ---
 
-#### BÆ°á»›c 9: Kiá»ƒm tra Resource Inventory trong AWS Config
+#### Bước 9: Kiểm tra Resource Inventory trong AWS Config
 
-Sau khi báº­t AWS Config, vÃ o:
+Sau khi bật AWS Config, vào:
 
 ```text
-AWS Config â†’ Resources
+AWS Config → Resources
 ```
 
-TÃ¬m cÃ¡c tÃ i nguyÃªn liÃªn quan Ä‘áº¿n CloudSOC, vÃ­ dá»¥:
+Tìm các tài nguyên liên quan đến CloudSOC, ví dụ:
 
 + EC2 instance `cloudsoc-workload-ec2`
 + Security Group `SG-Workload`
 + Security Group `SG-Isolation`
 + VPC `cloudsoc-vpc`
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-AWS Config ghi nháº­n cÃ¡c tÃ i nguyÃªn chÃ­nh cá»§a CloudSOC Lab.
+AWS Config ghi nhận các tài nguyên chính của CloudSOC Lab.
 ```
 
 ![AWS Config Resources](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/aws-config-resources.png)
 
-AWS Config sáº½ há»¯u Ã­ch trong cÃ¡c pháº§n sau khi Lambda thay Ä‘á»•i security group cá»§a EC2 tá»«:
+AWS Config sẽ hữu ích trong các phần sau khi Lambda thay đổi security group của EC2 từ:
 
 ```text
-SG-Workload â†’ SG-Isolation
+SG-Workload → SG-Isolation
 ```
 
-Thay Ä‘á»•i nÃ y cÃ³ thá»ƒ Ä‘Æ°á»£c ghi nháº­n nhÆ° má»™t configuration change.
+Thay đổi này có thể được ghi nhận như một configuration change.
 
 ---
 
-#### BÆ°á»›c 10: Kiá»ƒm tra liÃªn káº¿t GuardDuty vá»›i EventBridge
+#### Bước 10: Kiểm tra liên kết GuardDuty với EventBridge
 
-GuardDuty findings cÃ³ thá»ƒ Ä‘Æ°á»£c gá»­i Ä‘áº¿n Amazon EventBridge dÆ°á»›i dáº¡ng events. Trong pháº§n tiáº¿p theo, chÃºng ta sáº½ táº¡o EventBridge rule Ä‘á»ƒ báº¯t GuardDuty finding vÃ  kÃ­ch hoáº¡t Step Functions workflow.
+GuardDuty findings có thể được gửi đến Amazon EventBridge dưới dạng events. Trong phần tiếp theo, chúng ta sẽ tạo EventBridge rule để bắt GuardDuty finding và kích hoạt Step Functions workflow.
 
-á»ž pháº§n nÃ y, báº¡n chá»‰ cáº§n Ä‘áº£m báº£o GuardDuty Ä‘Ã£ Ä‘Æ°á»£c báº­t vÃ  cÃ³ thá»ƒ táº¡o finding.
+Ở phần này, bạn chỉ cần đảm bảo GuardDuty đã được bật và có thể tạo finding.
 
-Luá»“ng chuáº©n bá»‹ cho pháº§n sau:
+Luồng chuẩn bị cho phần sau:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge Rule
-â†’ Step Functions
-â†’ Incident Response Workflow
+→ EventBridge Rule
+→ Step Functions
+→ Incident Response Workflow
 ```
 
-Káº¿t quáº£ mong Ä‘á»£i:
+Kết quả mong đợi:
 
 ```text
-GuardDuty Ä‘Ã£ sáºµn sÃ ng lÃ m nguá»“n sá»± kiá»‡n cho EventBridge.
+GuardDuty đã sẵn sàng làm nguồn sự kiện cho EventBridge.
 ```
 
 ---
 
-#### Kiá»ƒm tra sau khi hoÃ n thÃ nh
+#### Kiểm tra sau khi hoàn thành
 
-Sau khi hoÃ n thÃ nh pháº§n nÃ y, kiá»ƒm tra láº¡i cÃ¡c má»¥c sau:
+Sau khi hoàn thành phần này, kiểm tra lại các mục sau:
 
-- [ ] Amazon GuardDuty Ä‘Ã£ Ä‘Æ°á»£c báº­t.
-- [ ] GuardDuty Findings page cÃ³ thá»ƒ truy cáº­p Ä‘Æ°á»£c.
-- [ ] GuardDuty sample findings Ä‘Ã£ Ä‘Æ°á»£c táº¡o náº¿u cáº§n.
-- [ ] AWS Security Hub Ä‘Ã£ Ä‘Æ°á»£c báº­t.
-- [ ] Security Hub cÃ³ thá»ƒ nháº­n findings tá»« GuardDuty.
-- [ ] Amazon Detective Ä‘Ã£ Ä‘Æ°á»£c báº­t.
-- [ ] Detective sáºµn sÃ ng há»— trá»£ Ä‘iá»u tra finding.
-- [ ] AWS Config Ä‘Ã£ Ä‘Æ°á»£c báº­t.
-- [ ] AWS Config cÃ³ thá»ƒ ghi nháº­n tÃ i nguyÃªn EC2 vÃ  Security Group.
-- [ ] GuardDuty findings sáºµn sÃ ng Ä‘á»ƒ sá»­ dá»¥ng vá»›i EventBridge.
+- [ ] Amazon GuardDuty đã được bật.
+- [ ] GuardDuty Findings page có thể truy cập được.
+- [ ] GuardDuty sample findings đã được tạo nếu cần.
+- [ ] AWS Security Hub đã được bật.
+- [ ] Security Hub có thể nhận findings từ GuardDuty.
+- [ ] Amazon Detective đã được bật.
+- [ ] Detective sẵn sàng hỗ trợ điều tra finding.
+- [ ] AWS Config đã được bật.
+- [ ] AWS Config có thể ghi nhận tài nguyên EC2 và Security Group.
+- [ ] GuardDuty findings sẵn sàng để sử dụng với EventBridge.
 
 ---
 
-#### Káº¿t quáº£ sau khi hoÃ n thÃ nh
+#### Kết quả sau khi hoàn thành
 
-Sau khi hoÃ n thÃ nh pháº§n nÃ y, há»‡ thá»‘ng AWS CloudSOC Ä‘Ã£ cÃ³ lá»›p phÃ¡t hiá»‡n má»‘i Ä‘e dá»a vÃ  há»— trá»£ Ä‘iá»u tra sá»± cá»‘.
+Sau khi hoàn thành phần này, hệ thống AWS CloudSOC đã có lớp phát hiện mối đe dọa và hỗ trợ điều tra sự cố.
 
-CÃ¡c thÃ nh pháº§n Ä‘Ã£ sáºµn sÃ ng gá»“m:
+Các thành phần đã sẵn sàng gồm:
 
 ```text
 Amazon GuardDuty
@@ -414,12 +414,12 @@ Amazon Detective
 AWS Config
 ```
 
-Khi má»™t hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá» xáº£y ra, GuardDuty sáº½ táº¡o security finding. Finding nÃ y cÃ³ thá»ƒ Ä‘Æ°á»£c Security Hub táº­p trung, Detective há»— trá»£ Ä‘iá»u tra vÃ  EventBridge sá»­ dá»¥ng Ä‘á»ƒ kÃ­ch hoáº¡t workflow pháº£n á»©ng sá»± cá»‘.
+Khi một hoạt động đáng ngờ xảy ra, GuardDuty sẽ tạo security finding. Finding này có thể được Security Hub tập trung, Detective hỗ trợ điều tra và EventBridge sử dụng để kích hoạt workflow phản ứng sự cố.
 
 ---
 
-#### TÃ³m táº¯t
+#### Tóm tắt
 
-Trong pháº§n nÃ y, chÃºng ta Ä‘Ã£ báº­t cÃ¡c dá»‹ch vá»¥ phÃ¡t hiá»‡n vÃ  Ä‘iá»u tra má»‘i Ä‘e dá»a cho AWS CloudSOC. GuardDuty Ä‘Ã³ng vai trÃ² phÃ¡t hiá»‡n chÃ­nh, Security Hub táº­p trung findings, Detective há»— trá»£ Ä‘iá»u tra chuyÃªn sÃ¢u, cÃ²n AWS Config theo dÃµi thay Ä‘á»•i cáº¥u hÃ¬nh tÃ i nguyÃªn.
+Trong phần này, chúng ta đã bật các dịch vụ phát hiện và điều tra mối đe dọa cho AWS CloudSOC. GuardDuty đóng vai trò phát hiện chính, Security Hub tập trung findings, Detective hỗ trợ điều tra chuyên sâu, còn AWS Config theo dõi thay đổi cấu hình tài nguyên.
 
-á»ž pháº§n tiáº¿p theo, chÃºng ta sáº½ cáº¥u hÃ¬nh **EventBridge and Step Functions Workflow** Ä‘á»ƒ tá»± Ä‘á»™ng xá»­ lÃ½ GuardDuty findings vÃ  báº¯t Ä‘áº§u quy trÃ¬nh pháº£n á»©ng sá»± cá»‘.
+Ở phần tiếp theo, chúng ta sẽ cấu hình **EventBridge and Step Functions Workflow** để tự động xử lý GuardDuty findings và bắt đầu quy trình phản ứng sự cố.

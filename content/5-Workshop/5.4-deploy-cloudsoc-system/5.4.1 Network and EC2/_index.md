@@ -39,12 +39,12 @@ The main deployment flow is:
 
 ```text
 AWS Region
-â†’ VPC
-â†’ Public Subnet
-â†’ Internet Gateway
-â†’ Route Table
-â†’ EC2 Workload
-â†’ SG-Workload / SG-Isolation
+→ VPC
+→ Public Subnet
+→ Internet Gateway
+→ Route Table
+→ EC2 Workload
+→ SG-Workload / SG-Isolation
 ```
 
 In this workshop, the EC2 instance is placed in a Public Subnet to simplify attack simulation and GuardDuty finding testing. This design is intended for a Lab / Proof of Concept environment and is not a complete production architecture.
@@ -78,7 +78,7 @@ Open the AWS Management Console and go to the **VPC** service.
 Choose:
 
 ```text
-VPC â†’ Your VPCs â†’ Create VPC
+VPC → Your VPCs → Create VPC
 ```
 
 Configure the VPC as follows:
@@ -107,7 +107,7 @@ The cloudsoc-vpc VPC is created successfully.
 In the VPC Console, choose:
 
 ```text
-Subnets â†’ Create subnet
+Subnets → Create subnet
 ```
 
 Select the VPC that you created:
@@ -149,7 +149,7 @@ cloudsoc-public-subnet
 Then choose:
 
 ```text
-Actions â†’ Edit subnet settings
+Actions → Edit subnet settings
 ```
 
 Enable the option:
@@ -173,7 +173,7 @@ Auto-assign public IPv4 is enabled for the Public Subnet.
 In the VPC Console, choose:
 
 ```text
-Internet Gateways â†’ Create internet gateway
+Internet Gateways → Create internet gateway
 ```
 
 Configure the Internet Gateway:
@@ -187,7 +187,7 @@ Choose **Create internet gateway**.
 After the Internet Gateway is created, select it and choose:
 
 ```text
-Actions â†’ Attach to VPC
+Actions → Attach to VPC
 ```
 
 Select the VPC:
@@ -213,7 +213,7 @@ The cloudsoc-igw Internet Gateway is attached to cloudsoc-vpc.
 In the VPC Console, choose:
 
 ```text
-Route Tables â†’ Create route table
+Route Tables → Create route table
 ```
 
 Configure the route table:
@@ -230,7 +230,7 @@ Next, select the route table and open the **Routes** tab.
 Choose:
 
 ```text
-Edit routes â†’ Add route
+Edit routes → Add route
 ```
 
 Add the following route:
@@ -272,7 +272,7 @@ The EC2 instance needs an IAM Role to connect to AWS Systems Manager. This allow
 Open the **IAM** service and choose:
 
 ```text
-Roles â†’ Create role
+Roles → Create role
 ```
 
 Configure the role:
@@ -313,7 +313,7 @@ The CloudSOC-EC2-SSM-Role IAM Role is created successfully.
 In the EC2 Console, choose:
 
 ```text
-Security Groups â†’ Create security group
+Security Groups → Create security group
 ```
 
 Configure the security group:
@@ -355,7 +355,7 @@ The SG-Workload security group is created successfully.
 In the EC2 Console, choose:
 
 ```text
-Security Groups â†’ Create security group
+Security Groups → Create security group
 ```
 
 Configure the security group:
@@ -395,7 +395,7 @@ SG-Isolation has no inbound rules and no outbound rules.
 Open the **EC2** service and choose:
 
 ```text
-Instances â†’ Launch instances
+Instances → Launch instances
 ```
 
 Configure the EC2 instance:
@@ -471,7 +471,7 @@ Fleet Manager
 Or:
 
 ```text
-Session Manager â†’ Start session
+Session Manager → Start session
 ```
 
 Check whether the `cloudsoc-workload-ec2` instance appears in the list of managed instances.
@@ -500,7 +500,7 @@ If the EC2 instance does not appear in Systems Manager, check the following:
 Verify that the EC2 instance is currently using the normal workload security group:
 
 ```text
-cloudsoc-workload-ec2 â†’ Security â†’ Security groups
+cloudsoc-workload-ec2 → Security → Security groups
 ```
 
 Expected result:
@@ -513,7 +513,7 @@ SG-Isolation has been created but is not attached to the EC2 instance yet.
 In later sections, Lambda will perform the isolation action by replacing the security group:
 
 ```text
-SG-Workload â†’ SG-Isolation
+SG-Workload → SG-Isolation
 ```
 
 ---

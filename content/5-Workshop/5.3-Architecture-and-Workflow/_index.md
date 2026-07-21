@@ -71,14 +71,14 @@ The main components include:
 The logging and evidence flow in the system is:
 
 ```text
-CloudTrail â†’ S3
-CloudTrail â†’ CloudWatch
-VPC Flow Logs â†’ CloudWatch
-Systems Manager â†’ S3
-Systems Manager â†’ EBS Snapshot
-Incident Response Lambda â†’ S3
-Incident Response Lambda â†’ CloudWatch
-KMS â†’ S3
+CloudTrail → S3
+CloudTrail → CloudWatch
+VPC Flow Logs → CloudWatch
+Systems Manager → S3
+Systems Manager → EBS Snapshot
+Incident Response Lambda → S3
+Incident Response Lambda → CloudWatch
+KMS → S3
 ```
 
 The role of each component:
@@ -110,10 +110,10 @@ The incident detection and response flow is:
 
 ```text
 GuardDuty
-â†’ EventBridge
-â†’ Step Functions
-â†’ Systems Manager / Lambda
-â†’ Evidence Storage / Isolation / Notification
+→ EventBridge
+→ Step Functions
+→ Systems Manager / Lambda
+→ Evidence Storage / Isolation / Notification
 ```
 
 When GuardDuty detects suspicious activity, it creates a security finding. The finding is sent to EventBridge, which triggers the Step Functions workflow.
@@ -153,12 +153,12 @@ The dashboard flow is:
 
 ```text
 SOC Analyst
-â†’ AWS Amplify Hosting
-â†’ Amazon Cognito
-â†’ Amazon API Gateway
-â†’ Dashboard API Lambda
-â†’ Amazon DynamoDB / Amazon S3
-â†’ AWS Step Functions Approval Callback
+→ AWS Amplify Hosting
+→ Amazon Cognito
+→ Amazon API Gateway
+→ Dashboard API Lambda
+→ Amazon DynamoDB / Amazon S3
+→ AWS Step Functions Approval Callback
 ```
 
 The role of each component:
@@ -267,7 +267,7 @@ When abnormal behavior is detected, GuardDuty generates a security finding.
 The GuardDuty finding is sent to Amazon EventBridge. EventBridge uses a configured rule to filter matching findings and trigger AWS Step Functions.
 
 ```text
-GuardDuty Finding â†’ EventBridge Rule â†’ Step Functions
+GuardDuty Finding → EventBridge Rule → Step Functions
 ```
 
 ---
@@ -297,11 +297,11 @@ Auto Response
 The system response policy is:
 
 ```text
-Non-EC2 Finding        â†’ Alert Only
-Low / Medium Severity  â†’ Dry Run
-High Severity          â†’ Request Approval
-Critical Severity      â†’ Auto Response
-Reject / Timeout       â†’ End Workflow
+Non-EC2 Finding        → Alert Only
+Low / Medium Severity  → Dry Run
+High Severity          → Request Approval
+Critical Severity      → Auto Response
+Reject / Timeout       → End Workflow
 ```
 
 For High severity findings, the system requires SOC Analyst approval before isolating the EC2 instance.
@@ -345,7 +345,7 @@ This snapshot can be used for:
 AWS Lambda performs the isolation action by replacing the current security group of the EC2 instance.
 
 ```text
-SG-Workload â†’ SG-Isolation
+SG-Workload → SG-Isolation
 ```
 
 `SG-Isolation` does not allow inbound or outbound traffic. This helps prevent the EC2 instance from continuing to communicate with other systems.
@@ -393,11 +393,11 @@ The approval flow is:
 
 ```text
 SOC Analyst
-â†’ SOC Dashboard
-â†’ Review Incident
-â†’ Approve / Reject
-â†’ Step Functions Callback
-â†’ Continue or End Workflow
+→ SOC Dashboard
+→ Review Incident
+→ Approve / Reject
+→ Step Functions Callback
+→ Continue or End Workflow
 ```
 
 If the SOC Analyst approves the action, the workflow continues to collect evidence, create a snapshot, and isolate the EC2 instance.

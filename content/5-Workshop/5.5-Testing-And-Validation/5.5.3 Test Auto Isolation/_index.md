@@ -18,13 +18,13 @@ The overall workflow is:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge / Step Functions
-â†’ Incident Response Lambda
-â†’ Systems Manager
-â†’ EBS Snapshot
-â†’ S3 Evidence Bucket
-â†’ Replace SG-Workload with SG-Isolation
-â†’ DynamoDB Incident Update
+→ EventBridge / Step Functions
+→ Incident Response Lambda
+→ Systems Manager
+→ EBS Snapshot
+→ S3 Evidence Bucket
+→ Replace SG-Workload with SG-Isolation
+→ DynamoDB Incident Update
 ```
 
 In this section, a controlled sample event is used to make sure the event contains the correct EC2 instance ID from the lab environment.
@@ -56,13 +56,13 @@ The testing flow includes the following steps:
 
 ```text
 Sample GuardDuty Event
-â†’ Incident Response Lambda
-â†’ Validate EC2 Instance
-â†’ Collect Evidence with SSM
-â†’ Create EBS Snapshot
-â†’ Store Evidence in S3
-â†’ Apply SG-Isolation
-â†’ Update DynamoDB
+→ Incident Response Lambda
+→ Validate EC2 Instance
+→ Collect Evidence with SSM
+→ Create EBS Snapshot
+→ Store Evidence in S3
+→ Apply SG-Isolation
+→ Update DynamoDB
 ```
 
 ---

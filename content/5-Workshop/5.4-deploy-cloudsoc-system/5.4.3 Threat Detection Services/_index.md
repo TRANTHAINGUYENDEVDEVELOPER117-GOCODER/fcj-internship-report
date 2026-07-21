@@ -44,11 +44,11 @@ The main threat detection flow is:
 
 ```text
 AWS Telemetry
-â†’ Amazon GuardDuty
-â†’ AWS Security Hub
-â†’ Amazon Detective
-â†’ Amazon EventBridge
-â†’ Step Functions Response Workflow
+→ Amazon GuardDuty
+→ AWS Security Hub
+→ Amazon Detective
+→ Amazon EventBridge
+→ Step Functions Response Workflow
 ```
 
 Amazon GuardDuty analyzes AWS-managed telemetry sources such as CloudTrail management events, VPC Flow Logs, and DNS logs. When suspicious behavior is detected, GuardDuty creates a security finding. This finding will be used in later sections to trigger EventBridge and Step Functions.
@@ -80,7 +80,7 @@ Open the **Amazon GuardDuty** service in the AWS Management Console.
 Choose:
 
 ```text
-GuardDuty â†’ Get started
+GuardDuty → Get started
 ```
 
 Then choose:
@@ -108,13 +108,13 @@ After enabling GuardDuty, check the GuardDuty dashboard.
 Go to:
 
 ```text
-GuardDuty â†’ Summary
+GuardDuty → Summary
 ```
 
 Or:
 
 ```text
-GuardDuty â†’ Findings
+GuardDuty → Findings
 ```
 
 At the beginning, there may be no real findings. This is normal because GuardDuty needs activity data to analyze.
@@ -137,7 +137,7 @@ To test the interface and prepare sample data for the EventBridge section, you c
 Go to:
 
 ```text
-GuardDuty â†’ Settings
+GuardDuty → Settings
 ```
 
 Find the section:
@@ -155,7 +155,7 @@ Generate sample findings
 After generating sample findings, return to:
 
 ```text
-GuardDuty â†’ Findings
+GuardDuty → Findings
 ```
 
 Expected result:
@@ -179,7 +179,7 @@ Open the **AWS Security Hub** service.
 Choose:
 
 ```text
-Security Hub â†’ Go to Security Hub
+Security Hub → Go to Security Hub
 ```
 
 If this is the first time using Security Hub, choose:
@@ -205,7 +205,7 @@ AWS Security Hub is enabled successfully.
 After enabling Security Hub, go to:
 
 ```text
-Security Hub â†’ Findings
+Security Hub → Findings
 ```
 
 If GuardDuty has generated sample findings or real findings, they may appear in Security Hub after a short period.
@@ -237,7 +237,7 @@ Open the **Amazon Detective** service.
 Choose:
 
 ```text
-Detective â†’ Get started
+Detective → Get started
 ```
 
 Then choose:
@@ -263,13 +263,13 @@ After enabling Detective, it may take some time for data to be collected and dis
 Go to:
 
 ```text
-Detective â†’ Search
+Detective → Search
 ```
 
 Or:
 
 ```text
-Detective â†’ Investigations
+Detective → Investigations
 ```
 
 The SOC Analyst can use Detective to investigate entities such as:
@@ -299,7 +299,7 @@ Open the **AWS Config** service.
 Choose:
 
 ```text
-AWS Config â†’ Get started
+AWS Config → Get started
 ```
 
 Basic configuration:
@@ -333,7 +333,7 @@ AWS Config is enabled and starts recording resource configuration changes.
 After enabling AWS Config, go to:
 
 ```text
-AWS Config â†’ Resources
+AWS Config → Resources
 ```
 
 Search for CloudSOC-related resources, such as:
@@ -354,7 +354,7 @@ AWS Config records the main resources of the CloudSOC Lab.
 AWS Config will be useful later when Lambda changes the EC2 security group from:
 
 ```text
-SG-Workload â†’ SG-Isolation
+SG-Workload → SG-Isolation
 ```
 
 This change can be recorded as a configuration change.
@@ -371,9 +371,9 @@ Preparation flow for the next section:
 
 ```text
 GuardDuty Finding
-â†’ EventBridge Rule
-â†’ Step Functions
-â†’ Incident Response Workflow
+→ EventBridge Rule
+→ Step Functions
+→ Incident Response Workflow
 ```
 
 Expected result:
