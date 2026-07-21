@@ -11,7 +11,7 @@ Báo cáo thực tập FCJ — Trần Thái Nguyên
 Xem báo cáo online tại:
 
 ```
-https://tranthainguyendevdeveloper117-gocoder.github.io/Tran-Thai-Nguyen-fcj-internship-report/vi/
+https://tranthainguyendevdeveloper117-gocoder.github.io/fcj-internship-report/vi/
 ```
 
 ## Tổng quan
