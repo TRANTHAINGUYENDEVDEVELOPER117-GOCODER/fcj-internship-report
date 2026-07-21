@@ -8,76 +8,76 @@ pre : " <b> 5.4.7. </b> "
 
 #### Notification and Alerting
 
-Trong phần này, chúng ta sẽ triển khai lớp **Notification and Alerting** cho hệ thống AWS CloudSOC. Đây là lớp chịu trách nhiệm gửi thông báo khi có incident, khi Lambda xử lý xong, hoặc khi hệ thống phản ứng sự cố gặp lỗi.
+Trong pháº§n nÃ y, chÃºng ta sáº½ triá»ƒn khai lá»›p **Notification and Alerting** cho há»‡ thá»‘ng AWS CloudSOC. ÄÃ¢y lÃ  lá»›p chá»‹u trÃ¡ch nhiá»‡m gá»­i thÃ´ng bÃ¡o khi cÃ³ incident, khi Lambda xá»­ lÃ½ xong, hoáº·c khi há»‡ thá»‘ng pháº£n á»©ng sá»± cá»‘ gáº·p lá»—i.
 
-Ở các phần trước, hệ thống đã có khả năng phát hiện finding, điều phối workflow, thu thập evidence, tạo snapshot và cô lập EC2. Tuy nhiên, một hệ thống SOC không chỉ xử lý sự cố mà còn phải thông báo kịp thời cho SOC Analyst hoặc đội vận hành.
+á»ž cÃ¡c pháº§n trÆ°á»›c, há»‡ thá»‘ng Ä‘Ã£ cÃ³ kháº£ nÄƒng phÃ¡t hiá»‡n finding, Ä‘iá»u phá»‘i workflow, thu tháº­p evidence, táº¡o snapshot vÃ  cÃ´ láº­p EC2. Tuy nhiÃªn, má»™t há»‡ thá»‘ng SOC khÃ´ng chá»‰ xá»­ lÃ½ sá»± cá»‘ mÃ  cÃ²n pháº£i thÃ´ng bÃ¡o ká»‹p thá»i cho SOC Analyst hoáº·c Ä‘á»™i váº­n hÃ nh.
 
-Luồng thông báo chính trong phần này:
+Luá»“ng thÃ´ng bÃ¡o chÃ­nh trong pháº§n nÃ y:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS Topic
-→ Email / SMS / Slack
+â†’ Amazon SNS Topic
+â†’ Email / SMS / Slack
 ```
 
-Ngoài ra, CloudWatch Alarm cũng có thể gửi cảnh báo khi Lambda gặp lỗi:
+NgoÃ i ra, CloudWatch Alarm cÅ©ng cÃ³ thá»ƒ gá»­i cáº£nh bÃ¡o khi Lambda gáº·p lá»—i:
 
 ```text
 CloudWatch Alarm
-→ Amazon SNS Topic
-→ Email / SMS / Slack
+â†’ Amazon SNS Topic
+â†’ Email / SMS / Slack
 ```
 
 ---
 
-#### Mục tiêu
+#### Má»¥c tiÃªu
 
-Sau khi hoàn thành phần này, bạn sẽ có:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, báº¡n sáº½ cÃ³:
 
-+ SNS Topic dùng để gửi cảnh báo CloudSOC.
-+ Email subscription để nhận thông báo incident.
-+ Lambda được cập nhật để publish kết quả xử lý incident lên SNS.
-+ CloudWatch Alarm theo dõi lỗi của Incident Response Lambda.
-+ Cảnh báo khi Lambda execution bị lỗi.
-+ Tuỳ chọn tích hợp Slack thông qua Amazon Q Developer in chat applications.
-+ Ảnh chứng minh hệ thống đã gửi notification thành công.
++ SNS Topic dÃ¹ng Ä‘á»ƒ gá»­i cáº£nh bÃ¡o CloudSOC.
++ Email subscription Ä‘á»ƒ nháº­n thÃ´ng bÃ¡o incident.
++ Lambda Ä‘Æ°á»£c cáº­p nháº­t Ä‘á»ƒ publish káº¿t quáº£ xá»­ lÃ½ incident lÃªn SNS.
++ CloudWatch Alarm theo dÃµi lá»—i cá»§a Incident Response Lambda.
++ Cáº£nh bÃ¡o khi Lambda execution bá»‹ lá»—i.
++ Tuá»³ chá»n tÃ­ch há»£p Slack thÃ´ng qua Amazon Q Developer in chat applications.
++ áº¢nh chá»©ng minh há»‡ thá»‘ng Ä‘Ã£ gá»­i notification thÃ nh cÃ´ng.
 
 ---
 
 #### Notification and Alerting Architecture
 
-Sơ đồ sau minh họa luồng thông báo của AWS CloudSOC.
+SÆ¡ Ä‘á»“ sau minh há»a luá»“ng thÃ´ng bÃ¡o cá»§a AWS CloudSOC.
 
-![Notification and Alerting Architecture](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/notification-alerting-architecture.png)
+![Notification and Alerting Architecture](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/notification-alerting-architecture.png)
 
-Luồng xử lý chính:
+Luá»“ng xá»­ lÃ½ chÃ­nh:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS
-→ Email / SMS / Slack
+â†’ Amazon SNS
+â†’ Email / SMS / Slack
 ```
 
-Luồng cảnh báo lỗi:
+Luá»“ng cáº£nh bÃ¡o lá»—i:
 
 ```text
 CloudWatch Metrics
-→ CloudWatch Alarm
-→ Amazon SNS
-→ Email / SMS / Slack
+â†’ CloudWatch Alarm
+â†’ Amazon SNS
+â†’ Email / SMS / Slack
 ```
 
-Trong kiến trúc này, Amazon SNS đóng vai trò trung tâm phân phối thông báo. Lambda gửi kết quả phản ứng sự cố đến SNS, còn CloudWatch Alarm gửi cảnh báo khi Lambda có lỗi.
+Trong kiáº¿n trÃºc nÃ y, Amazon SNS Ä‘Ã³ng vai trÃ² trung tÃ¢m phÃ¢n phá»‘i thÃ´ng bÃ¡o. Lambda gá»­i káº¿t quáº£ pháº£n á»©ng sá»± cá»‘ Ä‘áº¿n SNS, cÃ²n CloudWatch Alarm gá»­i cáº£nh bÃ¡o khi Lambda cÃ³ lá»—i.
 
 ---
 
-#### Thông tin cấu hình đề xuất
+#### ThÃ´ng tin cáº¥u hÃ¬nh Ä‘á» xuáº¥t
 
-| Thành phần | Giá trị đề xuất |
+| ThÃ nh pháº§n | GiÃ¡ trá»‹ Ä‘á» xuáº¥t |
 |---|---|
 | SNS Topic | `cloudsoc-incident-alerts` |
 | SNS Display name | `CloudSOCAlert` |
-| Email subscription | Email của SOC Analyst |
+| Email subscription | Email cá»§a SOC Analyst |
 | Lambda Function | `cloudsoc-incident-response-lambda` |
 | Lambda Environment Variable | `SNS_TOPIC_ARN` |
 | CloudWatch Alarm | `cloudsoc-incident-response-lambda-errors` |
@@ -87,39 +87,39 @@ Trong kiến trúc này, Amazon SNS đóng vai trò trung tâm phân phối thô
 
 ---
 
-#### Bước 1: Tạo SNS Topic
+#### BÆ°á»›c 1: Táº¡o SNS Topic
 
-Vào:
+VÃ o:
 
 ```text
-Amazon SNS → Topics → Create topic
+Amazon SNS â†’ Topics â†’ Create topic
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Type | Standard |
 | Name | `cloudsoc-incident-alerts` |
 | Display name | `CloudSOCAlert` |
 
-Sau đó chọn:
+Sau Ä‘Ã³ chá»n:
 
 ```text
 Create topic
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-SNS Topic cloudsoc-incident-alerts được tạo thành công.
+SNS Topic cloudsoc-incident-alerts Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create SNS Topic](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/create-sns-topic.png)
+![Create SNS Topic](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/create-sns-topic.png)
 
 ---
 
-#### Bước 2: Tạo Email Subscription
+#### BÆ°á»›c 2: Táº¡o Email Subscription
 
 Trong topic:
 
@@ -127,59 +127,59 @@ Trong topic:
 cloudsoc-incident-alerts
 ```
 
-chọn:
+chá»n:
 
 ```text
 Create subscription
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
-| Topic ARN | ARN của `cloudsoc-incident-alerts` |
+| Topic ARN | ARN cá»§a `cloudsoc-incident-alerts` |
 | Protocol | Email |
-| Endpoint | Email của SOC Analyst |
+| Endpoint | Email cá»§a SOC Analyst |
 
-Sau đó chọn:
+Sau Ä‘Ã³ chá»n:
 
 ```text
 Create subscription
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Email subscription được tạo và đang ở trạng thái Pending confirmation.
+Email subscription Ä‘Æ°á»£c táº¡o vÃ  Ä‘ang á»Ÿ tráº¡ng thÃ¡i Pending confirmation.
 ```
 
-![SNS Email Subscription](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-email-subscription.png)
+![SNS Email Subscription](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-email-subscription.png)
 
 ---
 
-#### Bước 3: Confirm Email Subscription
+#### BÆ°á»›c 3: Confirm Email Subscription
 
-Mở email nhận được từ AWS Notifications.
+Má»Ÿ email nháº­n Ä‘Æ°á»£c tá»« AWS Notifications.
 
-Chọn:
+Chá»n:
 
 ```text
 Confirm subscription
 ```
 
-Sau khi xác nhận, quay lại SNS topic và kiểm tra trạng thái subscription.
+Sau khi xÃ¡c nháº­n, quay láº¡i SNS topic vÃ  kiá»ƒm tra tráº¡ng thÃ¡i subscription.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Subscription status chuyển từ Pending confirmation sang Confirmed.
+Subscription status chuyá»ƒn tá»« Pending confirmation sang Confirmed.
 ```
 
-![SNS Subscription Confirmed](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-subscription-confirmed.png)
+![SNS Subscription Confirmed](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-subscription-confirmed.png)
 
 ---
 
-#### Bước 4: Gửi Test Message từ SNS
+#### BÆ°á»›c 4: Gá»­i Test Message tá»« SNS
 
 Trong SNS topic:
 
@@ -187,60 +187,60 @@ Trong SNS topic:
 cloudsoc-incident-alerts
 ```
 
-chọn:
+chá»n:
 
 ```text
 Publish message
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Subject | `AWS CloudSOC Test Alert` |
 | Message body | `This is a test notification from AWS CloudSOC.` |
 
-Sau đó chọn:
+Sau Ä‘Ã³ chá»n:
 
 ```text
 Publish message
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-SOC Analyst nhận được email test alert từ SNS.
+SOC Analyst nháº­n Ä‘Æ°á»£c email test alert tá»« SNS.
 ```
 
-![SNS Test Message](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-test-message.png)
+![SNS Test Message](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-test-message.png)
 
-![Email Alert Received](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/email-alert-received.png)
+![Email Alert Received](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/email-alert-received.png)
 
 ---
 
-#### Bước 5: Thêm SNS Permission cho Incident Response Lambda Role
+#### BÆ°á»›c 5: ThÃªm SNS Permission cho Incident Response Lambda Role
 
-Lambda cần quyền publish message đến SNS topic.
+Lambda cáº§n quyá»n publish message Ä‘áº¿n SNS topic.
 
-Vào:
-
-```text
-IAM → Roles → CloudSOC-Incident-Response-Lambda-Role
-```
-
-Chọn:
+VÃ o:
 
 ```text
-Add permissions → Create inline policy
+IAM â†’ Roles â†’ CloudSOC-Incident-Response-Lambda-Role
 ```
 
-Chọn tab:
+Chá»n:
+
+```text
+Add permissions â†’ Create inline policy
+```
+
+Chá»n tab:
 
 ```text
 JSON
 ```
 
-Thêm policy sau. Thay `<account-id>` bằng AWS Account ID của bạn.
+ThÃªm policy sau. Thay `<account-id>` báº±ng AWS Account ID cá»§a báº¡n.
 
 ```json
 {
@@ -258,54 +258,54 @@ Thêm policy sau. Thay `<account-id>` bằng AWS Account ID của bạn.
 }
 ```
 
-Đặt tên policy:
+Äáº·t tÃªn policy:
 
 ```text
 CloudSOC-SNS-Publish-Policy
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Incident Response Lambda Role có quyền publish message đến SNS.
+Incident Response Lambda Role cÃ³ quyá»n publish message Ä‘áº¿n SNS.
 ```
 
-![Lambda SNS Permission](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-permission.png)
+![Lambda SNS Permission](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-permission.png)
 
 ---
 
-#### Bước 6: Thêm SNS Topic ARN vào Lambda Environment Variables
+#### BÆ°á»›c 6: ThÃªm SNS Topic ARN vÃ o Lambda Environment Variables
 
-Vào:
+VÃ o:
 
 ```text
-Lambda → cloudsoc-incident-response-lambda
-→ Configuration → Environment variables → Edit
+Lambda â†’ cloudsoc-incident-response-lambda
+â†’ Configuration â†’ Environment variables â†’ Edit
 ```
 
-Thêm biến môi trường:
+ThÃªm biáº¿n mÃ´i trÆ°á»ng:
 
 | Key | Value |
 |---|---|
-| `SNS_TOPIC_ARN` | ARN của SNS topic `cloudsoc-incident-alerts` |
+| `SNS_TOPIC_ARN` | ARN cá»§a SNS topic `cloudsoc-incident-alerts` |
 
-Ví dụ:
+VÃ­ dá»¥:
 
 ```text
 SNS_TOPIC_ARN = arn:aws:sns:ap-southeast-1:123456789012:cloudsoc-incident-alerts
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Lambda biết SNS Topic cần gửi notification.
+Lambda biáº¿t SNS Topic cáº§n gá»­i notification.
 ```
 
-![Lambda SNS Environment Variable](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-environment-variable.png)
+![Lambda SNS Environment Variable](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-environment-variable.png)
 
 ---
 
-#### Bước 7: Cập nhật Lambda để gửi SNS Notification
+#### BÆ°á»›c 7: Cáº­p nháº­t Lambda Ä‘á»ƒ gá»­i SNS Notification
 
 Trong Lambda function:
 
@@ -313,20 +313,20 @@ Trong Lambda function:
 cloudsoc-incident-response-lambda
 ```
 
-mở tab:
+má»Ÿ tab:
 
 ```text
 Code
 ```
 
-Thêm import và biến SNS vào đầu file:
+ThÃªm import vÃ  biáº¿n SNS vÃ o Ä‘áº§u file:
 
 ```python
 sns = boto3.client("sns", region_name=REGION)
 SNS_TOPIC_ARN = os.environ.get("SNS_TOPIC_ARN")
 ```
 
-Thêm function gửi notification:
+ThÃªm function gá»­i notification:
 
 ```python
 def publish_notification(subject, message):
@@ -343,13 +343,13 @@ def publish_notification(subject, message):
     return response.get("MessageId")
 ```
 
-Sau đó, trong phần cuối của `lambda_handler`, trước dòng:
+Sau Ä‘Ã³, trong pháº§n cuá»‘i cá»§a `lambda_handler`, trÆ°á»›c dÃ²ng:
 
 ```python
 return result
 ```
 
-thêm đoạn sau:
+thÃªm Ä‘oáº¡n sau:
 
 ```python
 notification_message = f"""
@@ -377,37 +377,37 @@ message_id = publish_notification(
 result["notificationMessageId"] = message_id
 ```
 
-Sau khi chỉnh code, chọn:
+Sau khi chá»‰nh code, chá»n:
 
 ```text
 Deploy
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Lambda có thể gửi notification sau khi xử lý incident.
+Lambda cÃ³ thá»ƒ gá»­i notification sau khi xá»­ lÃ½ incident.
 ```
 
-![Lambda SNS Publish Code](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-publish-code.png)
+![Lambda SNS Publish Code](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-publish-code.png)
 
 ---
 
-#### Bước 8: Test Lambda Notification
+#### BÆ°á»›c 8: Test Lambda Notification
 
-Vào tab:
+VÃ o tab:
 
 ```text
 Test
 ```
 
-Chạy lại test event:
+Cháº¡y láº¡i test event:
 
 ```text
 gd-ec2-test
 ```
 
-Kết quả mong đợi trong Lambda response:
+Káº¿t quáº£ mong Ä‘á»£i trong Lambda response:
 
 ```text
 notificationMessageId
@@ -416,11 +416,11 @@ approvalStatus = Approved
 responseMode = AutoResponse
 ```
 
-![Lambda SNS Test Result](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-test-result.png)
+![Lambda SNS Test Result](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-test-result.png)
 
-Sau đó kiểm tra email.
+Sau Ä‘Ã³ kiá»ƒm tra email.
 
-Email nhận được nên có nội dung tương tự:
+Email nháº­n Ä‘Æ°á»£c nÃªn cÃ³ ná»™i dung tÆ°Æ¡ng tá»±:
 
 ```text
 AWS CloudSOC Incident Response Completed
@@ -433,29 +433,29 @@ Response Mode: AutoResponse
 Incident Status: Isolated
 ```
 
-![Incident Email Notification](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/incident-email-notification.png)
+![Incident Email Notification](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/incident-email-notification.png)
 
 ---
 
-#### Bước 9: Tạo CloudWatch Alarm cho Lambda Errors
+#### BÆ°á»›c 9: Táº¡o CloudWatch Alarm cho Lambda Errors
 
-CloudWatch Alarm giúp cảnh báo khi Lambda xử lý incident bị lỗi.
+CloudWatch Alarm giÃºp cáº£nh bÃ¡o khi Lambda xá»­ lÃ½ incident bá»‹ lá»—i.
 
-Vào:
-
-```text
-CloudWatch → Alarms → All alarms → Create alarm
-```
-
-Chọn metric:
+VÃ o:
 
 ```text
-Lambda → By Function Name → cloudsoc-incident-response-lambda → Errors
+CloudWatch â†’ Alarms â†’ All alarms â†’ Create alarm
 ```
 
-Cấu hình:
+Chá»n metric:
 
-| Mục | Giá trị |
+```text
+Lambda â†’ By Function Name â†’ cloudsoc-incident-response-lambda â†’ Errors
+```
+
+Cáº¥u hÃ¬nh:
+
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Metric | `Errors` |
 | Statistic | Sum |
@@ -463,34 +463,34 @@ Cấu hình:
 | Condition | Greater/Equal |
 | Threshold | 1 |
 
-Cấu hình notification:
+Cáº¥u hÃ¬nh notification:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Alarm state trigger | In alarm |
 | SNS topic | `cloudsoc-incident-alerts` |
 
-Đặt tên alarm:
+Äáº·t tÃªn alarm:
 
 ```text
 cloudsoc-incident-response-lambda-errors
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-CloudWatch Alarm được tạo để theo dõi lỗi của Incident Response Lambda.
+CloudWatch Alarm Ä‘Æ°á»£c táº¡o Ä‘á»ƒ theo dÃµi lá»—i cá»§a Incident Response Lambda.
 ```
 
-![Create Lambda Error Alarm](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/create-lambda-error-alarm.png)
+![Create Lambda Error Alarm](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/create-lambda-error-alarm.png)
 
 ---
 
-#### Bước 10: Kiểm tra Alarm Notification
+#### BÆ°á»›c 10: Kiá»ƒm tra Alarm Notification
 
-Để kiểm tra alarm, có thể tạo một lần lỗi có kiểm soát bằng cách chạy Lambda với test event thiếu `instanceId`.
+Äá»ƒ kiá»ƒm tra alarm, cÃ³ thá»ƒ táº¡o má»™t láº§n lá»—i cÃ³ kiá»ƒm soÃ¡t báº±ng cÃ¡ch cháº¡y Lambda vá»›i test event thiáº¿u `instanceId`.
 
-Ví dụ test event lỗi:
+VÃ­ dá»¥ test event lá»—i:
 
 ```json
 {
@@ -513,73 +513,73 @@ Ví dụ test event lỗi:
 }
 ```
 
-Khi Lambda bị lỗi, CloudWatch sẽ ghi nhận metric `Errors`. Sau một thời gian ngắn, alarm sẽ chuyển sang trạng thái:
+Khi Lambda bá»‹ lá»—i, CloudWatch sáº½ ghi nháº­n metric `Errors`. Sau má»™t thá»i gian ngáº¯n, alarm sáº½ chuyá»ƒn sang tráº¡ng thÃ¡i:
 
 ```text
 In alarm
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-SOC Analyst nhận được email cảnh báo khi Incident Response Lambda có lỗi.
+SOC Analyst nháº­n Ä‘Æ°á»£c email cáº£nh bÃ¡o khi Incident Response Lambda cÃ³ lá»—i.
 ```
 
-![CloudWatch Alarm In Alarm](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/cloudwatch-alarm-in-alarm.png)
+![CloudWatch Alarm In Alarm](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/cloudwatch-alarm-in-alarm.png)
 
-![Alarm Email Notification](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/alarm-email-notification.png)
+![Alarm Email Notification](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/alarm-email-notification.png)
 
 ---
 
-#### Bước 11: Optional - Tích hợp Slack bằng Amazon Q Developer in chat applications
+#### BÆ°á»›c 11: Optional - TÃ­ch há»£p Slack báº±ng Amazon Q Developer in chat applications
 
-Ngoài email, hệ thống có thể gửi cảnh báo đến Slack thông qua Amazon Q Developer in chat applications.
+NgoÃ i email, há»‡ thá»‘ng cÃ³ thá»ƒ gá»­i cáº£nh bÃ¡o Ä‘áº¿n Slack thÃ´ng qua Amazon Q Developer in chat applications.
 
-Luồng tích hợp:
+Luá»“ng tÃ­ch há»£p:
 
 ```text
 Amazon SNS
-→ Amazon Q Developer in chat applications
-→ Slack Channel
+â†’ Amazon Q Developer in chat applications
+â†’ Slack Channel
 ```
 
-Các bước tổng quát:
+CÃ¡c bÆ°á»›c tá»•ng quÃ¡t:
 
 ```text
 Amazon Q Developer in chat applications
-→ Configure Slack workspace
-→ Configure Slack channel
-→ Subscribe SNS topic
-→ Test notification
+â†’ Configure Slack workspace
+â†’ Configure Slack channel
+â†’ Subscribe SNS topic
+â†’ Test notification
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Incident alert được gửi đến Slack channel của SOC team.
+Incident alert Ä‘Æ°á»£c gá»­i Ä‘áº¿n Slack channel cá»§a SOC team.
 ```
 
-![Slack Channel Configuration](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/slack-channel-configuration.png)
+![Slack Channel Configuration](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/slack-channel-configuration.png)
 
-![Slack Incident Alert](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/slack-incident-alert.png)
+![Slack Incident Alert](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/slack-incident-alert.png)
 
 > **Note:** Slack integration is optional for this lab. Email notification is enough to demonstrate the notification flow.
 
 ---
 
-#### Bước 12: Kiểm tra DynamoDB sau khi gửi Notification
+#### BÆ°á»›c 12: Kiá»ƒm tra DynamoDB sau khi gá»­i Notification
 
-Vào:
+VÃ o:
 
 ```text
-DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
+DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
 ```
 
-Kiểm tra incident mới nhất.
+Kiá»ƒm tra incident má»›i nháº¥t.
 
-Nếu bạn đã thêm `notificationMessageId` vào result, DynamoDB có thể lưu thêm thông tin notification trong incident record.
+Náº¿u báº¡n Ä‘Ã£ thÃªm `notificationMessageId` vÃ o result, DynamoDB cÃ³ thá»ƒ lÆ°u thÃªm thÃ´ng tin notification trong incident record.
 
-Các trường cần kiểm tra:
+CÃ¡c trÆ°á»ng cáº§n kiá»ƒm tra:
 
 ```text
 incidentStatus = Isolated
@@ -587,38 +587,38 @@ approvalStatus = Approved
 notificationMessageId = <sns-message-id>
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Incident record thể hiện rằng response action đã hoàn tất và notification đã được gửi.
+Incident record thá»ƒ hiá»‡n ráº±ng response action Ä‘Ã£ hoÃ n táº¥t vÃ  notification Ä‘Ã£ Ä‘Æ°á»£c gá»­i.
 ```
 
-![DynamoDB Notification Updated](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/dynamodb-notification-updated.png)
+![DynamoDB Notification Updated](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/dynamodb-notification-updated.png)
 
 ---
 
-#### Kiểm tra sau khi hoàn thành
+#### Kiá»ƒm tra sau khi hoÃ n thÃ nh
 
-Sau khi hoàn thành phần này, kiểm tra lại các mục sau:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, kiá»ƒm tra láº¡i cÃ¡c má»¥c sau:
 
-- [ ] SNS Topic `cloudsoc-incident-alerts` đã được tạo.
-- [ ] Email subscription đã được confirm.
-- [ ] SNS test message được gửi thành công.
-- [ ] Incident Response Lambda có quyền `sns:Publish`.
-- [ ] Lambda có environment variable `SNS_TOPIC_ARN`.
-- [ ] Lambda gửi notification sau khi xử lý incident.
-- [ ] Email nhận được incident alert.
-- [ ] CloudWatch Alarm theo dõi Lambda Errors.
-- [ ] Alarm gửi notification khi Lambda bị lỗi.
-- [ ] Slack integration được cấu hình nếu workshop yêu cầu.
+- [ ] SNS Topic `cloudsoc-incident-alerts` Ä‘Ã£ Ä‘Æ°á»£c táº¡o.
+- [ ] Email subscription Ä‘Ã£ Ä‘Æ°á»£c confirm.
+- [ ] SNS test message Ä‘Æ°á»£c gá»­i thÃ nh cÃ´ng.
+- [ ] Incident Response Lambda cÃ³ quyá»n `sns:Publish`.
+- [ ] Lambda cÃ³ environment variable `SNS_TOPIC_ARN`.
+- [ ] Lambda gá»­i notification sau khi xá»­ lÃ½ incident.
+- [ ] Email nháº­n Ä‘Æ°á»£c incident alert.
+- [ ] CloudWatch Alarm theo dÃµi Lambda Errors.
+- [ ] Alarm gá»­i notification khi Lambda bá»‹ lá»—i.
+- [ ] Slack integration Ä‘Æ°á»£c cáº¥u hÃ¬nh náº¿u workshop yÃªu cáº§u.
 
 ---
 
-#### Kết quả sau khi hoàn thành
+#### Káº¿t quáº£ sau khi hoÃ n thÃ nh
 
-Sau khi hoàn thành phần này, AWS CloudSOC đã có khả năng gửi cảnh báo khi có incident và khi hệ thống phản ứng sự cố gặp lỗi.
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, AWS CloudSOC Ä‘Ã£ cÃ³ kháº£ nÄƒng gá»­i cáº£nh bÃ¡o khi cÃ³ incident vÃ  khi há»‡ thá»‘ng pháº£n á»©ng sá»± cá»‘ gáº·p lá»—i.
 
-Các thành phần đã sẵn sàng gồm:
+CÃ¡c thÃ nh pháº§n Ä‘Ã£ sáºµn sÃ ng gá»“m:
 
 ```text
 Amazon SNS
@@ -628,22 +628,22 @@ CloudWatch Alarm
 Optional Slack Notification
 ```
 
-Quy trình tổng thể sau khi hoàn thành phần này:
+Quy trÃ¬nh tá»•ng thá»ƒ sau khi hoÃ n thÃ nh pháº§n nÃ y:
 
 ```text
 GuardDuty Finding
-→ EventBridge
-→ Step Functions
-→ Incident Response Lambda
-→ Forensics / Snapshot / Isolation
-→ SNS Notification
-→ SOC Analyst
+â†’ EventBridge
+â†’ Step Functions
+â†’ Incident Response Lambda
+â†’ Forensics / Snapshot / Isolation
+â†’ SNS Notification
+â†’ SOC Analyst
 ```
 
 ---
 
-#### Tóm tắt
+#### TÃ³m táº¯t
 
-Trong phần này, chúng ta đã triển khai lớp Notification and Alerting cho AWS CloudSOC. Amazon SNS được sử dụng làm trung tâm gửi thông báo, Email giúp SOC Analyst nhận cảnh báo nhanh, CloudWatch Alarm giúp phát hiện lỗi trong Lambda, và Slack có thể được tích hợp thêm nếu cần mở rộng kênh cảnh báo.
+Trong pháº§n nÃ y, chÃºng ta Ä‘Ã£ triá»ƒn khai lá»›p Notification and Alerting cho AWS CloudSOC. Amazon SNS Ä‘Æ°á»£c sá»­ dá»¥ng lÃ m trung tÃ¢m gá»­i thÃ´ng bÃ¡o, Email giÃºp SOC Analyst nháº­n cáº£nh bÃ¡o nhanh, CloudWatch Alarm giÃºp phÃ¡t hiá»‡n lá»—i trong Lambda, vÃ  Slack cÃ³ thá»ƒ Ä‘Æ°á»£c tÃ­ch há»£p thÃªm náº¿u cáº§n má»Ÿ rá»™ng kÃªnh cáº£nh bÃ¡o.
 
-Sau phần này, quy trình triển khai chính của CloudSOC đã hoàn tất. Ở phần tiếp theo, chúng ta sẽ chuyển sang **Testing and Validation** để kiểm tra toàn bộ luồng phát hiện, phản ứng, lưu evidence, cô lập EC2 và gửi notification.
+Sau pháº§n nÃ y, quy trÃ¬nh triá»ƒn khai chÃ­nh cá»§a CloudSOC Ä‘Ã£ hoÃ n táº¥t. á»ž pháº§n tiáº¿p theo, chÃºng ta sáº½ chuyá»ƒn sang **Testing and Validation** Ä‘á»ƒ kiá»ƒm tra toÃ n bá»™ luá»“ng phÃ¡t hiá»‡n, pháº£n á»©ng, lÆ°u evidence, cÃ´ láº­p EC2 vÃ  gá»­i notification.

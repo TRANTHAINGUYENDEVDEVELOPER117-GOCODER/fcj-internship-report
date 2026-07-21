@@ -18,13 +18,13 @@ The overall workflow is:
 
 ```text
 GuardDuty Finding
-→ EventBridge / Step Functions
-→ Incident Response Lambda
-→ Systems Manager
-→ EBS Snapshot
-→ S3 Evidence Bucket
-→ Replace SG-Workload with SG-Isolation
-→ DynamoDB Incident Update
+â†’ EventBridge / Step Functions
+â†’ Incident Response Lambda
+â†’ Systems Manager
+â†’ EBS Snapshot
+â†’ S3 Evidence Bucket
+â†’ Replace SG-Workload with SG-Isolation
+â†’ DynamoDB Incident Update
 ```
 
 In this section, a controlled sample event is used to make sure the event contains the correct EC2 instance ID from the lab environment.
@@ -50,19 +50,19 @@ After completing this section, you will be able to confirm that:
 
 The following diagram shows the Auto Isolation test flow.
 
-![Test Auto Isolation Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/test-auto-isolation-flow.png)
+![Test Auto Isolation Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/test-auto-isolation-flow.png)
 
 The testing flow includes the following steps:
 
 ```text
 Sample GuardDuty Event
-→ Incident Response Lambda
-→ Validate EC2 Instance
-→ Collect Evidence with SSM
-→ Create EBS Snapshot
-→ Store Evidence in S3
-→ Apply SG-Isolation
-→ Update DynamoDB
+â†’ Incident Response Lambda
+â†’ Validate EC2 Instance
+â†’ Collect Evidence with SSM
+â†’ Create EBS Snapshot
+â†’ Store Evidence in S3
+â†’ Apply SG-Isolation
+â†’ Update DynamoDB
 ```
 
 ---
@@ -85,7 +85,7 @@ Security Group: SG-Workload
 AutoIsolate tag: true
 ```
 
-![EC2 Before Auto Isolation](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/ec2-before-auto-isolation.png)
+![EC2 Before Auto Isolation](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/ec2-before-auto-isolation.png)
 
 At this stage, the EC2 instance has not been isolated yet. The current Security Group shows that the instance is still in its normal operating state before the incident response workflow is triggered.
 
@@ -121,7 +121,7 @@ The sample event simulates a high-severity finding:
 
 This sample event allows the auto response workflow to be tested safely without performing real attack activities.
 
-![Lambda Auto Isolation Test Event](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/lambda-auto-isolation-test-event.png)
+![Lambda Auto Isolation Test Event](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/lambda-auto-isolation-test-event.png)
 
 Important fields in the event:
 
@@ -159,7 +159,7 @@ When Lambda is triggered, it performs the following actions:
 9. Update the incident status in DynamoDB.
 ```
 
-![Lambda Auto Isolation Success](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/lambda-auto-isolation-success.png)
+![Lambda Auto Isolation Success](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/lambda-auto-isolation-success.png)
 
 A successful Lambda result confirms that the system processed the event and performed the incident response actions.
 
@@ -182,7 +182,7 @@ Recent login history
 Recent system logs
 ```
 
-![SSM Forensic Command Output](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/ssm-forensic-command-output.png)
+![SSM Forensic Command Output](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/ssm-forensic-command-output.png)
 
 This result confirms that Systems Manager can communicate with the EC2 instance and execute the forensic evidence collection command.
 
@@ -200,7 +200,7 @@ response-summary.json
 ssm-output/
 ```
 
-![S3 Auto Isolation Evidence](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/s3-auto-isolation-evidence.png)
+![S3 Auto Isolation Evidence](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/s3-auto-isolation-evidence.png)
 
 The S3 Evidence Bucket stores incident evidence for post-incident investigation. These files help the SOC Analyst review the original event, response result, and forensic data collected from the EC2 instance.
 
@@ -212,7 +212,7 @@ One important action in the auto isolation workflow is creating an **EBS Snapsho
 
 The snapshot preserves the volume state at the time of the incident and can be used for forensic investigation.
 
-![EBS Forensic Snapshot Created](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/ebs-forensic-snapshot-created.png)
+![EBS Forensic Snapshot Created](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/ebs-forensic-snapshot-created.png)
 
 The snapshot is tagged with incident-related metadata, for example:
 
@@ -240,7 +240,7 @@ Inbound rules: None
 Outbound rules: None
 ```
 
-![EC2 After Auto Isolation](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/ec2-after-auto-isolation.png)
+![EC2 After Auto Isolation](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/ec2-after-auto-isolation.png)
 
 Replacing the Security Group helps isolate the EC2 instance from unwanted network communication. In this lab, `SG-Isolation` is configured with no inbound and outbound rules to reduce the ability of the instance to communicate over the network.
 
@@ -250,7 +250,7 @@ Replacing the Security Group helps isolate the EC2 instance from unwanted networ
 
 After the EC2 instance is isolated, the DynamoDB Incident Table is updated with the new incident status.
 
-![DynamoDB Auto Isolation Updated](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/dynamodb-auto-isolation-updated.png)
+![DynamoDB Auto Isolation Updated](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/dynamodb-auto-isolation-updated.png)
 
 Expected result:
 
@@ -272,7 +272,7 @@ DynamoDB allows the SOC Analyst to track the incident response status and confir
 
 If auto isolation is triggered through Step Functions, the execution should follow the `Auto Response` branch.
 
-![Step Functions Auto Response Execution](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-test-auto-isolation/stepfunctions-auto-response-execution.png)
+![Step Functions Auto Response Execution](/images/5-Workshop/5.5-Testing-and-validation/5.5.3-Test-Auto-Isolation/stepfunctions-auto-response-execution.png)
 
 A successful execution confirms that the workflow can route the incident through the correct automated response path.
 

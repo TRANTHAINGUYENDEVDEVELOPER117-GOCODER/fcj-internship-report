@@ -16,9 +16,9 @@ A GuardDuty Finding is the starting point of the incident response flow:
 
 ```text
 GuardDuty Finding
-→ EventBridge
-→ Step Functions
-→ Incident Response Workflow
+â†’ EventBridge
+â†’ Step Functions
+â†’ Incident Response Workflow
 ```
 
 In section 5.5.1, the focus is on generating and reviewing GuardDuty findings in the GuardDuty console. Workflow execution, approval testing, auto isolation, dashboard validation, and alert delivery will be tested in the following sections.
@@ -41,18 +41,18 @@ After completing this section, you will be able to confirm that:
 
 The following diagram shows the GuardDuty Finding test flow.
 
-![Test GuardDuty Finding Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/test-guardduty-finding-flow.png)
+![Test GuardDuty Finding Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/test-guardduty-finding-flow.png)
 
 The testing flow includes the following steps:
 
 ```text
 SOC Analyst
-→ GuardDuty Console
-→ Generate Sample Findings
-→ View Finding Details
-→ Confirm Finding Information
-→ Check EventBridge Rule
-→ Check Step Functions Execution
+â†’ GuardDuty Console
+â†’ Generate Sample Findings
+â†’ View Finding Details
+â†’ Confirm Finding Information
+â†’ Check EventBridge Rule
+â†’ Check Step Functions Execution
 ```
 
 In this test, **GuardDuty sample findings** are used. This is a safe way to validate the lab without performing real attack activities against the EC2 instance.
@@ -65,7 +65,7 @@ First, open the AWS Console and go to **Amazon GuardDuty** in the `Asia Pacific 
 
 The GuardDuty dashboard confirms that the service has been enabled and is ready to generate or display security findings.
 
-![GuardDuty Dashboard Before Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-dashboard-before-test.png)
+![GuardDuty Dashboard Before Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-dashboard-before-test.png)
 
 At this stage, GuardDuty is available in the selected Region and can be used as the main detection service for the AWS CloudSOC lab.
 
@@ -86,7 +86,7 @@ Trojan:EC2/DNSDataExfiltration
 
 These findings are used only for testing. They do not mean that the AWS account is under a real attack.
 
-![Generate GuardDuty Sample Findings](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/generate-guardduty-sample-findings.png)
+![Generate GuardDuty Sample Findings](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/generate-guardduty-sample-findings.png)
 
 After the sample findings are generated, GuardDuty begins displaying multiple simulated security events in the findings list.
 
@@ -96,7 +96,7 @@ After the sample findings are generated, GuardDuty begins displaying multiple si
 
 After generating sample findings, the GuardDuty **Findings** page displays multiple sample findings.
 
-![GuardDuty Sample Findings List](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-sample-findings-list.png)
+![GuardDuty Sample Findings List](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-sample-findings-list.png)
 
 The findings list shows important information such as finding title, severity, finding type, and related resource.
 
@@ -129,7 +129,7 @@ Recon:EC2/PortProbeUnprotectedPort
 
 The finding detail page provides more information about the suspicious activity, affected resource, severity level, and event timeline.
 
-![GuardDuty Finding Detail](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-finding-detail.png)
+![GuardDuty Finding Detail](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-finding-detail.png)
 
 The following fields are reviewed in the finding detail page:
 
@@ -186,7 +186,7 @@ The event pattern is configured to match GuardDuty findings:
 }
 ```
 
-![EventBridge GuardDuty Rule Enabled](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/eventbridge-guardduty-rule-enabled.png)
+![EventBridge GuardDuty Rule Enabled](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/eventbridge-guardduty-rule-enabled.png)
 
 This rule allows GuardDuty findings to be routed to the CloudSOC workflow.
 
@@ -204,7 +204,7 @@ cloudsoc-incident-response-workflow
 
 The executions page shows whether the workflow has received and processed a finding event.
 
-![Step Functions Execution From GuardDuty](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/stepfunctions-execution-from-guardduty.png)
+![Step Functions Execution From GuardDuty](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/stepfunctions-execution-from-guardduty.png)
 
 In some cases, GuardDuty sample findings may not immediately trigger the exact workflow execution expected in the lab. Therefore, the full auto isolation test will be performed later using a controlled sample event in section **5.5.3 Test Auto Isolation**.
 

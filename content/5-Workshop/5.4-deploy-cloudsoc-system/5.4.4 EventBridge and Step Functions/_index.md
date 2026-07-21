@@ -31,16 +31,16 @@ After completing this section, you will have:
 
 The following diagram illustrates the EventBridge and Step Functions workflow in the AWS CloudSOC system.
 
-![EventBridge and Step Functions Architecture](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/eventbridge-stepfunctions-architecture.png)
+![EventBridge and Step Functions Architecture](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/eventbridge-stepfunctions-architecture.png)
 
 The main processing flow is:
 
 ```text
 Amazon GuardDuty Finding
-→ Amazon EventBridge Rule
-→ AWS Step Functions State Machine
-→ Evaluate Finding
-→ Alert Only / Approval Required / Auto Response
+â†’ Amazon EventBridge Rule
+â†’ AWS Step Functions State Machine
+â†’ Evaluate Finding
+â†’ Alert Only / Approval Required / Auto Response
 ```
 
 In this architecture, GuardDuty acts as the threat detection source. EventBridge acts as the event router that sends findings to Step Functions. Step Functions acts as the incident response orchestrator.
@@ -72,7 +72,7 @@ AWS Step Functions needs an IAM Role to run the workflow and call other AWS serv
 Open the **IAM** service and choose:
 
 ```text
-Roles → Create role
+Roles â†’ Create role
 ```
 
 Configure the role:
@@ -104,7 +104,7 @@ Expected result:
 The IAM Role CloudSOC-StepFunctions-Workflow-Role is created successfully.
 ```
 
-![Step Functions IAM Role](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/stepfunctions-execution-role.png)
+![Step Functions IAM Role](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/stepfunctions-execution-role.png)
 
 ---
 
@@ -115,7 +115,7 @@ CloudWatch Logs is used to store Step Functions execution logs. This helps verif
 Open the **Amazon CloudWatch** service and choose:
 
 ```text
-Logs → Log groups → Create log group
+Logs â†’ Log groups â†’ Create log group
 ```
 
 Enter the log group name:
@@ -143,7 +143,7 @@ The CloudWatch Log Group for Step Functions is created successfully.
 Open the **AWS Step Functions** service and choose:
 
 ```text
-State machines → Create state machine
+State machines â†’ Create state machine
 ```
 
 Choose:
@@ -164,7 +164,7 @@ Set the State Machine name:
 cloudsoc-incident-response-workflow
 ```
 
-![Create State Machine](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/create-state-machine.png)
+![Create State Machine](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/create-state-machine.png)
 
 ---
 
@@ -269,7 +269,7 @@ Expected result:
 The cloudsoc-incident-response-workflow State Machine is created successfully.
 ```
 
-![State Machine Graph](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/state-machine-graph.png)
+![State Machine Graph](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/state-machine-graph.png)
 
 ---
 
@@ -341,7 +341,7 @@ The workflow enters the Auto Response branch.
 Execution status is Succeeded.
 ```
 
-![Test State Machine Execution](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/test-state-machine-execution.png)
+![Test State Machine Execution](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/test-state-machine-execution.png)
 
 ---
 
@@ -422,7 +422,7 @@ Amazon EventBridge needs permission to start the Step Functions execution.
 Open the **IAM** service and choose:
 
 ```text
-Roles → Create role
+Roles â†’ Create role
 ```
 
 Configure the role:
@@ -463,7 +463,7 @@ EventBridge has permission to trigger the Step Functions State Machine.
 Open the **Amazon EventBridge** service and choose:
 
 ```text
-Rules → Create rule
+Rules â†’ Create rule
 ```
 
 Configure the rule:
@@ -475,7 +475,7 @@ Configure the rule:
 | Event bus | default |
 | Rule type | Rule with an event pattern |
 
-![Create EventBridge Rule](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/create-eventbridge-rule.png)
+![Create EventBridge Rule](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/create-eventbridge-rule.png)
 
 ---
 
@@ -504,7 +504,7 @@ Expected result:
 The EventBridge rule can match GuardDuty findings.
 ```
 
-![EventBridge Rule Pattern](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/eventbridge-rule-pattern.png)
+![EventBridge Rule Pattern](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/eventbridge-rule-pattern.png)
 
 ---
 
@@ -546,7 +546,7 @@ Expected result:
 The EventBridge rule is created with Step Functions as the target.
 ```
 
-![EventBridge Target Step Functions](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/eventbridge-target-stepfunctions.png)
+![EventBridge Target Step Functions](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/eventbridge-target-stepfunctions.png)
 
 ---
 
@@ -555,7 +555,7 @@ The EventBridge rule is created with Step Functions as the target.
 After creating the rule, verify it:
 
 ```text
-EventBridge → Rules → cloudsoc-guardduty-finding-rule
+EventBridge â†’ Rules â†’ cloudsoc-guardduty-finding-rule
 ```
 
 Check the following information:
@@ -580,7 +580,7 @@ If you generated sample findings in GuardDuty, EventBridge can receive the event
 Check:
 
 ```text
-Step Functions → State machines → cloudsoc-incident-response-workflow → Executions
+Step Functions â†’ State machines â†’ cloudsoc-incident-response-workflow â†’ Executions
 ```
 
 If EventBridge successfully triggered the workflow, a new execution will appear.
@@ -591,7 +591,7 @@ Expected result:
 A Step Functions execution is created from the GuardDuty finding event.
 ```
 
-![EventBridge Trigger Execution](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.4-eventbridge-and-step-functions/eventbridge-trigger-execution.png)
+![EventBridge Trigger Execution](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.4-Eventbridge-And-Step-Functions/eventbridge-trigger-execution.png)
 
 > **Note:** If no execution appears immediately, generate GuardDuty sample findings again or verify the EventBridge event pattern and target permissions.
 

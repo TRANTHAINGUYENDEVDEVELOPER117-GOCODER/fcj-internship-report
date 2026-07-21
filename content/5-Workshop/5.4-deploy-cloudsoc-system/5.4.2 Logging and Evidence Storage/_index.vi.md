@@ -8,51 +8,51 @@ pre : " <b> 5.4.2. </b> "
 
 #### Logging and Evidence Storage
 
-Trong phần này, chúng ta sẽ cấu hình lớp **Logging and Evidence Storage** cho hệ thống AWS CloudSOC. Đây là lớp chịu trách nhiệm ghi nhận log, lưu trữ bằng chứng sự cố và chuẩn bị dữ liệu phục vụ quá trình điều tra sau khi phát hiện mối đe dọa.
+Trong pháº§n nÃ y, chÃºng ta sáº½ cáº¥u hÃ¬nh lá»›p **Logging and Evidence Storage** cho há»‡ thá»‘ng AWS CloudSOC. ÄÃ¢y lÃ  lá»›p chá»‹u trÃ¡ch nhiá»‡m ghi nháº­n log, lÆ°u trá»¯ báº±ng chá»©ng sá»± cá»‘ vÃ  chuáº©n bá»‹ dá»¯ liá»‡u phá»¥c vá»¥ quÃ¡ trÃ¬nh Ä‘iá»u tra sau khi phÃ¡t hiá»‡n má»‘i Ä‘e dá»a.
 
-Các log và bằng chứng thu thập được sẽ được lưu trữ trong Amazon S3 và Amazon CloudWatch. Những dữ liệu này sẽ hỗ trợ SOC Analyst trong quá trình phân tích incident, kiểm tra hành vi bất thường và xác minh kết quả phản ứng sự cố.
-
----
-
-#### Mục tiêu
-
-Sau khi hoàn thành phần này, bạn sẽ có:
-
-+ Một S3 bucket dùng để lưu CloudTrail audit logs.
-+ Một S3 bucket dùng để lưu forensic evidence.
-+ AWS CloudTrail được bật để ghi lại management events.
-+ Amazon CloudWatch Logs được chuẩn bị để lưu log.
-+ VPC Flow Logs được bật để ghi nhận metadata của network traffic.
-+ AWS KMS key được chuẩn bị để mã hóa dữ liệu nếu cần.
-+ Cấu trúc thư mục S3 dùng để lưu evidence theo từng incident.
+CÃ¡c log vÃ  báº±ng chá»©ng thu tháº­p Ä‘Æ°á»£c sáº½ Ä‘Æ°á»£c lÆ°u trá»¯ trong Amazon S3 vÃ  Amazon CloudWatch. Nhá»¯ng dá»¯ liá»‡u nÃ y sáº½ há»— trá»£ SOC Analyst trong quÃ¡ trÃ¬nh phÃ¢n tÃ­ch incident, kiá»ƒm tra hÃ nh vi báº¥t thÆ°á»ng vÃ  xÃ¡c minh káº¿t quáº£ pháº£n á»©ng sá»± cá»‘.
 
 ---
 
-#### Kiến trúc Logging and Evidence Storage
+#### Má»¥c tiÃªu
 
-Sơ đồ sau minh họa lớp Logging and Evidence Storage trong hệ thống AWS CloudSOC.
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, báº¡n sáº½ cÃ³:
 
-![Logging and Evidence Storage](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/logging-evidence-architecture.png)
++ Má»™t S3 bucket dÃ¹ng Ä‘á»ƒ lÆ°u CloudTrail audit logs.
++ Má»™t S3 bucket dÃ¹ng Ä‘á»ƒ lÆ°u forensic evidence.
++ AWS CloudTrail Ä‘Æ°á»£c báº­t Ä‘á»ƒ ghi láº¡i management events.
++ Amazon CloudWatch Logs Ä‘Æ°á»£c chuáº©n bá»‹ Ä‘á»ƒ lÆ°u log.
++ VPC Flow Logs Ä‘Æ°á»£c báº­t Ä‘á»ƒ ghi nháº­n metadata cá»§a network traffic.
++ AWS KMS key Ä‘Æ°á»£c chuáº©n bá»‹ Ä‘á»ƒ mÃ£ hÃ³a dá»¯ liá»‡u náº¿u cáº§n.
++ Cáº¥u trÃºc thÆ° má»¥c S3 dÃ¹ng Ä‘á»ƒ lÆ°u evidence theo tá»«ng incident.
 
-Luồng logging và evidence chính:
+---
+
+#### Kiáº¿n trÃºc Logging and Evidence Storage
+
+SÆ¡ Ä‘á»“ sau minh há»a lá»›p Logging and Evidence Storage trong há»‡ thá»‘ng AWS CloudSOC.
+
+![Logging and Evidence Storage](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/logging-evidence-architecture.png)
+
+Luá»“ng logging vÃ  evidence chÃ­nh:
 
 ```text
-CloudTrail → S3 Audit Logs
-CloudTrail → CloudWatch Logs
-VPC Flow Logs → CloudWatch Logs
-Systems Manager → S3 Evidence Bucket
-Incident Response Lambda → S3 Evidence Bucket
-Incident Response Lambda → CloudWatch Logs
-KMS → S3 Encryption
+CloudTrail â†’ S3 Audit Logs
+CloudTrail â†’ CloudWatch Logs
+VPC Flow Logs â†’ CloudWatch Logs
+Systems Manager â†’ S3 Evidence Bucket
+Incident Response Lambda â†’ S3 Evidence Bucket
+Incident Response Lambda â†’ CloudWatch Logs
+KMS â†’ S3 Encryption
 ```
 
 ---
 
-#### Thông tin cấu hình đề xuất
+#### ThÃ´ng tin cáº¥u hÃ¬nh Ä‘á» xuáº¥t
 
-Bạn có thể sử dụng các thông tin cấu hình sau cho workshop:
+Báº¡n cÃ³ thá»ƒ sá»­ dá»¥ng cÃ¡c thÃ´ng tin cáº¥u hÃ¬nh sau cho workshop:
 
-| Thành phần | Giá trị đề xuất |
+| ThÃ nh pháº§n | GiÃ¡ trá»‹ Ä‘á» xuáº¥t |
 |---|---|
 | Audit Log Bucket | `cloudsoc-audit-logs-<account-id>` |
 | Evidence Bucket | `cloudsoc-evidence-<account-id>` |
@@ -63,90 +63,90 @@ Bạn có thể sử dụng các thông tin cấu hình sau cho workshop:
 | S3 Evidence Prefix | `incidents/` |
 | S3 Forensic Prefix | `forensics/` |
 
-> **Lưu ý:** Tên S3 bucket phải là duy nhất toàn cầu. Vì vậy, nên thêm Account ID hoặc một chuỗi ngẫu nhiên vào cuối tên bucket.
+> **LÆ°u Ã½:** TÃªn S3 bucket pháº£i lÃ  duy nháº¥t toÃ n cáº§u. VÃ¬ váº­y, nÃªn thÃªm Account ID hoáº·c má»™t chuá»—i ngáº«u nhiÃªn vÃ o cuá»‘i tÃªn bucket.
 
 ---
 
-#### Bước 1: Tạo S3 Bucket lưu Audit Logs
+#### BÆ°á»›c 1: Táº¡o S3 Bucket lÆ°u Audit Logs
 
-Mở dịch vụ **Amazon S3**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **Amazon S3**, chá»n:
 
 ```text
-Buckets → Create bucket
+Buckets â†’ Create bucket
 ```
 
-Cấu hình bucket:
+Cáº¥u hÃ¬nh bucket:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Bucket name | `cloudsoc-audit-logs-<account-id>` |
 | AWS Region | `ap-southeast-1` |
 | Object Ownership | ACLs disabled |
 | Block Public Access | Block all public access |
 | Bucket Versioning | Enable |
-| Default encryption | SSE-S3 hoặc SSE-KMS |
+| Default encryption | SSE-S3 hoáº·c SSE-KMS |
 
-Sau đó chọn **Create bucket**.
+Sau Ä‘Ã³ chá»n **Create bucket**.
 
-Bucket này được sử dụng để lưu log từ AWS CloudTrail.
+Bucket nÃ y Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ lÆ°u log tá»« AWS CloudTrail.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-S3 bucket cloudsoc-audit-logs-<account-id> được tạo thành công.
+S3 bucket cloudsoc-audit-logs-<account-id> Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create Audit Logs Bucket](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-audit-logs-bucket.png)
+![Create Audit Logs Bucket](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-audit-logs-bucket.png)
 
 ---
 
-#### Bước 2: Tạo S3 Bucket lưu Evidence
+#### BÆ°á»›c 2: Táº¡o S3 Bucket lÆ°u Evidence
 
-Tiếp tục tạo bucket thứ hai để lưu evidence và forensic output.
+Tiáº¿p tá»¥c táº¡o bucket thá»© hai Ä‘á»ƒ lÆ°u evidence vÃ  forensic output.
 
-Trong Amazon S3, chọn:
+Trong Amazon S3, chá»n:
 
 ```text
-Buckets → Create bucket
+Buckets â†’ Create bucket
 ```
 
-Cấu hình bucket:
+Cáº¥u hÃ¬nh bucket:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Bucket name | `cloudsoc-evidence-<account-id>` |
 | AWS Region | `ap-southeast-1` |
 | Object Ownership | ACLs disabled |
 | Block Public Access | Block all public access |
 | Bucket Versioning | Enable |
-| Default encryption | SSE-S3 hoặc SSE-KMS |
+| Default encryption | SSE-S3 hoáº·c SSE-KMS |
 
-Bucket này dùng để lưu:
+Bucket nÃ y dÃ¹ng Ä‘á»ƒ lÆ°u:
 
-+ Forensic output từ Systems Manager.
-+ Incident evidence từ Lambda.
-+ Metadata liên quan đến snapshot.
-+ File JSON mô tả incident.
++ Forensic output tá»« Systems Manager.
++ Incident evidence tá»« Lambda.
++ Metadata liÃªn quan Ä‘áº¿n snapshot.
++ File JSON mÃ´ táº£ incident.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-S3 bucket cloudsoc-evidence-<account-id> được tạo thành công.
+S3 bucket cloudsoc-evidence-<account-id> Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create Evidence Bucket](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-evidence-bucket.png)
+![Create Evidence Bucket](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-evidence-bucket.png)
 
 ---
 
-#### Bước 3: Tạo cấu trúc thư mục trong Evidence Bucket
+#### BÆ°á»›c 3: Táº¡o cáº¥u trÃºc thÆ° má»¥c trong Evidence Bucket
 
-Mở bucket:
+Má»Ÿ bucket:
 
 ```text
 cloudsoc-evidence-<account-id>
 ```
 
-Tạo các folder/prefix sau:
+Táº¡o cÃ¡c folder/prefix sau:
 
 ```text
 incidents/
@@ -155,339 +155,339 @@ snapshots/
 lambda-output/
 ```
 
-Ý nghĩa từng folder:
+Ã nghÄ©a tá»«ng folder:
 
-| Prefix | Mục đích |
+| Prefix | Má»¥c Ä‘Ã­ch |
 |---|---|
-| `incidents/` | Lưu thông tin incident theo từng finding |
-| `forensics/` | Lưu output thu thập từ Systems Manager |
-| `snapshots/` | Lưu metadata liên quan đến EBS Snapshot |
-| `lambda-output/` | Lưu kết quả xử lý từ Lambda |
+| `incidents/` | LÆ°u thÃ´ng tin incident theo tá»«ng finding |
+| `forensics/` | LÆ°u output thu tháº­p tá»« Systems Manager |
+| `snapshots/` | LÆ°u metadata liÃªn quan Ä‘áº¿n EBS Snapshot |
+| `lambda-output/` | LÆ°u káº¿t quáº£ xá»­ lÃ½ tá»« Lambda |
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Evidence bucket đã có cấu trúc folder phục vụ lưu trữ bằng chứng.
+Evidence bucket Ä‘Ã£ cÃ³ cáº¥u trÃºc folder phá»¥c vá»¥ lÆ°u trá»¯ báº±ng chá»©ng.
 ```
 
-![Evidence Bucket Folders](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/evidence-bucket-folders.png)
+![Evidence Bucket Folders](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/evidence-bucket-folders.png)
 
 ---
 
-#### Bước 4: Tạo KMS Key cho Evidence Storage
+#### BÆ°á»›c 4: Táº¡o KMS Key cho Evidence Storage
 
-AWS KMS được sử dụng để mã hóa dữ liệu nhạy cảm trong S3 nếu cần. Trong môi trường lab, bạn có thể dùng SSE-S3 để đơn giản hóa. Tuy nhiên, để kiến trúc bảo mật đầy đủ hơn, nên chuẩn bị KMS key riêng cho evidence bucket.
+AWS KMS Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ mÃ£ hÃ³a dá»¯ liá»‡u nháº¡y cáº£m trong S3 náº¿u cáº§n. Trong mÃ´i trÆ°á»ng lab, báº¡n cÃ³ thá»ƒ dÃ¹ng SSE-S3 Ä‘á»ƒ Ä‘Æ¡n giáº£n hÃ³a. Tuy nhiÃªn, Ä‘á»ƒ kiáº¿n trÃºc báº£o máº­t Ä‘áº§y Ä‘á»§ hÆ¡n, nÃªn chuáº©n bá»‹ KMS key riÃªng cho evidence bucket.
 
-Mở dịch vụ **AWS KMS**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **AWS KMS**, chá»n:
 
 ```text
-Customer managed keys → Create key
+Customer managed keys â†’ Create key
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Key type | Symmetric |
 | Key usage | Encrypt and decrypt |
 | Alias | `alias/cloudsoc-evidence-key` |
-| Key administrators | Chọn user/role quản trị |
-| Key users | Chọn các role cần dùng key |
+| Key administrators | Chá»n user/role quáº£n trá»‹ |
+| Key users | Chá»n cÃ¡c role cáº§n dÃ¹ng key |
 
-Các role có thể cần quyền sử dụng KMS key:
+CÃ¡c role cÃ³ thá»ƒ cáº§n quyá»n sá»­ dá»¥ng KMS key:
 
 + Incident Response Lambda Role
 + Step Functions Workflow Role
 + EC2 SSM Instance Role
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-KMS key alias/cloudsoc-evidence-key được tạo thành công.
+KMS key alias/cloudsoc-evidence-key Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create KMS Key](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-kms-key.png)
+![Create KMS Key](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-kms-key.png)
 
 ---
 
-#### Bước 5: Bật CloudTrail
+#### BÆ°á»›c 5: Báº­t CloudTrail
 
-AWS CloudTrail được sử dụng để ghi lại các management events trong AWS account. Những event này giúp SOC Analyst biết được ai đã thực hiện hành động gì, trên tài nguyên nào và vào thời điểm nào.
+AWS CloudTrail Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ ghi láº¡i cÃ¡c management events trong AWS account. Nhá»¯ng event nÃ y giÃºp SOC Analyst biáº¿t Ä‘Æ°á»£c ai Ä‘Ã£ thá»±c hiá»‡n hÃ nh Ä‘á»™ng gÃ¬, trÃªn tÃ i nguyÃªn nÃ o vÃ  vÃ o thá»i Ä‘iá»ƒm nÃ o.
 
-Mở dịch vụ **AWS CloudTrail**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **AWS CloudTrail**, chá»n:
 
 ```text
-Trails → Create trail
+Trails â†’ Create trail
 ```
 
-Cấu hình trail:
+Cáº¥u hÃ¬nh trail:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Trail name | `cloudsoc-cloudtrail` |
 | Storage location | Use existing S3 bucket |
 | S3 bucket | `cloudsoc-audit-logs-<account-id>` |
-| Log file SSE-KMS encryption | Enable nếu dùng KMS |
+| Log file SSE-KMS encryption | Enable náº¿u dÃ¹ng KMS |
 | CloudWatch Logs | Enable |
 | Log group | `/aws/cloudtrail/cloudsoc` |
 
-Ở phần **Events**, chọn:
+á»ž pháº§n **Events**, chá»n:
 
 ```text
 Management events
 ```
 
-Chọn:
+Chá»n:
 
 ```text
 Read
 Write
 ```
 
-Sau đó chọn **Create trail**.
+Sau Ä‘Ã³ chá»n **Create trail**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-CloudTrail cloudsoc-cloudtrail được bật và ghi log vào S3 / CloudWatch.
+CloudTrail cloudsoc-cloudtrail Ä‘Æ°á»£c báº­t vÃ  ghi log vÃ o S3 / CloudWatch.
 ```
 
-![Create CloudTrail](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-cloudtrail.png)
+![Create CloudTrail](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-cloudtrail.png)
 
 ---
 
-#### Bước 6: Kiểm tra CloudTrail Logs trong S3
+#### BÆ°á»›c 6: Kiá»ƒm tra CloudTrail Logs trong S3
 
-Sau khi bật CloudTrail, chờ vài phút để log được ghi vào S3.
+Sau khi báº­t CloudTrail, chá» vÃ i phÃºt Ä‘á»ƒ log Ä‘Æ°á»£c ghi vÃ o S3.
 
-Mở bucket:
+Má»Ÿ bucket:
 
 ```text
 cloudsoc-audit-logs-<account-id>
 ```
 
-Kiểm tra thư mục log CloudTrail:
+Kiá»ƒm tra thÆ° má»¥c log CloudTrail:
 
 ```text
 AWSLogs/
 ```
 
-Bên trong sẽ có log theo cấu trúc account, region và ngày.
+BÃªn trong sáº½ cÃ³ log theo cáº¥u trÃºc account, region vÃ  ngÃ y.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-CloudTrail log files xuất hiện trong S3 audit logs bucket.
+CloudTrail log files xuáº¥t hiá»‡n trong S3 audit logs bucket.
 ```
 
-![CloudTrail Logs in S3](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/cloudtrail-logs-s3.png)
+![CloudTrail Logs in S3](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/cloudtrail-logs-s3.png)
 
 ---
 
-#### Bước 7: Tạo CloudWatch Log Group cho VPC Flow Logs
+#### BÆ°á»›c 7: Táº¡o CloudWatch Log Group cho VPC Flow Logs
 
-Mở dịch vụ **Amazon CloudWatch**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **Amazon CloudWatch**, chá»n:
 
 ```text
-Logs → Log groups → Create log group
+Logs â†’ Log groups â†’ Create log group
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Log group name | `/aws/vpc-flowlogs/cloudsoc-vpc` |
-| Retention setting | 7 days hoặc 14 days |
+| Retention setting | 7 days hoáº·c 14 days |
 
-Chọn **Create**.
+Chá»n **Create**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-CloudWatch Log Group cho VPC Flow Logs được tạo thành công.
+CloudWatch Log Group cho VPC Flow Logs Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create VPC Flow Logs Log Group](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/vpc-flowlogs-cloudwatch.png)
+![Create VPC Flow Logs Log Group](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/vpc-flowlogs-cloudwatch.png)
 
 ---
 
-#### Bước 8: Bật VPC Flow Logs
+#### BÆ°á»›c 8: Báº­t VPC Flow Logs
 
-VPC Flow Logs được sử dụng để ghi nhận metadata của network traffic trong VPC. Trong workshop này, log được gửi đến CloudWatch Logs để dễ quan sát.
+VPC Flow Logs Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ ghi nháº­n metadata cá»§a network traffic trong VPC. Trong workshop nÃ y, log Ä‘Æ°á»£c gá»­i Ä‘áº¿n CloudWatch Logs Ä‘á»ƒ dá»… quan sÃ¡t.
 
-Mở dịch vụ **VPC**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **VPC**, chá»n:
 
 ```text
-Your VPCs → cloudsoc-vpc → Flow logs
+Your VPCs â†’ cloudsoc-vpc â†’ Flow logs
 ```
 
-Chọn:
+Chá»n:
 
 ```text
 Create flow log
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Name | `cloudsoc-vpc-flowlogs` |
 | Filter | All |
 | Maximum aggregation interval | 1 minute |
 | Destination | Send to CloudWatch Logs |
 | Destination log group | `/aws/vpc-flowlogs/cloudsoc-vpc` |
-| IAM role | Role cho phép VPC Flow Logs ghi vào CloudWatch |
+| IAM role | Role cho phÃ©p VPC Flow Logs ghi vÃ o CloudWatch |
 
-Nếu chưa có IAM Role cho VPC Flow Logs, tạo role mới theo hướng dẫn trên AWS Console.
+Náº¿u chÆ°a cÃ³ IAM Role cho VPC Flow Logs, táº¡o role má»›i theo hÆ°á»›ng dáº«n trÃªn AWS Console.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-VPC Flow Logs được bật cho cloudsoc-vpc và gửi log đến CloudWatch.
+VPC Flow Logs Ä‘Æ°á»£c báº­t cho cloudsoc-vpc vÃ  gá»­i log Ä‘áº¿n CloudWatch.
 ```
 
-![Create VPC Flow Logs](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-vpc-flowlogs.png)
+![Create VPC Flow Logs](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-vpc-flowlogs.png)
 
 ---
 
-#### Bước 9: Kiểm tra VPC Flow Logs trong CloudWatch
+#### BÆ°á»›c 9: Kiá»ƒm tra VPC Flow Logs trong CloudWatch
 
-Sau khi bật VPC Flow Logs, chờ vài phút rồi mở:
+Sau khi báº­t VPC Flow Logs, chá» vÃ i phÃºt rá»“i má»Ÿ:
 
 ```text
-CloudWatch → Logs → Log groups
+CloudWatch â†’ Logs â†’ Log groups
 ```
 
-Chọn log group:
+Chá»n log group:
 
 ```text
 /aws/vpc-flowlogs/cloudsoc-vpc
 ```
 
-Kiểm tra các log stream được tạo.
+Kiá»ƒm tra cÃ¡c log stream Ä‘Æ°á»£c táº¡o.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-VPC Flow Logs xuất hiện trong CloudWatch Logs.
+VPC Flow Logs xuáº¥t hiá»‡n trong CloudWatch Logs.
 ```
 
-![VPC Flow Logs in CloudWatch](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/vpc-flowlogs-cloudwatch.png)
+![VPC Flow Logs in CloudWatch](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/vpc-flowlogs-cloudwatch.png)
 
 ---
 
-#### Bước 10: Chuẩn bị nơi lưu forensic output từ Systems Manager
+#### BÆ°á»›c 10: Chuáº©n bá»‹ nÆ¡i lÆ°u forensic output tá»« Systems Manager
 
-Trong các phần sau, Systems Manager sẽ chạy command trên EC2 để thu thập forensic evidence. Output của command có thể được lưu vào S3 evidence bucket.
+Trong cÃ¡c pháº§n sau, Systems Manager sáº½ cháº¡y command trÃªn EC2 Ä‘á»ƒ thu tháº­p forensic evidence. Output cá»§a command cÃ³ thá»ƒ Ä‘Æ°á»£c lÆ°u vÃ o S3 evidence bucket.
 
-Đường dẫn lưu forensic output đề xuất:
+ÄÆ°á»ng dáº«n lÆ°u forensic output Ä‘á» xuáº¥t:
 
 ```text
 s3://cloudsoc-evidence-<account-id>/forensics/
 ```
 
-Khi chạy Systems Manager Run Command, cấu hình output như sau:
+Khi cháº¡y Systems Manager Run Command, cáº¥u hÃ¬nh output nhÆ° sau:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | S3 bucket name | `cloudsoc-evidence-<account-id>` |
 | S3 key prefix | `forensics/` |
-| CloudWatch output | Enable nếu cần |
+| CloudWatch output | Enable náº¿u cáº§n |
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-S3 evidence bucket đã sẵn sàng để lưu forensic output từ Systems Manager.
+S3 evidence bucket Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ lÆ°u forensic output tá»« Systems Manager.
 ```
 
 ---
 
-#### Bước 11: Chuẩn bị nơi lưu incident evidence từ Lambda
+#### BÆ°á»›c 11: Chuáº©n bá»‹ nÆ¡i lÆ°u incident evidence tá»« Lambda
 
-Incident Response Lambda sẽ lưu kết quả xử lý incident vào S3 evidence bucket.
+Incident Response Lambda sáº½ lÆ°u káº¿t quáº£ xá»­ lÃ½ incident vÃ o S3 evidence bucket.
 
-Đường dẫn lưu incident evidence đề xuất:
+ÄÆ°á»ng dáº«n lÆ°u incident evidence Ä‘á» xuáº¥t:
 
 ```text
 s3://cloudsoc-evidence-<account-id>/incidents/
 ```
 
-Ví dụ cấu trúc evidence theo từng incident:
+VÃ­ dá»¥ cáº¥u trÃºc evidence theo tá»«ng incident:
 
 ```text
 incidents/
-└── finding-id/
-    ├── finding.json
-    ├── response-result.json
-    ├── isolation-status.json
-    └── snapshot-metadata.json
+â””â”€â”€ finding-id/
+    â”œâ”€â”€ finding.json
+    â”œâ”€â”€ response-result.json
+    â”œâ”€â”€ isolation-status.json
+    â””â”€â”€ snapshot-metadata.json
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-S3 evidence bucket đã sẵn sàng để lưu incident evidence từ Lambda.
+S3 evidence bucket Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ lÆ°u incident evidence tá»« Lambda.
 ```
 
 ---
 
-#### Bước 12: Kiểm tra CloudWatch Logs cho Lambda
+#### BÆ°á»›c 12: Kiá»ƒm tra CloudWatch Logs cho Lambda
 
-Trong các phần sau, khi Lambda được tạo và thực thi, CloudWatch sẽ tự động tạo log group tương ứng.
+Trong cÃ¡c pháº§n sau, khi Lambda Ä‘Æ°á»£c táº¡o vÃ  thá»±c thi, CloudWatch sáº½ tá»± Ä‘á»™ng táº¡o log group tÆ°Æ¡ng á»©ng.
 
-Log group Lambda thường có dạng:
+Log group Lambda thÆ°á»ng cÃ³ dáº¡ng:
 
 ```text
 /aws/lambda/<lambda-function-name>
 ```
 
-Ví dụ:
+VÃ­ dá»¥:
 
 ```text
 /aws/lambda/cloudsoc-incident-response-lambda
 /aws/lambda/cloudsoc-dashboard-api-lambda
 ```
 
-Các log này dùng để kiểm tra:
+CÃ¡c log nÃ y dÃ¹ng Ä‘á»ƒ kiá»ƒm tra:
 
-+ Lambda có được invoke hay không.
-+ Lambda xử lý finding thành công hay thất bại.
-+ Lambda có lỗi permission hay không.
-+ Lambda có cập nhật DynamoDB hoặc S3 thành công hay không.
++ Lambda cÃ³ Ä‘Æ°á»£c invoke hay khÃ´ng.
++ Lambda xá»­ lÃ½ finding thÃ nh cÃ´ng hay tháº¥t báº¡i.
++ Lambda cÃ³ lá»—i permission hay khÃ´ng.
++ Lambda cÃ³ cáº­p nháº­t DynamoDB hoáº·c S3 thÃ nh cÃ´ng hay khÃ´ng.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-CloudWatch Logs đã sẵn sàng để lưu execution logs của Lambda.
+CloudWatch Logs Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ lÆ°u execution logs cá»§a Lambda.
 ```
 
 ---
 
-#### Kiểm tra sau khi hoàn thành
+#### Kiá»ƒm tra sau khi hoÃ n thÃ nh
 
-Sau khi hoàn thành phần này, kiểm tra lại các mục sau:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, kiá»ƒm tra láº¡i cÃ¡c má»¥c sau:
 
-- [ ] S3 bucket `cloudsoc-audit-logs-<account-id>` đã được tạo.
-- [ ] S3 bucket `cloudsoc-evidence-<account-id>` đã được tạo.
-- [ ] Block Public Access đã được bật cho cả hai bucket.
-- [ ] Bucket Versioning đã được bật cho các bucket quan trọng.
-- [ ] Evidence bucket có các prefix `incidents/`, `forensics/`, `snapshots/`, `lambda-output/`.
-- [ ] KMS key `alias/cloudsoc-evidence-key` đã được tạo nếu dùng SSE-KMS.
-- [ ] CloudTrail `cloudsoc-cloudtrail` đã được bật.
-- [ ] CloudTrail ghi log vào S3 audit logs bucket.
-- [ ] CloudTrail có thể gửi log đến CloudWatch Logs.
-- [ ] VPC Flow Logs đã được bật cho `cloudsoc-vpc`.
-- [ ] VPC Flow Logs gửi log đến CloudWatch Logs.
-- [ ] Evidence bucket đã sẵn sàng để nhận forensic output từ Systems Manager.
-- [ ] Evidence bucket đã sẵn sàng để nhận incident evidence từ Lambda.
+- [ ] S3 bucket `cloudsoc-audit-logs-<account-id>` Ä‘Ã£ Ä‘Æ°á»£c táº¡o.
+- [ ] S3 bucket `cloudsoc-evidence-<account-id>` Ä‘Ã£ Ä‘Æ°á»£c táº¡o.
+- [ ] Block Public Access Ä‘Ã£ Ä‘Æ°á»£c báº­t cho cáº£ hai bucket.
+- [ ] Bucket Versioning Ä‘Ã£ Ä‘Æ°á»£c báº­t cho cÃ¡c bucket quan trá»ng.
+- [ ] Evidence bucket cÃ³ cÃ¡c prefix `incidents/`, `forensics/`, `snapshots/`, `lambda-output/`.
+- [ ] KMS key `alias/cloudsoc-evidence-key` Ä‘Ã£ Ä‘Æ°á»£c táº¡o náº¿u dÃ¹ng SSE-KMS.
+- [ ] CloudTrail `cloudsoc-cloudtrail` Ä‘Ã£ Ä‘Æ°á»£c báº­t.
+- [ ] CloudTrail ghi log vÃ o S3 audit logs bucket.
+- [ ] CloudTrail cÃ³ thá»ƒ gá»­i log Ä‘áº¿n CloudWatch Logs.
+- [ ] VPC Flow Logs Ä‘Ã£ Ä‘Æ°á»£c báº­t cho `cloudsoc-vpc`.
+- [ ] VPC Flow Logs gá»­i log Ä‘áº¿n CloudWatch Logs.
+- [ ] Evidence bucket Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ nháº­n forensic output tá»« Systems Manager.
+- [ ] Evidence bucket Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ nháº­n incident evidence tá»« Lambda.
 
 ---
 
-#### Kết quả sau khi hoàn thành
+#### Káº¿t quáº£ sau khi hoÃ n thÃ nh
 
-Sau khi hoàn thành phần này, hệ thống AWS CloudSOC đã có nền tảng logging và evidence storage.
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, há»‡ thá»‘ng AWS CloudSOC Ä‘Ã£ cÃ³ ná»n táº£ng logging vÃ  evidence storage.
 
-Các thành phần đã sẵn sàng gồm:
+CÃ¡c thÃ nh pháº§n Ä‘Ã£ sáºµn sÃ ng gá»“m:
 
 ```text
 CloudTrail
@@ -498,12 +498,12 @@ AWS KMS
 Evidence folder structure
 ```
 
-Lớp này giúp hệ thống lưu lại audit logs, network flow logs và bằng chứng sự cố. Đây là dữ liệu quan trọng để SOC Analyst điều tra, xác minh và báo cáo sau khi incident xảy ra.
+Lá»›p nÃ y giÃºp há»‡ thá»‘ng lÆ°u láº¡i audit logs, network flow logs vÃ  báº±ng chá»©ng sá»± cá»‘. ÄÃ¢y lÃ  dá»¯ liá»‡u quan trá»ng Ä‘á»ƒ SOC Analyst Ä‘iá»u tra, xÃ¡c minh vÃ  bÃ¡o cÃ¡o sau khi incident xáº£y ra.
 
 ---
 
-#### Tóm tắt
+#### TÃ³m táº¯t
 
-Trong phần này, chúng ta đã cấu hình các thành phần phục vụ logging và lưu trữ bằng chứng cho AWS CloudSOC. CloudTrail ghi lại management events, VPC Flow Logs ghi lại metadata của network traffic, CloudWatch Logs hỗ trợ quan sát log, còn Amazon S3 được sử dụng để lưu audit logs và forensic evidence.
+Trong pháº§n nÃ y, chÃºng ta Ä‘Ã£ cáº¥u hÃ¬nh cÃ¡c thÃ nh pháº§n phá»¥c vá»¥ logging vÃ  lÆ°u trá»¯ báº±ng chá»©ng cho AWS CloudSOC. CloudTrail ghi láº¡i management events, VPC Flow Logs ghi láº¡i metadata cá»§a network traffic, CloudWatch Logs há»— trá»£ quan sÃ¡t log, cÃ²n Amazon S3 Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ lÆ°u audit logs vÃ  forensic evidence.
 
-Ở phần tiếp theo, chúng ta sẽ bật các dịch vụ **Threat Detection Services** như Amazon GuardDuty, AWS Security Hub, Amazon Detective và AWS Config để phát hiện và phân tích các mối đe dọa trong môi trường AWS.
+á»ž pháº§n tiáº¿p theo, chÃºng ta sáº½ báº­t cÃ¡c dá»‹ch vá»¥ **Threat Detection Services** nhÆ° Amazon GuardDuty, AWS Security Hub, Amazon Detective vÃ  AWS Config Ä‘á»ƒ phÃ¡t hiá»‡n vÃ  phÃ¢n tÃ­ch cÃ¡c má»‘i Ä‘e dá»a trong mÃ´i trÆ°á»ng AWS.

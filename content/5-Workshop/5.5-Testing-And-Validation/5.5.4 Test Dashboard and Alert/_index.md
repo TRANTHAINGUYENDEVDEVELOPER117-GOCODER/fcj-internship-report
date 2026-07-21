@@ -16,17 +16,17 @@ The overall workflow is:
 
 ```text
 Incident Response Lambda
-→ DynamoDB Incident Table
-→ SOC Dashboard
+â†’ DynamoDB Incident Table
+â†’ SOC Dashboard
 
 Incident Response Lambda
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 
 CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
+â†’ Amazon SNS
+â†’ Email / Slack
 ```
 
 This test validates that the dashboard and alerting layer work correctly after an incident is processed.
@@ -51,23 +51,23 @@ After completing this section, you will be able to confirm that:
 
 The following diagram shows the Dashboard and Alert test flow.
 
-![Test Dashboard and Alert Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/test-dashboard-alert-flow.png)
+![Test Dashboard and Alert Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/test-dashboard-alert-flow.png)
 
 The testing flow has two main validation paths:
 
 ```text
 Dashboard Validation:
 DynamoDB Incident Table
-→ Dashboard API Lambda
-→ API Gateway
-→ Amplify Dashboard
-→ SOC Analyst
+â†’ Dashboard API Lambda
+â†’ API Gateway
+â†’ Amplify Dashboard
+â†’ SOC Analyst
 
 Alert Validation:
 Incident Response Lambda / CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
 ---
@@ -91,7 +91,7 @@ Critical Findings
 Incident List
 ```
 
-![Dashboard Before Alert Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-before-alert-test.png)
+![Dashboard Before Alert Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-before-alert-test.png)
 
 At this stage, the dashboard acts as the monitoring interface for the SOC Analyst.
 
@@ -114,7 +114,7 @@ Approval Status: Approved
 Incident Status: Isolated
 ```
 
-![Dashboard Isolated Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-isolated-incident.png)
+![Dashboard Isolated Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-isolated-incident.png)
 
 This confirms that the dashboard can display the incident response result after auto isolation is completed.
 
@@ -140,7 +140,7 @@ ssmCommandId
 notificationMessageId
 ```
 
-![DynamoDB Notification Record](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dynamodb-notification-record.png)
+![DynamoDB Notification Record](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dynamodb-notification-record.png)
 
 The `notificationMessageId` field indicates that Lambda successfully called SNS publish and that SNS generated a message ID for the notification.
 
@@ -158,7 +158,7 @@ cloudsoc-incident-alerts
 
 This topic is used to send incident alerts to Email and Slack.
 
-![SNS Topic Subscriptions Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/sns-topic-subscriptions-validation.png)
+![SNS Topic Subscriptions Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/sns-topic-subscriptions-validation.png)
 
 The subscription status should be:
 
@@ -198,7 +198,7 @@ Snapshot IDs
 Evidence Path
 ```
 
-![Email Incident Alert Received](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/email-incident-alert-received.png)
+![Email Incident Alert Received](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/email-incident-alert-received.png)
 
 The email alert confirms that the SOC Analyst can receive a notification after an incident is processed.
 
@@ -216,7 +216,7 @@ The Slack channel used in this lab is:
 
 After SNS sends the message, the Slack channel displays a notification from AWS.
 
-![Slack Incident Alert Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/slack-incident-alert-validation.png)
+![Slack Incident Alert Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/slack-incident-alert-validation.png)
 
 Slack alerts help the SOC Analyst receive incident notifications quickly in the team communication channel.
 
@@ -248,7 +248,7 @@ The alarm used in this lab is:
 cloudsoc-incident-response-lambda-errors
 ```
 
-![CloudWatch Alarm Dashboard](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/cloudwatch-alarm-dashboard.png)
+![CloudWatch Alarm Dashboard](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/cloudwatch-alarm-dashboard.png)
 
 This alarm helps the SOC Analyst know when the incident response automation has an error and needs investigation.
 
@@ -262,12 +262,12 @@ The error alert flow is:
 
 ```text
 CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
-![CloudWatch Alarm Notification](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/cloudwatch-alarm-notification.png)
+![CloudWatch Alarm Notification](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/cloudwatch-alarm-notification.png)
 
 The alarm notification helps the SOC Analyst detect failures in the response workflow, such as Lambda errors or workflow execution failures.
 
@@ -286,7 +286,7 @@ Approval Status: Approved
 Notification: Sent
 ```
 
-![Dashboard Final Incident Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-final-incident-status.png)
+![Dashboard Final Incident Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-final-incident-status.png)
 
 This result confirms that the SOC Dashboard reflects the final state of the incident correctly.
 

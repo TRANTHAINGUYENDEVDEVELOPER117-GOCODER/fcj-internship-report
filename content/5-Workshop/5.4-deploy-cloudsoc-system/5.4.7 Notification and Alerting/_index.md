@@ -16,16 +16,16 @@ The main notification flow in this section is:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS Topic
-→ Email / SMS / Slack
+â†’ Amazon SNS Topic
+â†’ Email / SMS / Slack
 ```
 
 In addition, CloudWatch Alarm can send alerts when the Lambda function fails:
 
 ```text
 CloudWatch Alarm
-→ Amazon SNS Topic
-→ Email / SMS / Slack
+â†’ Amazon SNS Topic
+â†’ Email / SMS / Slack
 ```
 
 ---
@@ -48,23 +48,23 @@ After completing this section, you will have:
 
 The following diagram illustrates the notification flow of AWS CloudSOC.
 
-![Notification and Alerting Architecture](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/notification-alerting-architecture.png)
+![Notification and Alerting Architecture](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/notification-alerting-architecture.png)
 
 The main notification workflow is:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS
-→ Email / SMS / Slack
+â†’ Amazon SNS
+â†’ Email / SMS / Slack
 ```
 
 The error alerting workflow is:
 
 ```text
 CloudWatch Metrics
-→ CloudWatch Alarm
-→ Amazon SNS
-→ Email / SMS / Slack
+â†’ CloudWatch Alarm
+â†’ Amazon SNS
+â†’ Email / SMS / Slack
 ```
 
 In this architecture, Amazon SNS acts as the central notification distribution service. Lambda publishes incident response results to SNS, while CloudWatch Alarm sends alerts when Lambda errors occur.
@@ -92,7 +92,7 @@ In this architecture, Amazon SNS acts as the central notification distribution s
 Go to:
 
 ```text
-Amazon SNS → Topics → Create topic
+Amazon SNS â†’ Topics â†’ Create topic
 ```
 
 Configure the topic:
@@ -115,7 +115,7 @@ Expected result:
 The SNS Topic cloudsoc-incident-alerts is created successfully.
 ```
 
-![Create SNS Topic](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/create-sns-topic.png)
+![Create SNS Topic](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/create-sns-topic.png)
 
 ---
 
@@ -153,7 +153,7 @@ Expected result:
 The email subscription is created and is waiting for confirmation.
 ```
 
-![SNS Email Subscription](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-email-subscription.png)
+![SNS Email Subscription](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-email-subscription.png)
 
 ---
 
@@ -175,7 +175,7 @@ Expected result:
 The subscription status changes from Pending confirmation to Confirmed.
 ```
 
-![SNS Subscription Confirmed](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-subscription-confirmed.png)
+![SNS Subscription Confirmed](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-subscription-confirmed.png)
 
 ---
 
@@ -212,9 +212,9 @@ Expected result:
 The SOC Analyst receives a test alert email from SNS.
 ```
 
-![SNS Test Message](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/sns-test-message.png)
+![SNS Test Message](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/sns-test-message.png)
 
-![Email Alert Received](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/email-alert-received.png)
+![Email Alert Received](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/email-alert-received.png)
 
 ---
 
@@ -225,13 +225,13 @@ The Incident Response Lambda needs permission to publish messages to the SNS top
 Go to:
 
 ```text
-IAM → Roles → CloudSOC-Incident-Response-Lambda-Role
+IAM â†’ Roles â†’ CloudSOC-Incident-Response-Lambda-Role
 ```
 
 Choose:
 
 ```text
-Add permissions → Create inline policy
+Add permissions â†’ Create inline policy
 ```
 
 Open the:
@@ -270,7 +270,7 @@ Expected result:
 The Incident Response Lambda Role can publish messages to SNS.
 ```
 
-![Lambda SNS Permission](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-permission.png)
+![Lambda SNS Permission](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-permission.png)
 
 ---
 
@@ -279,8 +279,8 @@ The Incident Response Lambda Role can publish messages to SNS.
 Go to:
 
 ```text
-Lambda → cloudsoc-incident-response-lambda
-→ Configuration → Environment variables → Edit
+Lambda â†’ cloudsoc-incident-response-lambda
+â†’ Configuration â†’ Environment variables â†’ Edit
 ```
 
 Add the following environment variable:
@@ -301,7 +301,7 @@ Expected result:
 Lambda knows which SNS Topic to publish notifications to.
 ```
 
-![Lambda SNS Environment Variable](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-environment-variable.png)
+![Lambda SNS Environment Variable](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-environment-variable.png)
 
 ---
 
@@ -391,7 +391,7 @@ Expected result:
 Lambda can send a notification after processing an incident.
 ```
 
-![Lambda SNS Publish Code](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-publish-code.png)
+![Lambda SNS Publish Code](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-publish-code.png)
 
 ---
 
@@ -418,7 +418,7 @@ approvalStatus = Approved
 responseMode = AutoResponse
 ```
 
-![Lambda SNS Test Result](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/lambda-sns-test-result.png)
+![Lambda SNS Test Result](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/lambda-sns-test-result.png)
 
 Then check your email inbox.
 
@@ -435,7 +435,7 @@ Response Mode: AutoResponse
 Incident Status: Isolated
 ```
 
-![Incident Email Notification](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/incident-email-notification.png)
+![Incident Email Notification](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/incident-email-notification.png)
 
 ---
 
@@ -446,13 +446,13 @@ CloudWatch Alarm helps notify the SOC Analyst when the Incident Response Lambda 
 Go to:
 
 ```text
-CloudWatch → Alarms → All alarms → Create alarm
+CloudWatch â†’ Alarms â†’ All alarms â†’ Create alarm
 ```
 
 Select the metric:
 
 ```text
-Lambda → By Function Name → cloudsoc-incident-response-lambda → Errors
+Lambda â†’ By Function Name â†’ cloudsoc-incident-response-lambda â†’ Errors
 ```
 
 Configure the metric condition:
@@ -484,7 +484,7 @@ Expected result:
 A CloudWatch Alarm is created to monitor Incident Response Lambda errors.
 ```
 
-![Create Lambda Error Alarm](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/create-lambda-error-alarm.png)
+![Create Lambda Error Alarm](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/create-lambda-error-alarm.png)
 
 ---
 
@@ -527,9 +527,9 @@ Expected result:
 The SOC Analyst receives an email alert when the Incident Response Lambda fails.
 ```
 
-![CloudWatch Alarm In Alarm](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/cloudwatch-alarm-in-alarm.png)
+![CloudWatch Alarm In Alarm](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/cloudwatch-alarm-in-alarm.png)
 
-![Alarm Email Notification](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/alarm-email-notification.png)
+![Alarm Email Notification](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/alarm-email-notification.png)
 
 ---
 
@@ -541,18 +541,18 @@ The integration flow is:
 
 ```text
 Amazon SNS
-→ Amazon Q Developer in chat applications
-→ Slack Channel
+â†’ Amazon Q Developer in chat applications
+â†’ Slack Channel
 ```
 
 General configuration steps:
 
 ```text
 Amazon Q Developer in chat applications
-→ Configure Slack workspace
-→ Configure Slack channel
-→ Subscribe SNS topic
-→ Test notification
+â†’ Configure Slack workspace
+â†’ Configure Slack channel
+â†’ Subscribe SNS topic
+â†’ Test notification
 ```
 
 Expected result:
@@ -561,9 +561,9 @@ Expected result:
 Incident alerts are delivered to the Slack channel used by the SOC team.
 ```
 
-![Slack Channel Configuration](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/slack-channel-configuration.png)
+![Slack Channel Configuration](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/slack-channel-configuration.png)
 
-![Slack Incident Alert](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/slack-incident-alert.png)
+![Slack Incident Alert](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/slack-incident-alert.png)
 
 > **Note:** Slack integration is optional for this lab. Email notification is enough to demonstrate the notification flow.
 
@@ -574,7 +574,7 @@ Incident alerts are delivered to the Slack channel used by the SOC team.
 Go to:
 
 ```text
-DynamoDB → Tables → CloudSOC-IncidentTable → Explore table items
+DynamoDB â†’ Tables â†’ CloudSOC-IncidentTable â†’ Explore table items
 ```
 
 Find the latest incident.
@@ -595,7 +595,7 @@ Expected result:
 The incident record shows that the response action has completed and a notification has been sent.
 ```
 
-![DynamoDB Notification Updated](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.7-notification-and-alerting/dynamodb-notification-updated.png)
+![DynamoDB Notification Updated](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.7-Notification-And-Alerting/dynamodb-notification-updated.png)
 
 ---
 
@@ -634,12 +634,12 @@ The complete workflow after this section is:
 
 ```text
 GuardDuty Finding
-→ EventBridge
-→ Step Functions
-→ Incident Response Lambda
-→ Forensics / Snapshot / Isolation
-→ SNS Notification
-→ SOC Analyst
+â†’ EventBridge
+â†’ Step Functions
+â†’ Incident Response Lambda
+â†’ Forensics / Snapshot / Isolation
+â†’ SNS Notification
+â†’ SOC Analyst
 ```
 
 ---

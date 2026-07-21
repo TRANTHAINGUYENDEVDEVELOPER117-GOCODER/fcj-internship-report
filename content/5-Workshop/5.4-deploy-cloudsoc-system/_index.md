@@ -15,7 +15,7 @@ The goal of section 5.4 is to build a **Security Operations Center on AWS** that
 The overall system process is:
 
 ```text
-Detect → Investigate → Respond → Store Evidence → Notify
+Detect â†’ Investigate â†’ Respond â†’ Store Evidence â†’ Notify
 ```
 
 The system is implemented using a **serverless** and **event-driven** architecture. The main AWS services include Amazon GuardDuty, AWS Security Hub, Amazon EventBridge, AWS Step Functions, AWS Lambda, AWS Systems Manager, Amazon S3, Amazon DynamoDB, Amazon SNS, and Amazon CloudWatch.
@@ -43,18 +43,18 @@ After completing this section, the CloudSOC system will be able to:
 
 The following diagram shows the overall deployment flow of the CloudSOC system.
 
-![CloudSOC Deployment Flow](/images/5-Workshop/5.4-Deploy-cloudsoc-system/deployment-flow.png)
+![CloudSOC Deployment Flow](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/deployment-flow.png)
 
 The overall deployment flow is:
 
 ```text
 Network and EC2
-→ Logging and Evidence Storage
-→ Threat Detection Services
-→ EventBridge and Step Functions
-→ Dashboard and Approval Flow
-→ Forensics, Snapshot and Isolation
-→ Notification and Alerting
+â†’ Logging and Evidence Storage
+â†’ Threat Detection Services
+â†’ EventBridge and Step Functions
+â†’ Dashboard and Approval Flow
+â†’ Forensics, Snapshot and Isolation
+â†’ Notification and Alerting
 ```
 
 Each subsection in 5.4 deploys a specific group of components. When combined, these components form a complete SOC workflow on AWS.
@@ -93,24 +93,24 @@ Section 5.4 is divided into seven subsections. You should deploy them in the fol
 
 ```text
 5.4.1 Network and EC2 Workload
-        ↓
+        â†“
 5.4.2 Logging and Evidence Storage
-        ↓
+        â†“
 5.4.3 Threat Detection Services
-        ↓
+        â†“
 5.4.4 EventBridge and Step Functions
-        ↓
+        â†“
 5.4.5 Dashboard and Approval Flow
-        ↓
+        â†“
 5.4.6 Forensics, Snapshot and Isolation
-        ↓
+        â†“
 5.4.7 Notification and Alerting
 ```
 
 This order helps the system follow the correct deployment flow:
 
 ```text
-Infrastructure → Logging → Detection → Workflow → Dashboard → Response → Notification
+Infrastructure â†’ Logging â†’ Detection â†’ Workflow â†’ Dashboard â†’ Response â†’ Notification
 ```
 
 ---
@@ -152,9 +152,9 @@ Basic network flow:
 
 ```text
 Internet
-→ Internet Gateway
-→ Public Subnet
-→ EC2 Workload
+â†’ Internet Gateway
+â†’ Public Subnet
+â†’ EC2 Workload
 ```
 
 The workload EC2 instance is tagged with:
@@ -190,10 +190,10 @@ The goal is to make sure important events and incident response evidence are sto
 Main logging flow:
 
 ```text
-CloudTrail → S3 Audit Logs
-VPC Flow Logs → CloudWatch Logs
-Incident Response Lambda → S3 Evidence Bucket
-Systems Manager → S3 Evidence Bucket
+CloudTrail â†’ S3 Audit Logs
+VPC Flow Logs â†’ CloudWatch Logs
+Incident Response Lambda â†’ S3 Evidence Bucket
+Systems Manager â†’ S3 Evidence Bucket
 ```
 
 Expected result after section 5.4.2:
@@ -221,17 +221,17 @@ Main detection flow:
 
 ```text
 CloudTrail / VPC Flow Logs / DNS Logs
-→ GuardDuty
-→ Security Hub
-→ EventBridge
+â†’ GuardDuty
+â†’ Security Hub
+â†’ EventBridge
 ```
 
 Detective supports investigation after findings are generated:
 
 ```text
 GuardDuty Finding
-→ Amazon Detective
-→ Investigation
+â†’ Amazon Detective
+â†’ Investigation
 ```
 
 Expected result after section 5.4.3:
@@ -260,10 +260,10 @@ Main workflow:
 
 ```text
 GuardDuty Finding
-→ EventBridge Rule
-→ Step Functions
-→ Evaluate Finding
-→ Alert Only / Approval Required / Auto Response
+â†’ EventBridge Rule
+â†’ Step Functions
+â†’ Evaluate Finding
+â†’ Alert Only / Approval Required / Auto Response
 ```
 
 Response branches:
@@ -302,21 +302,21 @@ Dashboard flow:
 
 ```text
 SOC Analyst
-→ Amplify Dashboard
-→ Cognito Authentication
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
+â†’ Amplify Dashboard
+â†’ Cognito Authentication
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
 ```
 
 Approval flow:
 
 ```text
 SOC Analyst
-→ Approve / Reject
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
+â†’ Approve / Reject
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
 ```
 
 Expected result after section 5.4.5:
@@ -344,10 +344,10 @@ When Lambda is triggered, the system performs the following actions:
 
 ```text
 Collect Evidence
-→ Create EBS Snapshot
-→ Store Evidence in S3
-→ Replace SG-Workload with SG-Isolation
-→ Update DynamoDB Incident Status
+â†’ Create EBS Snapshot
+â†’ Store Evidence in S3
+â†’ Replace SG-Workload with SG-Isolation
+â†’ Update DynamoDB Incident Status
 ```
 
 Incident Response Lambda performs the following actions:
@@ -386,18 +386,18 @@ Main notification flow:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
 Error alert flow:
 
 ```text
 CloudWatch Metrics
-→ CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
+â†’ CloudWatch Alarm
+â†’ Amazon SNS
+â†’ Email / Slack
 ```
 
 The goal is to help SOC Analysts receive timely notifications when incidents are processed or when the incident response workflow fails.
@@ -414,7 +414,7 @@ SNS successfully sends notifications to Email and optional Slack after an incide
 
 The following table summarizes the components that should be completed during the deployment section.
 
-![CloudSOC Deployment Checklist](/images/5-Workshop/5.4-Deploy-cloudsoc-system/deployment-checklist.png)
+![CloudSOC Deployment Checklist](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/deployment-checklist.png)
 
 | Item | Expected Status |
 |---|---|
@@ -491,14 +491,14 @@ The system can perform the following workflow:
 
 ```text
 GuardDuty detects a finding
-→ EventBridge routes the finding
-→ Step Functions evaluates the response path
-→ Lambda performs response actions
-→ Systems Manager collects evidence
-→ EBS Snapshot preserves forensic state
-→ EC2 is isolated with SG-Isolation
-→ DynamoDB records incident status
-→ SNS sends notification to SOC Analyst
+â†’ EventBridge routes the finding
+â†’ Step Functions evaluates the response path
+â†’ Lambda performs response actions
+â†’ Systems Manager collects evidence
+â†’ EBS Snapshot preserves forensic state
+â†’ EC2 is isolated with SG-Isolation
+â†’ DynamoDB records incident status
+â†’ SNS sends notification to SOC Analyst
 ```
 
 The main completed components include:

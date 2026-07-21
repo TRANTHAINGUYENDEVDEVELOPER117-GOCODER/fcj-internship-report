@@ -8,54 +8,54 @@ pre : " <b> 5.4.1. </b> "
 
 #### Network and EC2 Workload
 
-Trong phần này, chúng ta sẽ triển khai lớp **Network and EC2 Workload** cho hệ thống AWS CloudSOC. Đây là lớp nền tảng dùng để tạo môi trường mạng, triển khai EC2 instance mục tiêu và chuẩn bị security group phục vụ cho quá trình cô lập sự cố.
+Trong pháº§n nÃ y, chÃºng ta sáº½ triá»ƒn khai lá»›p **Network and EC2 Workload** cho há»‡ thá»‘ng AWS CloudSOC. ÄÃ¢y lÃ  lá»›p ná»n táº£ng dÃ¹ng Ä‘á»ƒ táº¡o mÃ´i trÆ°á»ng máº¡ng, triá»ƒn khai EC2 instance má»¥c tiÃªu vÃ  chuáº©n bá»‹ security group phá»¥c vá»¥ cho quÃ¡ trÃ¬nh cÃ´ láº­p sá»± cá»‘.
 
-EC2 instance trong phần này sẽ đóng vai trò là workload thử nghiệm để mô phỏng các hành vi đáng ngờ như port scanning hoặc SSH brute-force. Sau đó, các dịch vụ như GuardDuty, EventBridge, Step Functions và Lambda sẽ sử dụng EC2 này để kiểm thử luồng phát hiện và phản ứng sự cố.
-
----
-
-#### Mục tiêu
-
-Sau khi hoàn thành phần này, bạn sẽ có:
-
-+ Một Amazon VPC dùng cho môi trường CloudSOC Lab.
-+ Một Public Subnet để triển khai EC2 workload.
-+ Một Internet Gateway để EC2 có thể truy cập internet.
-+ Một Route Table cho Public Subnet.
-+ Một EC2 instance dùng làm workload mục tiêu.
-+ Một security group bình thường tên `SG-Workload`.
-+ Một security group cô lập tên `SG-Isolation`.
-+ Một IAM Role cho phép EC2 kết nối với AWS Systems Manager.
+EC2 instance trong pháº§n nÃ y sáº½ Ä‘Ã³ng vai trÃ² lÃ  workload thá»­ nghiá»‡m Ä‘á»ƒ mÃ´ phá»ng cÃ¡c hÃ nh vi Ä‘Ã¡ng ngá» nhÆ° port scanning hoáº·c SSH brute-force. Sau Ä‘Ã³, cÃ¡c dá»‹ch vá»¥ nhÆ° GuardDuty, EventBridge, Step Functions vÃ  Lambda sáº½ sá»­ dá»¥ng EC2 nÃ y Ä‘á»ƒ kiá»ƒm thá»­ luá»“ng phÃ¡t hiá»‡n vÃ  pháº£n á»©ng sá»± cá»‘.
 
 ---
 
-#### Kiến trúc Network and EC2
+#### Má»¥c tiÃªu
 
-Sơ đồ sau minh họa phần Network and EC2 Workload trong hệ thống AWS CloudSOC.
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, báº¡n sáº½ cÃ³:
 
-![Network and EC2 Workload](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/network-ec2-workload.png)
++ Má»™t Amazon VPC dÃ¹ng cho mÃ´i trÆ°á»ng CloudSOC Lab.
++ Má»™t Public Subnet Ä‘á»ƒ triá»ƒn khai EC2 workload.
++ Má»™t Internet Gateway Ä‘á»ƒ EC2 cÃ³ thá»ƒ truy cáº­p internet.
++ Má»™t Route Table cho Public Subnet.
++ Má»™t EC2 instance dÃ¹ng lÃ m workload má»¥c tiÃªu.
++ Má»™t security group bÃ¬nh thÆ°á»ng tÃªn `SG-Workload`.
++ Má»™t security group cÃ´ láº­p tÃªn `SG-Isolation`.
++ Má»™t IAM Role cho phÃ©p EC2 káº¿t ná»‘i vá»›i AWS Systems Manager.
 
-Luồng triển khai chính:
+---
+
+#### Kiáº¿n trÃºc Network and EC2
+
+SÆ¡ Ä‘á»“ sau minh há»a pháº§n Network and EC2 Workload trong há»‡ thá»‘ng AWS CloudSOC.
+
+![Network and EC2 Workload](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/network-ec2-workload.png)
+
+Luá»“ng triá»ƒn khai chÃ­nh:
 
 ```text
 AWS Region
-→ VPC
-→ Public Subnet
-→ Internet Gateway
-→ Route Table
-→ EC2 Workload
-→ SG-Workload / SG-Isolation
+â†’ VPC
+â†’ Public Subnet
+â†’ Internet Gateway
+â†’ Route Table
+â†’ EC2 Workload
+â†’ SG-Workload / SG-Isolation
 ```
 
-Trong workshop này, EC2 được đặt trong Public Subnet để đơn giản hóa quá trình mô phỏng tấn công và kiểm thử GuardDuty finding. Đây là thiết kế dành cho môi trường Lab / Proof of Concept, không phải kiến trúc production hoàn chỉnh.
+Trong workshop nÃ y, EC2 Ä‘Æ°á»£c Ä‘áº·t trong Public Subnet Ä‘á»ƒ Ä‘Æ¡n giáº£n hÃ³a quÃ¡ trÃ¬nh mÃ´ phá»ng táº¥n cÃ´ng vÃ  kiá»ƒm thá»­ GuardDuty finding. ÄÃ¢y lÃ  thiáº¿t káº¿ dÃ nh cho mÃ´i trÆ°á»ng Lab / Proof of Concept, khÃ´ng pháº£i kiáº¿n trÃºc production hoÃ n chá»‰nh.
 
 ---
 
-#### Thông tin cấu hình đề xuất
+#### ThÃ´ng tin cáº¥u hÃ¬nh Ä‘á» xuáº¥t
 
-Bạn có thể sử dụng các thông tin cấu hình sau cho workshop:
+Báº¡n cÃ³ thá»ƒ sá»­ dá»¥ng cÃ¡c thÃ´ng tin cáº¥u hÃ¬nh sau cho workshop:
 
-| Thành phần | Giá trị đề xuất |
+| ThÃ nh pháº§n | GiÃ¡ trá»‹ Ä‘á» xuáº¥t |
 |---|---|
 | Region | `ap-southeast-1` |
 | VPC Name | `cloudsoc-vpc` |
@@ -65,266 +65,266 @@ Bạn có thể sử dụng các thông tin cấu hình sau cho workshop:
 | Internet Gateway | `cloudsoc-igw` |
 | Route Table | `cloudsoc-public-rtb` |
 | EC2 Name | `cloudsoc-workload-ec2` |
-| Security Group bình thường | `SG-Workload` |
-| Security Group cô lập | `SG-Isolation` |
+| Security Group bÃ¬nh thÆ°á»ng | `SG-Workload` |
+| Security Group cÃ´ láº­p | `SG-Isolation` |
 | EC2 IAM Role | `CloudSOC-EC2-SSM-Role` |
 
 ---
 
-#### Bước 1: Tạo VPC
+#### BÆ°á»›c 1: Táº¡o VPC
 
-Truy cập AWS Management Console và mở dịch vụ **VPC**.
+Truy cáº­p AWS Management Console vÃ  má»Ÿ dá»‹ch vá»¥ **VPC**.
 
-Chọn:
+Chá»n:
 
 ```text
-VPC → Your VPCs → Create VPC
+VPC â†’ Your VPCs â†’ Create VPC
 ```
 
-Cấu hình VPC như sau:
+Cáº¥u hÃ¬nh VPC nhÆ° sau:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Name tag | `cloudsoc-vpc` |
 | IPv4 CIDR block | `10.0.0.0/16` |
 | IPv6 CIDR block | No IPv6 CIDR block |
 | Tenancy | Default |
 
-Sau đó chọn **Create VPC**.
+Sau Ä‘Ã³ chá»n **Create VPC**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-VPC cloudsoc-vpc được tạo thành công.
+VPC cloudsoc-vpc Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![Create VPC](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/create-vpc.png)
+![Create VPC](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/create-vpc.png)
 
 ---
 
-#### Bước 2: Tạo Public Subnet
+#### BÆ°á»›c 2: Táº¡o Public Subnet
 
-Trong VPC Console, chọn:
+Trong VPC Console, chá»n:
 
 ```text
-Subnets → Create subnet
+Subnets â†’ Create subnet
 ```
 
-Chọn VPC vừa tạo:
+Chá»n VPC vá»«a táº¡o:
 
 ```text
 cloudsoc-vpc
 ```
 
-Cấu hình subnet:
+Cáº¥u hÃ¬nh subnet:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Subnet name | `cloudsoc-public-subnet` |
-| Availability Zone | Chọn một AZ trong `ap-southeast-1` |
+| Availability Zone | Chá»n má»™t AZ trong `ap-southeast-1` |
 | IPv4 subnet CIDR block | `10.0.1.0/24` |
 
-Sau đó chọn **Create subnet**.
+Sau Ä‘Ã³ chá»n **Create subnet**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Public Subnet cloudsoc-public-subnet được tạo trong VPC cloudsoc-vpc.
+Public Subnet cloudsoc-public-subnet Ä‘Æ°á»£c táº¡o trong VPC cloudsoc-vpc.
 ```
 
-![Create Public Subnet](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/create-public-subnet.png)
+![Create Public Subnet](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/create-public-subnet.png)
 
 ---
 
-#### Bước 3: Bật Auto-assign Public IPv4
+#### BÆ°á»›c 3: Báº­t Auto-assign Public IPv4
 
-Để EC2 trong Public Subnet có thể nhận Public IPv4 khi khởi tạo, cần bật tính năng Auto-assign public IPv4.
+Äá»ƒ EC2 trong Public Subnet cÃ³ thá»ƒ nháº­n Public IPv4 khi khá»Ÿi táº¡o, cáº§n báº­t tÃ­nh nÄƒng Auto-assign public IPv4.
 
-Chọn subnet vừa tạo:
+Chá»n subnet vá»«a táº¡o:
 
 ```text
 cloudsoc-public-subnet
 ```
 
-Sau đó chọn:
+Sau Ä‘Ã³ chá»n:
 
 ```text
-Actions → Edit subnet settings
+Actions â†’ Edit subnet settings
 ```
 
-Bật tùy chọn:
+Báº­t tÃ¹y chá»n:
 
 ```text
 Enable auto-assign public IPv4 address
 ```
 
-Chọn **Save**.
+Chá»n **Save**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Public Subnet đã được bật Auto-assign public IPv4.
+Public Subnet Ä‘Ã£ Ä‘Æ°á»£c báº­t Auto-assign public IPv4.
 ```
 
 ---
 
-#### Bước 4: Tạo Internet Gateway
+#### BÆ°á»›c 4: Táº¡o Internet Gateway
 
-Trong VPC Console, chọn:
+Trong VPC Console, chá»n:
 
 ```text
-Internet Gateways → Create internet gateway
+Internet Gateways â†’ Create internet gateway
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Name tag | `cloudsoc-igw` |
 
-Chọn **Create internet gateway**.
+Chá»n **Create internet gateway**.
 
-Sau khi tạo xong, chọn Internet Gateway vừa tạo và chọn:
+Sau khi táº¡o xong, chá»n Internet Gateway vá»«a táº¡o vÃ  chá»n:
 
 ```text
-Actions → Attach to VPC
+Actions â†’ Attach to VPC
 ```
 
-Chọn VPC:
+Chá»n VPC:
 
 ```text
 cloudsoc-vpc
 ```
 
-Sau đó chọn **Attach internet gateway**.
+Sau Ä‘Ã³ chá»n **Attach internet gateway**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Internet Gateway cloudsoc-igw đã được gắn vào VPC cloudsoc-vpc.
+Internet Gateway cloudsoc-igw Ä‘Ã£ Ä‘Æ°á»£c gáº¯n vÃ o VPC cloudsoc-vpc.
 ```
 
-![Create Internet Gateway](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/create-internet-gateway.png)
+![Create Internet Gateway](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/create-internet-gateway.png)
 
 ---
 
-#### Bước 5: Tạo Route Table cho Public Subnet
+#### BÆ°á»›c 5: Táº¡o Route Table cho Public Subnet
 
-Trong VPC Console, chọn:
+Trong VPC Console, chá»n:
 
 ```text
-Route Tables → Create route table
+Route Tables â†’ Create route table
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Name | `cloudsoc-public-rtb` |
 | VPC | `cloudsoc-vpc` |
 
-Sau đó chọn **Create route table**.
+Sau Ä‘Ã³ chá»n **Create route table**.
 
-Tiếp theo, chọn route table vừa tạo và vào tab **Routes**.
+Tiáº¿p theo, chá»n route table vá»«a táº¡o vÃ  vÃ o tab **Routes**.
 
-Chọn:
+Chá»n:
 
 ```text
-Edit routes → Add route
+Edit routes â†’ Add route
 ```
 
-Thêm route:
+ThÃªm route:
 
 | Destination | Target |
 |---|---|
 | `0.0.0.0/0` | `cloudsoc-igw` |
 
-Chọn **Save changes**.
+Chá»n **Save changes**.
 
-Sau đó vào tab **Subnet associations** và chọn:
+Sau Ä‘Ã³ vÃ o tab **Subnet associations** vÃ  chá»n:
 
 ```text
 Edit subnet associations
 ```
 
-Chọn subnet:
+Chá»n subnet:
 
 ```text
 cloudsoc-public-subnet
 ```
 
-Chọn **Save associations**.
+Chá»n **Save associations**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Public Subnet đã có route 0.0.0.0/0 đi qua Internet Gateway.
+Public Subnet Ä‘Ã£ cÃ³ route 0.0.0.0/0 Ä‘i qua Internet Gateway.
 ```
 
-![Public Route Table](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/public-route-table.png)
+![Public Route Table](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/public-route-table.png)
 
 ---
 
-#### Bước 6: Tạo IAM Role cho EC2 Systems Manager
+#### BÆ°á»›c 6: Táº¡o IAM Role cho EC2 Systems Manager
 
-EC2 cần IAM Role để có thể kết nối với AWS Systems Manager. Điều này giúp Systems Manager có thể chạy command để thu thập forensic evidence trong các phần sau.
+EC2 cáº§n IAM Role Ä‘á»ƒ cÃ³ thá»ƒ káº¿t ná»‘i vá»›i AWS Systems Manager. Äiá»u nÃ y giÃºp Systems Manager cÃ³ thá»ƒ cháº¡y command Ä‘á»ƒ thu tháº­p forensic evidence trong cÃ¡c pháº§n sau.
 
-Mở dịch vụ **IAM**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **IAM**, chá»n:
 
 ```text
-Roles → Create role
+Roles â†’ Create role
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Trusted entity type | AWS service |
 | Use case | EC2 |
 
-Ở phần permissions, gắn policy:
+á»ž pháº§n permissions, gáº¯n policy:
 
 ```text
 AmazonSSMManagedInstanceCore
 ```
 
-Đặt tên role:
+Äáº·t tÃªn role:
 
 ```text
 CloudSOC-EC2-SSM-Role
 ```
 
-Sau đó chọn **Create role**.
+Sau Ä‘Ã³ chá»n **Create role**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-IAM Role CloudSOC-EC2-SSM-Role được tạo thành công.
+IAM Role CloudSOC-EC2-SSM-Role Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![EC2 SSM Role](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/ec2-ssm-role.png)
+![EC2 SSM Role](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/ec2-ssm-role.png)
 
 ---
 
-#### Bước 7: Tạo Security Group SG-Workload
+#### BÆ°á»›c 7: Táº¡o Security Group SG-Workload
 
-`SG-Workload` là security group ban đầu được gắn cho EC2 instance. Security group này cho phép EC2 hoạt động trong trạng thái bình thường.
+`SG-Workload` lÃ  security group ban Ä‘áº§u Ä‘Æ°á»£c gáº¯n cho EC2 instance. Security group nÃ y cho phÃ©p EC2 hoáº¡t Ä‘á»™ng trong tráº¡ng thÃ¡i bÃ¬nh thÆ°á»ng.
 
-Trong EC2 Console, chọn:
+Trong EC2 Console, chá»n:
 
 ```text
-Security Groups → Create security group
+Security Groups â†’ Create security group
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Security group name | `SG-Workload` |
 | Description | `Security group for CloudSOC workload EC2` |
 | VPC | `cloudsoc-vpc` |
 
-Inbound rules đề xuất cho môi trường lab:
+Inbound rules Ä‘á» xuáº¥t cho mÃ´i trÆ°á»ng lab:
 
 | Type | Protocol | Port | Source |
 |---|---|---|---|
@@ -336,31 +336,31 @@ Outbound rules:
 |---|---|---|---|
 | All traffic | All | All | `0.0.0.0/0` |
 
-> **Lưu ý:** Chỉ nên mở SSH từ **My IP** để giảm rủi ro. Không nên mở SSH `0.0.0.0/0` nếu không cần thiết.
+> **LÆ°u Ã½:** Chá»‰ nÃªn má»Ÿ SSH tá»« **My IP** Ä‘á»ƒ giáº£m rá»§i ro. KhÃ´ng nÃªn má»Ÿ SSH `0.0.0.0/0` náº¿u khÃ´ng cáº§n thiáº¿t.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-Security Group SG-Workload được tạo thành công.
+Security Group SG-Workload Ä‘Æ°á»£c táº¡o thÃ nh cÃ´ng.
 ```
 
-![SG Workload](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/sg-workload.png)
+![SG Workload](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/sg-workload.png)
 
 ---
 
-#### Bước 8: Tạo Security Group SG-Isolation
+#### BÆ°á»›c 8: Táº¡o Security Group SG-Isolation
 
-`SG-Isolation` là security group dùng để cô lập EC2 khi xảy ra sự cố. Security group này được tạo sẵn trong VPC và không cho phép inbound hoặc outbound traffic.
+`SG-Isolation` lÃ  security group dÃ¹ng Ä‘á»ƒ cÃ´ láº­p EC2 khi xáº£y ra sá»± cá»‘. Security group nÃ y Ä‘Æ°á»£c táº¡o sáºµn trong VPC vÃ  khÃ´ng cho phÃ©p inbound hoáº·c outbound traffic.
 
-Trong EC2 Console, chọn:
+Trong EC2 Console, chá»n:
 
 ```text
-Security Groups → Create security group
+Security Groups â†’ Create security group
 ```
 
-Cấu hình:
+Cáº¥u hÃ¬nh:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Security group name | `SG-Isolation` |
 | Description | `Isolation security group for compromised EC2 instance` |
@@ -369,78 +369,78 @@ Cấu hình:
 Inbound rules:
 
 ```text
-Không thêm inbound rule.
+KhÃ´ng thÃªm inbound rule.
 ```
 
 Outbound rules:
 
 ```text
-Xóa default outbound rule 0.0.0.0/0.
+XÃ³a default outbound rule 0.0.0.0/0.
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-SG-Isolation không có inbound rule và không có outbound rule.
+SG-Isolation khÃ´ng cÃ³ inbound rule vÃ  khÃ´ng cÃ³ outbound rule.
 ```
 
-![SG Isolation](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/sg-isolation.png)
+![SG Isolation](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/sg-isolation.png)
 
-> **Lưu ý:** Khi tạo security group mới, AWS thường tự tạo outbound rule cho phép tất cả traffic. Bạn cần xóa outbound rule này để `SG-Isolation` thực sự chặn outbound traffic.
+> **LÆ°u Ã½:** Khi táº¡o security group má»›i, AWS thÆ°á»ng tá»± táº¡o outbound rule cho phÃ©p táº¥t cáº£ traffic. Báº¡n cáº§n xÃ³a outbound rule nÃ y Ä‘á»ƒ `SG-Isolation` thá»±c sá»± cháº·n outbound traffic.
 
 ---
 
-#### Bước 9: Khởi tạo EC2 Workload
+#### BÆ°á»›c 9: Khá»Ÿi táº¡o EC2 Workload
 
-Mở dịch vụ **EC2**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **EC2**, chá»n:
 
 ```text
-Instances → Launch instances
+Instances â†’ Launch instances
 ```
 
-Cấu hình EC2:
+Cáº¥u hÃ¬nh EC2:
 
-| Mục | Giá trị |
+| Má»¥c | GiÃ¡ trá»‹ |
 |---|---|
 | Name | `cloudsoc-workload-ec2` |
 | AMI | Amazon Linux 2023 |
-| Instance type | `t2.micro` hoặc `t3.micro` |
-| Key pair | Chọn key pair có sẵn hoặc tạo mới |
+| Instance type | `t2.micro` hoáº·c `t3.micro` |
+| Key pair | Chá»n key pair cÃ³ sáºµn hoáº·c táº¡o má»›i |
 | VPC | `cloudsoc-vpc` |
 | Subnet | `cloudsoc-public-subnet` |
 | Auto-assign public IP | Enable |
 | Security Group | `SG-Workload` |
 | IAM instance profile | `CloudSOC-EC2-SSM-Role` |
 
-Ở phần **Advanced details**, gắn IAM instance profile:
+á»ž pháº§n **Advanced details**, gáº¯n IAM instance profile:
 
 ```text
 CloudSOC-EC2-SSM-Role
 ```
 
-Sau đó chọn **Launch instance**.
+Sau Ä‘Ã³ chá»n **Launch instance**.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-EC2 instance cloudsoc-workload-ec2 được khởi tạo thành công.
+EC2 instance cloudsoc-workload-ec2 Ä‘Æ°á»£c khá»Ÿi táº¡o thÃ nh cÃ´ng.
 ```
 
-![Launch EC2](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/launch-ec2.png)
+![Launch EC2](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/launch-ec2.png)
 
 ---
 
-#### Bước 10: Gắn tag AutoIsolate cho EC2
+#### BÆ°á»›c 10: Gáº¯n tag AutoIsolate cho EC2
 
-Tag `AutoIsolate=true` được sử dụng để xác định EC2 instance nào được phép tự động cô lập khi có finding nghiêm trọng.
+Tag `AutoIsolate=true` Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ xÃ¡c Ä‘á»‹nh EC2 instance nÃ o Ä‘Æ°á»£c phÃ©p tá»± Ä‘á»™ng cÃ´ láº­p khi cÃ³ finding nghiÃªm trá»ng.
 
-Chọn EC2 instance:
+Chá»n EC2 instance:
 
 ```text
 cloudsoc-workload-ec2
 ```
 
-Vào tab **Tags**, chọn **Manage tags** và thêm tag:
+VÃ o tab **Tags**, chá»n **Manage tags** vÃ  thÃªm tag:
 
 | Key | Value |
 |---|---|
@@ -448,99 +448,99 @@ Vào tab **Tags**, chọn **Manage tags** và thêm tag:
 | `Project` | `AWS-CloudSOC` |
 | `Environment` | `Lab` |
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-EC2 instance đã có tag AutoIsolate=true.
+EC2 instance Ä‘Ã£ cÃ³ tag AutoIsolate=true.
 ```
 
-![EC2 Tags](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/ec2-tags.png)
+![EC2 Tags](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/ec2-tags.png)
 
 ---
 
-#### Bước 11: Kiểm tra kết nối Systems Manager
+#### BÆ°á»›c 11: Kiá»ƒm tra káº¿t ná»‘i Systems Manager
 
-Sau khi EC2 chạy, kiểm tra xem instance đã kết nối được với AWS Systems Manager hay chưa.
+Sau khi EC2 cháº¡y, kiá»ƒm tra xem instance Ä‘Ã£ káº¿t ná»‘i Ä‘Æ°á»£c vá»›i AWS Systems Manager hay chÆ°a.
 
-Mở dịch vụ **Systems Manager**, chọn:
+Má»Ÿ dá»‹ch vá»¥ **Systems Manager**, chá»n:
 
 ```text
 Fleet Manager
 ```
 
-Hoặc:
+Hoáº·c:
 
 ```text
-Session Manager → Start session
+Session Manager â†’ Start session
 ```
 
-Kiểm tra xem EC2 instance `cloudsoc-workload-ec2` có xuất hiện trong danh sách managed instances hay không.
+Kiá»ƒm tra xem EC2 instance `cloudsoc-workload-ec2` cÃ³ xuáº¥t hiá»‡n trong danh sÃ¡ch managed instances hay khÃ´ng.
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-EC2 instance xuất hiện trong Systems Manager Managed Nodes.
+EC2 instance xuáº¥t hiá»‡n trong Systems Manager Managed Nodes.
 ```
 
-![SSM Managed Instance](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.1-network-and-ec2/ssm-managed-instance.png)
+![SSM Managed Instance](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.1-Network-and-EC2/ssm-managed-instance.png)
 
-Nếu EC2 chưa xuất hiện trong Systems Manager, hãy kiểm tra:
+Náº¿u EC2 chÆ°a xuáº¥t hiá»‡n trong Systems Manager, hÃ£y kiá»ƒm tra:
 
-+ EC2 đã gắn IAM Role `CloudSOC-EC2-SSM-Role`.
-+ EC2 có outbound internet access.
-+ Security group `SG-Workload` cho phép outbound traffic.
-+ Public Subnet có route `0.0.0.0/0` đến Internet Gateway.
-+ EC2 đã được gán Public IPv4.
-+ SSM Agent đang chạy trên instance.
++ EC2 Ä‘Ã£ gáº¯n IAM Role `CloudSOC-EC2-SSM-Role`.
++ EC2 cÃ³ outbound internet access.
++ Security group `SG-Workload` cho phÃ©p outbound traffic.
++ Public Subnet cÃ³ route `0.0.0.0/0` Ä‘áº¿n Internet Gateway.
++ EC2 Ä‘Ã£ Ä‘Æ°á»£c gÃ¡n Public IPv4.
++ SSM Agent Ä‘ang cháº¡y trÃªn instance.
 
 ---
 
-#### Bước 12: Kiểm tra trạng thái Security Group
+#### BÆ°á»›c 12: Kiá»ƒm tra tráº¡ng thÃ¡i Security Group
 
-Kiểm tra EC2 instance đang sử dụng security group ban đầu:
+Kiá»ƒm tra EC2 instance Ä‘ang sá»­ dá»¥ng security group ban Ä‘áº§u:
 
 ```text
-cloudsoc-workload-ec2 → Security → Security groups
+cloudsoc-workload-ec2 â†’ Security â†’ Security groups
 ```
 
-Kết quả mong đợi:
+Káº¿t quáº£ mong Ä‘á»£i:
 
 ```text
-EC2 đang được gắn SG-Workload.
-SG-Isolation đã được tạo sẵn nhưng chưa gắn vào EC2.
+EC2 Ä‘ang Ä‘Æ°á»£c gáº¯n SG-Workload.
+SG-Isolation Ä‘Ã£ Ä‘Æ°á»£c táº¡o sáºµn nhÆ°ng chÆ°a gáº¯n vÃ o EC2.
 ```
 
-Trong các phần sau, Lambda sẽ thực hiện hành động cô lập bằng cách thay thế security group:
+Trong cÃ¡c pháº§n sau, Lambda sáº½ thá»±c hiá»‡n hÃ nh Ä‘á»™ng cÃ´ láº­p báº±ng cÃ¡ch thay tháº¿ security group:
 
 ```text
-SG-Workload → SG-Isolation
+SG-Workload â†’ SG-Isolation
 ```
 
 ---
 
-#### Kết quả sau khi hoàn thành
+#### Káº¿t quáº£ sau khi hoÃ n thÃ nh
 
-Sau khi hoàn thành phần này, bạn đã triển khai xong lớp Network and EC2 Workload cho hệ thống AWS CloudSOC.
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, báº¡n Ä‘Ã£ triá»ƒn khai xong lá»›p Network and EC2 Workload cho há»‡ thá»‘ng AWS CloudSOC.
 
-Kết quả cần đạt được:
+Káº¿t quáº£ cáº§n Ä‘áº¡t Ä‘Æ°á»£c:
 
-- [ ] VPC `cloudsoc-vpc` đã được tạo.
-- [ ] Public Subnet `cloudsoc-public-subnet` đã được tạo.
-- [ ] Internet Gateway `cloudsoc-igw` đã được gắn vào VPC.
-- [ ] Route Table `cloudsoc-public-rtb` có route ra Internet Gateway.
-- [ ] EC2 instance `cloudsoc-workload-ec2` đang chạy.
-- [ ] EC2 được gắn security group `SG-Workload`.
-- [ ] Security group `SG-Isolation` đã được tạo và không có inbound/outbound rule.
-- [ ] EC2 có IAM Role `CloudSOC-EC2-SSM-Role`.
-- [ ] EC2 xuất hiện trong AWS Systems Manager.
-- [ ] EC2 có tag `AutoIsolate=true`.
+- [ ] VPC `cloudsoc-vpc` Ä‘Ã£ Ä‘Æ°á»£c táº¡o.
+- [ ] Public Subnet `cloudsoc-public-subnet` Ä‘Ã£ Ä‘Æ°á»£c táº¡o.
+- [ ] Internet Gateway `cloudsoc-igw` Ä‘Ã£ Ä‘Æ°á»£c gáº¯n vÃ o VPC.
+- [ ] Route Table `cloudsoc-public-rtb` cÃ³ route ra Internet Gateway.
+- [ ] EC2 instance `cloudsoc-workload-ec2` Ä‘ang cháº¡y.
+- [ ] EC2 Ä‘Æ°á»£c gáº¯n security group `SG-Workload`.
+- [ ] Security group `SG-Isolation` Ä‘Ã£ Ä‘Æ°á»£c táº¡o vÃ  khÃ´ng cÃ³ inbound/outbound rule.
+- [ ] EC2 cÃ³ IAM Role `CloudSOC-EC2-SSM-Role`.
+- [ ] EC2 xuáº¥t hiá»‡n trong AWS Systems Manager.
+- [ ] EC2 cÃ³ tag `AutoIsolate=true`.
 
 ---
 
-#### Tóm tắt
+#### TÃ³m táº¯t
 
-Trong phần này, chúng ta đã tạo môi trường mạng cơ bản cho CloudSOC Lab, bao gồm VPC, Public Subnet, Internet Gateway, Route Table, EC2 instance và hai security group quan trọng.
+Trong pháº§n nÃ y, chÃºng ta Ä‘Ã£ táº¡o mÃ´i trÆ°á»ng máº¡ng cÆ¡ báº£n cho CloudSOC Lab, bao gá»“m VPC, Public Subnet, Internet Gateway, Route Table, EC2 instance vÃ  hai security group quan trá»ng.
 
-`SG-Workload` được sử dụng cho trạng thái hoạt động bình thường của EC2. `SG-Isolation` được chuẩn bị để cô lập EC2 khi hệ thống phát hiện incident nghiêm trọng và được phép phản ứng.
+`SG-Workload` Ä‘Æ°á»£c sá»­ dá»¥ng cho tráº¡ng thÃ¡i hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng cá»§a EC2. `SG-Isolation` Ä‘Æ°á»£c chuáº©n bá»‹ Ä‘á»ƒ cÃ´ láº­p EC2 khi há»‡ thá»‘ng phÃ¡t hiá»‡n incident nghiÃªm trá»ng vÃ  Ä‘Æ°á»£c phÃ©p pháº£n á»©ng.
 
-Ở phần tiếp theo, chúng ta sẽ cấu hình **Logging and Evidence Storage** để thu thập log, lưu bằng chứng và chuẩn bị dữ liệu phục vụ điều tra sự cố.
+á»ž pháº§n tiáº¿p theo, chÃºng ta sáº½ cáº¥u hÃ¬nh **Logging and Evidence Storage** Ä‘á»ƒ thu tháº­p log, lÆ°u báº±ng chá»©ng vÃ  chuáº©n bá»‹ dá»¯ liá»‡u phá»¥c vá»¥ Ä‘iá»u tra sá»± cá»‘.

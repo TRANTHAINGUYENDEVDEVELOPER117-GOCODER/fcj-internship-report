@@ -1,26 +1,26 @@
 ---
-title : "Kiến trúc và luồng hoạt động"
+title : "Kiáº¿n trÃºc vÃ  luá»“ng hoáº¡t Ä‘á»™ng"
 date : 2024-01-01
 weight : 3
 chapter : false
 pre : " <b> 5.3. </b> "
 ---
 
-#### Kiến trúc và luồng hoạt động
+#### Kiáº¿n trÃºc vÃ  luá»“ng hoáº¡t Ä‘á»™ng
 
-Phần này trình bày kiến trúc tổng quan và luồng hoạt động chính của hệ thống **AWS CloudSOC**. Kiến trúc được xây dựng nhằm mô phỏng một hệ thống SOC trên AWS có khả năng phát hiện mối đe dọa, điều phối phản ứng sự cố, thu thập bằng chứng, cô lập tài nguyên bị ảnh hưởng và gửi cảnh báo đến SOC Analyst.
+Pháº§n nÃ y trÃ¬nh bÃ y kiáº¿n trÃºc tá»•ng quan vÃ  luá»“ng hoáº¡t Ä‘á»™ng chÃ­nh cá»§a há»‡ thá»‘ng **AWS CloudSOC**. Kiáº¿n trÃºc Ä‘Æ°á»£c xÃ¢y dá»±ng nháº±m mÃ´ phá»ng má»™t há»‡ thá»‘ng SOC trÃªn AWS cÃ³ kháº£ nÄƒng phÃ¡t hiá»‡n má»‘i Ä‘e dá»a, Ä‘iá»u phá»‘i pháº£n á»©ng sá»± cá»‘, thu tháº­p báº±ng chá»©ng, cÃ´ láº­p tÃ i nguyÃªn bá»‹ áº£nh hÆ°á»Ÿng vÃ  gá»­i cáº£nh bÃ¡o Ä‘áº¿n SOC Analyst.
 
-Hệ thống được thiết kế theo mô hình **event-driven** và **serverless**, trong đó các security finding từ Amazon GuardDuty sẽ kích hoạt workflow phản ứng sự cố thông qua Amazon EventBridge và AWS Step Functions.
+Há»‡ thá»‘ng Ä‘Æ°á»£c thiáº¿t káº¿ theo mÃ´ hÃ¬nh **event-driven** vÃ  **serverless**, trong Ä‘Ã³ cÃ¡c security finding tá»« Amazon GuardDuty sáº½ kÃ­ch hoáº¡t workflow pháº£n á»©ng sá»± cá»‘ thÃ´ng qua Amazon EventBridge vÃ  AWS Step Functions.
 
 ---
 
-#### Kiến trúc tổng quan
+#### Kiáº¿n trÃºc tá»•ng quan
 
-Sơ đồ dưới đây mô tả kiến trúc tổng quan của hệ thống AWS CloudSOC.
+SÆ¡ Ä‘á»“ dÆ°á»›i Ä‘Ã¢y mÃ´ táº£ kiáº¿n trÃºc tá»•ng quan cá»§a há»‡ thá»‘ng AWS CloudSOC.
 
-![AWS CloudSOC Architecture](/images/5-Workshop/5.3-Architecture-and-workflow/cloudsoc-architecture.png)
+![AWS CloudSOC Architecture](/images/5-Workshop/5.3-Architecture-and-Workflow/cloudsoc-architecture.png)
 
-Kiến trúc được chia thành các nhóm chính:
+Kiáº¿n trÃºc Ä‘Æ°á»£c chia thÃ nh cÃ¡c nhÃ³m chÃ­nh:
 
 + **Network and Workload**
 + **Logging and Evidence Storage**
@@ -28,15 +28,15 @@ Kiến trúc được chia thành các nhóm chính:
 + **SOC Dashboard and Access**
 + **Security, Governance, and Notification**
 
-Mỗi nhóm đảm nhận một vai trò riêng trong toàn bộ quá trình phát hiện, điều tra và phản ứng sự cố.
+Má»—i nhÃ³m Ä‘áº£m nháº­n má»™t vai trÃ² riÃªng trong toÃ n bá»™ quÃ¡ trÃ¬nh phÃ¡t hiá»‡n, Ä‘iá»u tra vÃ  pháº£n á»©ng sá»± cá»‘.
 
 ---
 
-#### Nhóm Network and Workload
+#### NhÃ³m Network and Workload
 
-Nhóm Network and Workload là nơi triển khai tài nguyên mục tiêu để kiểm thử bảo mật.
+NhÃ³m Network and Workload lÃ  nÆ¡i triá»ƒn khai tÃ i nguyÃªn má»¥c tiÃªu Ä‘á»ƒ kiá»ƒm thá»­ báº£o máº­t.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
 + Amazon VPC
 + Public Subnet
@@ -45,21 +45,21 @@ Các thành phần chính gồm:
 + SG-Workload
 + SG-Isolation
 
-Trong workshop này, một Amazon EC2 instance được triển khai trong Public Subnet để đơn giản hóa quá trình mô phỏng tấn công và kiểm thử GuardDuty finding.
+Trong workshop nÃ y, má»™t Amazon EC2 instance Ä‘Æ°á»£c triá»ƒn khai trong Public Subnet Ä‘á»ƒ Ä‘Æ¡n giáº£n hÃ³a quÃ¡ trÃ¬nh mÃ´ phá»ng táº¥n cÃ´ng vÃ  kiá»ƒm thá»­ GuardDuty finding.
 
-EC2 instance ban đầu được gán security group tên là `SG-Workload`. Đây là security group dùng cho workload bình thường. Khi hệ thống xác định EC2 cần được cô lập, AWS Lambda sẽ thay thế `SG-Workload` bằng `SG-Isolation`.
+EC2 instance ban Ä‘áº§u Ä‘Æ°á»£c gÃ¡n security group tÃªn lÃ  `SG-Workload`. ÄÃ¢y lÃ  security group dÃ¹ng cho workload bÃ¬nh thÆ°á»ng. Khi há»‡ thá»‘ng xÃ¡c Ä‘á»‹nh EC2 cáº§n Ä‘Æ°á»£c cÃ´ láº­p, AWS Lambda sáº½ thay tháº¿ `SG-Workload` báº±ng `SG-Isolation`.
 
-`SG-Isolation` là security group được tạo sẵn trong VPC và không cho phép inbound hoặc outbound traffic. Cách này giúp cô lập EC2 instance bị ảnh hưởng khỏi các kết nối mạng mới.
+`SG-Isolation` lÃ  security group Ä‘Æ°á»£c táº¡o sáºµn trong VPC vÃ  khÃ´ng cho phÃ©p inbound hoáº·c outbound traffic. CÃ¡ch nÃ y giÃºp cÃ´ láº­p EC2 instance bá»‹ áº£nh hÆ°á»Ÿng khá»i cÃ¡c káº¿t ná»‘i máº¡ng má»›i.
 
-> **Lưu ý:** Security Group trên AWS là stateful. Việc cô lập bằng security group chủ yếu nhằm chặn các kết nối mới và giảm phạm vi ảnh hưởng của sự cố.
+> **LÆ°u Ã½:** Security Group trÃªn AWS lÃ  stateful. Viá»‡c cÃ´ láº­p báº±ng security group chá»§ yáº¿u nháº±m cháº·n cÃ¡c káº¿t ná»‘i má»›i vÃ  giáº£m pháº¡m vi áº£nh hÆ°á»Ÿng cá»§a sá»± cá»‘.
 
 ---
 
-#### Nhóm Logging and Evidence Storage
+#### NhÃ³m Logging and Evidence Storage
 
-Nhóm Logging and Evidence Storage chịu trách nhiệm ghi log, lưu bằng chứng và hỗ trợ quá trình điều tra sau sự cố.
+NhÃ³m Logging and Evidence Storage chá»‹u trÃ¡ch nhiá»‡m ghi log, lÆ°u báº±ng chá»©ng vÃ  há»— trá»£ quÃ¡ trÃ¬nh Ä‘iá»u tra sau sá»± cá»‘.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
 + AWS CloudTrail
 + Amazon CloudWatch
@@ -68,35 +68,35 @@ Các thành phần chính gồm:
 + Amazon EBS Snapshot
 + AWS KMS
 
-Luồng logging và evidence trong hệ thống:
+Luá»“ng logging vÃ  evidence trong há»‡ thá»‘ng:
 
 ```text
-CloudTrail → S3
-CloudTrail → CloudWatch
-VPC Flow Logs → CloudWatch
-Systems Manager → S3
-Systems Manager → EBS Snapshot
-Incident Response Lambda → S3
-Incident Response Lambda → CloudWatch
-KMS → S3
+CloudTrail â†’ S3
+CloudTrail â†’ CloudWatch
+VPC Flow Logs â†’ CloudWatch
+Systems Manager â†’ S3
+Systems Manager â†’ EBS Snapshot
+Incident Response Lambda â†’ S3
+Incident Response Lambda â†’ CloudWatch
+KMS â†’ S3
 ```
 
-Vai trò của từng thành phần:
+Vai trÃ² cá»§a tá»«ng thÃ nh pháº§n:
 
-+ **AWS CloudTrail** ghi lại các management events trong AWS account.
-+ **Amazon CloudWatch** lưu trữ logs, metrics và alarms.
-+ **VPC Flow Logs** ghi lại metadata của network traffic trong VPC.
-+ **Amazon S3** lưu trữ audit logs, forensic output và incident evidence.
-+ **Amazon EBS Snapshot** bảo toàn dữ liệu ổ đĩa của EC2 để phục vụ điều tra.
-+ **AWS KMS** hỗ trợ mã hóa dữ liệu lưu trữ trong S3 nếu được cấu hình.
++ **AWS CloudTrail** ghi láº¡i cÃ¡c management events trong AWS account.
++ **Amazon CloudWatch** lÆ°u trá»¯ logs, metrics vÃ  alarms.
++ **VPC Flow Logs** ghi láº¡i metadata cá»§a network traffic trong VPC.
++ **Amazon S3** lÆ°u trá»¯ audit logs, forensic output vÃ  incident evidence.
++ **Amazon EBS Snapshot** báº£o toÃ n dá»¯ liá»‡u á»• Ä‘Ä©a cá»§a EC2 Ä‘á»ƒ phá»¥c vá»¥ Ä‘iá»u tra.
++ **AWS KMS** há»— trá»£ mÃ£ hÃ³a dá»¯ liá»‡u lÆ°u trá»¯ trong S3 náº¿u Ä‘Æ°á»£c cáº¥u hÃ¬nh.
 
 ---
 
-#### Nhóm Threat Detection and Response
+#### NhÃ³m Threat Detection and Response
 
-Nhóm Threat Detection and Response là phần lõi của hệ thống AWS CloudSOC.
+NhÃ³m Threat Detection and Response lÃ  pháº§n lÃµi cá»§a há»‡ thá»‘ng AWS CloudSOC.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
 + Amazon GuardDuty
 + AWS Security Hub
@@ -106,40 +106,40 @@ Các thành phần chính gồm:
 + AWS Systems Manager
 + AWS Lambda
 
-Luồng phát hiện và phản ứng sự cố:
+Luá»“ng phÃ¡t hiá»‡n vÃ  pháº£n á»©ng sá»± cá»‘:
 
 ```text
 GuardDuty
-→ EventBridge
-→ Step Functions
-→ Systems Manager / Lambda
-→ Evidence Storage / Isolation / Notification
+â†’ EventBridge
+â†’ Step Functions
+â†’ Systems Manager / Lambda
+â†’ Evidence Storage / Isolation / Notification
 ```
 
-Khi GuardDuty phát hiện hoạt động đáng ngờ, dịch vụ này tạo ra một security finding. Finding được gửi đến EventBridge để kích hoạt Step Functions workflow.
+Khi GuardDuty phÃ¡t hiá»‡n hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá», dá»‹ch vá»¥ nÃ y táº¡o ra má»™t security finding. Finding Ä‘Æ°á»£c gá»­i Ä‘áº¿n EventBridge Ä‘á»ƒ kÃ­ch hoáº¡t Step Functions workflow.
 
-Step Functions sẽ điều phối toàn bộ quá trình phản ứng sự cố, bao gồm:
+Step Functions sáº½ Ä‘iá»u phá»‘i toÃ n bá»™ quÃ¡ trÃ¬nh pháº£n á»©ng sá»± cá»‘, bao gá»“m:
 
-+ Kiểm tra loại tài nguyên bị ảnh hưởng
-+ Kiểm tra Instance ID
-+ Kiểm tra mức độ nghiêm trọng
-+ Kiểm tra tag `AutoIsolate=true`
-+ Xác định chế độ phản ứng
-+ Gửi yêu cầu phê duyệt nếu cần
-+ Thu thập bằng chứng forensic
-+ Tạo EBS Snapshot
-+ Cô lập EC2 instance
-+ Gửi thông báo kết quả
++ Kiá»ƒm tra loáº¡i tÃ i nguyÃªn bá»‹ áº£nh hÆ°á»Ÿng
++ Kiá»ƒm tra Instance ID
++ Kiá»ƒm tra má»©c Ä‘á»™ nghiÃªm trá»ng
++ Kiá»ƒm tra tag `AutoIsolate=true`
++ XÃ¡c Ä‘á»‹nh cháº¿ Ä‘á»™ pháº£n á»©ng
++ Gá»­i yÃªu cáº§u phÃª duyá»‡t náº¿u cáº§n
++ Thu tháº­p báº±ng chá»©ng forensic
++ Táº¡o EBS Snapshot
++ CÃ´ láº­p EC2 instance
++ Gá»­i thÃ´ng bÃ¡o káº¿t quáº£
 
-Amazon Detective và AWS Security Hub hỗ trợ SOC Analyst trong quá trình phân tích và điều tra finding.
+Amazon Detective vÃ  AWS Security Hub há»— trá»£ SOC Analyst trong quÃ¡ trÃ¬nh phÃ¢n tÃ­ch vÃ  Ä‘iá»u tra finding.
 
 ---
 
-#### Nhóm SOC Dashboard and Access
+#### NhÃ³m SOC Dashboard and Access
 
-Nhóm SOC Dashboard and Access cung cấp giao diện cho SOC Analyst theo dõi incident và phê duyệt hành động phản ứng.
+NhÃ³m SOC Dashboard and Access cung cáº¥p giao diá»‡n cho SOC Analyst theo dÃµi incident vÃ  phÃª duyá»‡t hÃ nh Ä‘á»™ng pháº£n á»©ng.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
 + AWS Amplify Hosting
 + Amazon Cognito
@@ -149,37 +149,37 @@ Các thành phần chính gồm:
 + Amazon S3
 + AWS Step Functions
 
-Luồng dashboard:
+Luá»“ng dashboard:
 
 ```text
 SOC Analyst
-→ AWS Amplify Hosting
-→ Amazon Cognito
-→ Amazon API Gateway
-→ Dashboard API Lambda
-→ Amazon DynamoDB / Amazon S3
-→ AWS Step Functions Approval Callback
+â†’ AWS Amplify Hosting
+â†’ Amazon Cognito
+â†’ Amazon API Gateway
+â†’ Dashboard API Lambda
+â†’ Amazon DynamoDB / Amazon S3
+â†’ AWS Step Functions Approval Callback
 ```
 
-Vai trò của từng thành phần:
+Vai trÃ² cá»§a tá»«ng thÃ nh pháº§n:
 
-+ **AWS Amplify Hosting** host giao diện SOC Dashboard.
-+ **Amazon Cognito** xác thực SOC Analyst trước khi truy cập dashboard.
-+ **Amazon API Gateway** cung cấp HTTPS API cho dashboard.
-+ **Dashboard API Lambda** xử lý các request từ dashboard.
-+ **Amazon DynamoDB** lưu thông tin incident và trạng thái xử lý.
-+ **Amazon S3** lưu evidence và forensic output.
-+ **AWS Step Functions** nhận approval callback từ dashboard.
++ **AWS Amplify Hosting** host giao diá»‡n SOC Dashboard.
++ **Amazon Cognito** xÃ¡c thá»±c SOC Analyst trÆ°á»›c khi truy cáº­p dashboard.
++ **Amazon API Gateway** cung cáº¥p HTTPS API cho dashboard.
++ **Dashboard API Lambda** xá»­ lÃ½ cÃ¡c request tá»« dashboard.
++ **Amazon DynamoDB** lÆ°u thÃ´ng tin incident vÃ  tráº¡ng thÃ¡i xá»­ lÃ½.
++ **Amazon S3** lÆ°u evidence vÃ  forensic output.
++ **AWS Step Functions** nháº­n approval callback tá»« dashboard.
 
-SOC Dashboard không truy cập trực tiếp vào DynamoDB hoặc S3. Mọi thao tác đọc incident, xem evidence hoặc gửi phê duyệt đều đi qua API Gateway và Lambda.
+SOC Dashboard khÃ´ng truy cáº­p trá»±c tiáº¿p vÃ o DynamoDB hoáº·c S3. Má»i thao tÃ¡c Ä‘á»c incident, xem evidence hoáº·c gá»­i phÃª duyá»‡t Ä‘á»u Ä‘i qua API Gateway vÃ  Lambda.
 
 ---
 
-#### Nhóm Security, Governance, and Notification
+#### NhÃ³m Security, Governance, and Notification
 
-Nhóm này chịu trách nhiệm quản lý quyền truy cập, theo dõi cấu hình và gửi cảnh báo.
+NhÃ³m nÃ y chá»‹u trÃ¡ch nhiá»‡m quáº£n lÃ½ quyá»n truy cáº­p, theo dÃµi cáº¥u hÃ¬nh vÃ  gá»­i cáº£nh bÃ¡o.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
 + AWS IAM
 + AWS Config
@@ -189,33 +189,33 @@ Các thành phần chính gồm:
 + Slack
 + Email / SMS
 
-Vai trò của từng thành phần:
+Vai trÃ² cá»§a tá»«ng thÃ nh pháº§n:
 
-+ **AWS IAM** quản lý quyền truy cập và execution roles cho các dịch vụ.
-+ **AWS Config** theo dõi thay đổi cấu hình của EC2, Security Group và các tài nguyên liên quan.
-+ **AWS KMS** hỗ trợ mã hóa dữ liệu nhạy cảm.
-+ **Amazon SNS** gửi cảnh báo và kết quả xử lý incident.
-+ **Amazon Q Developer** có thể được dùng để chuyển tiếp thông báo đến Slack.
-+ **Email / SMS** giúp SOC Analyst nhận cảnh báo nhanh chóng.
++ **AWS IAM** quáº£n lÃ½ quyá»n truy cáº­p vÃ  execution roles cho cÃ¡c dá»‹ch vá»¥.
++ **AWS Config** theo dÃµi thay Ä‘á»•i cáº¥u hÃ¬nh cá»§a EC2, Security Group vÃ  cÃ¡c tÃ i nguyÃªn liÃªn quan.
++ **AWS KMS** há»— trá»£ mÃ£ hÃ³a dá»¯ liá»‡u nháº¡y cáº£m.
++ **Amazon SNS** gá»­i cáº£nh bÃ¡o vÃ  káº¿t quáº£ xá»­ lÃ½ incident.
++ **Amazon Q Developer** cÃ³ thá»ƒ Ä‘Æ°á»£c dÃ¹ng Ä‘á»ƒ chuyá»ƒn tiáº¿p thÃ´ng bÃ¡o Ä‘áº¿n Slack.
++ **Email / SMS** giÃºp SOC Analyst nháº­n cáº£nh bÃ¡o nhanh chÃ³ng.
 
-Các IAM role chính trong hệ thống gồm:
+CÃ¡c IAM role chÃ­nh trong há»‡ thá»‘ng gá»“m:
 
 + Dashboard Lambda Role
 + Incident Response Lambda Role
 + Step Functions Workflow Role
 + EC2 SSM Instance Role
 
-Các role này đảm bảo mỗi dịch vụ chỉ có quyền cần thiết để thực hiện đúng chức năng của mình.
+CÃ¡c role nÃ y Ä‘áº£m báº£o má»—i dá»‹ch vá»¥ chá»‰ cÃ³ quyá»n cáº§n thiáº¿t Ä‘á»ƒ thá»±c hiá»‡n Ä‘Ãºng chá»©c nÄƒng cá»§a mÃ¬nh.
 
 ---
 
-#### Luồng hoạt động chính
+#### Luá»“ng hoáº¡t Ä‘á»™ng chÃ­nh
 
-Sơ đồ sau minh họa luồng hoạt động chính của hệ thống AWS CloudSOC.
+SÆ¡ Ä‘á»“ sau minh há»a luá»“ng hoáº¡t Ä‘á»™ng chÃ­nh cá»§a há»‡ thá»‘ng AWS CloudSOC.
 
-![AWS CloudSOC Main Workflow](/images/5-Workshop/5.3-Architecture-and-workflow/cloudsoc-main-workflow.png)
+![AWS CloudSOC Main Workflow](/images/5-Workshop/5.3-Architecture-and-Workflow/cloudsoc-main-workflow.png)
 
-Luồng hoạt động chính gồm các bước:
+Luá»“ng hoáº¡t Ä‘á»™ng chÃ­nh gá»“m cÃ¡c bÆ°á»›c:
 
 ```text
 1. Threat activity occurs on EC2
@@ -235,46 +235,46 @@ Luồng hoạt động chính gồm các bước:
 
 ---
 
-#### Chi tiết luồng xử lý
+#### Chi tiáº¿t luá»“ng xá»­ lÃ½
 
-##### Bước 1: Phát sinh hoạt động đáng ngờ
+##### BÆ°á»›c 1: PhÃ¡t sinh hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá»
 
-Một hoạt động đáng ngờ xảy ra trên EC2 instance, ví dụ:
+Má»™t hoáº¡t Ä‘á»™ng Ä‘Ã¡ng ngá» xáº£y ra trÃªn EC2 instance, vÃ­ dá»¥:
 
 + Port scanning
 + SSH brute-force
 + Suspicious IP communication
 + Abnormal API activity
 
-EC2 instance trong workshop được sử dụng làm workload mục tiêu để mô phỏng các tình huống bảo mật này.
+EC2 instance trong workshop Ä‘Æ°á»£c sá»­ dá»¥ng lÃ m workload má»¥c tiÃªu Ä‘á»ƒ mÃ´ phá»ng cÃ¡c tÃ¬nh huá»‘ng báº£o máº­t nÃ y.
 
 ---
 
-##### Bước 2: GuardDuty phát hiện mối đe dọa
+##### BÆ°á»›c 2: GuardDuty phÃ¡t hiá»‡n má»‘i Ä‘e dá»a
 
-Amazon GuardDuty phân tích các nguồn telemetry do AWS quản lý như:
+Amazon GuardDuty phÃ¢n tÃ­ch cÃ¡c nguá»“n telemetry do AWS quáº£n lÃ½ nhÆ°:
 
 + CloudTrail management events
 + VPC Flow Logs
 + DNS logs
 
-Khi phát hiện hành vi bất thường, GuardDuty tạo security finding.
+Khi phÃ¡t hiá»‡n hÃ nh vi báº¥t thÆ°á»ng, GuardDuty táº¡o security finding.
 
 ---
 
-##### Bước 3: EventBridge kích hoạt workflow
+##### BÆ°á»›c 3: EventBridge kÃ­ch hoáº¡t workflow
 
-Finding từ GuardDuty được gửi đến Amazon EventBridge. EventBridge sử dụng rule đã cấu hình để lọc các finding phù hợp và kích hoạt AWS Step Functions.
+Finding tá»« GuardDuty Ä‘Æ°á»£c gá»­i Ä‘áº¿n Amazon EventBridge. EventBridge sá»­ dá»¥ng rule Ä‘Ã£ cáº¥u hÃ¬nh Ä‘á»ƒ lá»c cÃ¡c finding phÃ¹ há»£p vÃ  kÃ­ch hoáº¡t AWS Step Functions.
 
 ```text
-GuardDuty Finding → EventBridge Rule → Step Functions
+GuardDuty Finding â†’ EventBridge Rule â†’ Step Functions
 ```
 
 ---
 
-##### Bước 4: Step Functions đánh giá finding
+##### BÆ°á»›c 4: Step Functions Ä‘Ã¡nh giÃ¡ finding
 
-AWS Step Functions kiểm tra các thông tin quan trọng trong finding:
+AWS Step Functions kiá»ƒm tra cÃ¡c thÃ´ng tin quan trá»ng trong finding:
 
 + Resource Type
 + Instance ID
@@ -282,7 +282,7 @@ AWS Step Functions kiểm tra các thông tin quan trọng trong finding:
 + AutoIsolate Tag
 + Response Mode
 
-Dựa trên kết quả đánh giá, workflow sẽ chọn một trong các nhánh xử lý:
+Dá»±a trÃªn káº¿t quáº£ Ä‘Ã¡nh giÃ¡, workflow sáº½ chá»n má»™t trong cÃ¡c nhÃ¡nh xá»­ lÃ½:
 
 ```text
 Alert Only
@@ -292,29 +292,29 @@ Auto Response
 
 ---
 
-##### Bước 5: Xử lý theo chính sách phản ứng
+##### BÆ°á»›c 5: Xá»­ lÃ½ theo chÃ­nh sÃ¡ch pháº£n á»©ng
 
-Chính sách phản ứng của hệ thống:
+ChÃ­nh sÃ¡ch pháº£n á»©ng cá»§a há»‡ thá»‘ng:
 
 ```text
-Non-EC2 Finding        → Alert Only
-Low / Medium Severity  → Dry Run
-High Severity          → Request Approval
-Critical Severity      → Auto Response
-Reject / Timeout       → End Workflow
+Non-EC2 Finding        â†’ Alert Only
+Low / Medium Severity  â†’ Dry Run
+High Severity          â†’ Request Approval
+Critical Severity      â†’ Auto Response
+Reject / Timeout       â†’ End Workflow
 ```
 
-Với finding mức High, hệ thống yêu cầu SOC Analyst phê duyệt trước khi cô lập EC2.
+Vá»›i finding má»©c High, há»‡ thá»‘ng yÃªu cáº§u SOC Analyst phÃª duyá»‡t trÆ°á»›c khi cÃ´ láº­p EC2.
 
-Với finding mức Critical và có tag `AutoIsolate=true`, hệ thống có thể tự động thực hiện phản ứng.
+Vá»›i finding má»©c Critical vÃ  cÃ³ tag `AutoIsolate=true`, há»‡ thá»‘ng cÃ³ thá»ƒ tá»± Ä‘á»™ng thá»±c hiá»‡n pháº£n á»©ng.
 
 ---
 
-##### Bước 6: Thu thập bằng chứng forensic
+##### BÆ°á»›c 6: Thu tháº­p báº±ng chá»©ng forensic
 
-AWS Systems Manager được sử dụng để chạy command trên EC2 instance nhằm thu thập thông tin phục vụ điều tra.
+AWS Systems Manager Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ cháº¡y command trÃªn EC2 instance nháº±m thu tháº­p thÃ´ng tin phá»¥c vá»¥ Ä‘iá»u tra.
 
-Thông tin forensic có thể bao gồm:
+ThÃ´ng tin forensic cÃ³ thá»ƒ bao gá»“m:
 
 + Running processes
 + Network connections
@@ -323,40 +323,40 @@ Thông tin forensic có thể bao gồm:
 + Security logs
 + Instance metadata
 
-Kết quả thu thập được lưu vào Amazon S3.
+Káº¿t quáº£ thu tháº­p Ä‘Æ°á»£c lÆ°u vÃ o Amazon S3.
 
 ---
 
-##### Bước 7: Tạo EBS Snapshot
+##### BÆ°á»›c 7: Táº¡o EBS Snapshot
 
-Trước khi cô lập hoặc xử lý sâu hơn, hệ thống tạo Amazon EBS Snapshot để bảo toàn trạng thái ổ đĩa của EC2 instance.
+TrÆ°á»›c khi cÃ´ láº­p hoáº·c xá»­ lÃ½ sÃ¢u hÆ¡n, há»‡ thá»‘ng táº¡o Amazon EBS Snapshot Ä‘á»ƒ báº£o toÃ n tráº¡ng thÃ¡i á»• Ä‘Ä©a cá»§a EC2 instance.
 
-Snapshot này có thể được sử dụng cho:
+Snapshot nÃ y cÃ³ thá»ƒ Ä‘Æ°á»£c sá»­ dá»¥ng cho:
 
-+ Điều tra forensic
-+ Khôi phục dữ liệu
-+ Phân tích sau sự cố
-+ Lưu trữ bằng chứng
++ Äiá»u tra forensic
++ KhÃ´i phá»¥c dá»¯ liá»‡u
++ PhÃ¢n tÃ­ch sau sá»± cá»‘
++ LÆ°u trá»¯ báº±ng chá»©ng
 
 ---
 
-##### Bước 8: Cô lập EC2 instance
+##### BÆ°á»›c 8: CÃ´ láº­p EC2 instance
 
-AWS Lambda thực hiện hành động cô lập bằng cách thay thế security group hiện tại của EC2.
+AWS Lambda thá»±c hiá»‡n hÃ nh Ä‘á»™ng cÃ´ láº­p báº±ng cÃ¡ch thay tháº¿ security group hiá»‡n táº¡i cá»§a EC2.
 
 ```text
-SG-Workload → SG-Isolation
+SG-Workload â†’ SG-Isolation
 ```
 
-`SG-Isolation` không cho phép inbound hoặc outbound traffic, giúp hạn chế khả năng EC2 tiếp tục giao tiếp với các hệ thống khác.
+`SG-Isolation` khÃ´ng cho phÃ©p inbound hoáº·c outbound traffic, giÃºp háº¡n cháº¿ kháº£ nÄƒng EC2 tiáº¿p tá»¥c giao tiáº¿p vá»›i cÃ¡c há»‡ thá»‘ng khÃ¡c.
 
 ---
 
-##### Bước 9: Cập nhật incident record
+##### BÆ°á»›c 9: Cáº­p nháº­t incident record
 
-Sau khi thực hiện hành động phản ứng, Lambda cập nhật trạng thái incident vào Amazon DynamoDB.
+Sau khi thá»±c hiá»‡n hÃ nh Ä‘á»™ng pháº£n á»©ng, Lambda cáº­p nháº­t tráº¡ng thÃ¡i incident vÃ o Amazon DynamoDB.
 
-Các thông tin có thể được lưu gồm:
+CÃ¡c thÃ´ng tin cÃ³ thá»ƒ Ä‘Æ°á»£c lÆ°u gá»“m:
 
 + Incident ID
 + Finding ID
@@ -371,51 +371,51 @@ Các thông tin có thể được lưu gồm:
 
 ---
 
-##### Bước 10: Gửi thông báo
+##### BÆ°á»›c 10: Gá»­i thÃ´ng bÃ¡o
 
-Amazon SNS gửi thông báo đến SOC Analyst sau khi workflow hoàn tất hoặc khi cần phê duyệt.
+Amazon SNS gá»­i thÃ´ng bÃ¡o Ä‘áº¿n SOC Analyst sau khi workflow hoÃ n táº¥t hoáº·c khi cáº§n phÃª duyá»‡t.
 
-Thông báo có thể được gửi qua:
+ThÃ´ng bÃ¡o cÃ³ thá»ƒ Ä‘Æ°á»£c gá»­i qua:
 
 + Email
 + SMS
-+ Slack thông qua Amazon Q Developer
++ Slack thÃ´ng qua Amazon Q Developer
 
-Nội dung thông báo gồm thông tin incident, mức độ nghiêm trọng, tài nguyên bị ảnh hưởng và kết quả xử lý.
+Ná»™i dung thÃ´ng bÃ¡o gá»“m thÃ´ng tin incident, má»©c Ä‘á»™ nghiÃªm trá»ng, tÃ i nguyÃªn bá»‹ áº£nh hÆ°á»Ÿng vÃ  káº¿t quáº£ xá»­ lÃ½.
 
 ---
 
-#### Luồng phê duyệt của SOC Analyst
+#### Luá»“ng phÃª duyá»‡t cá»§a SOC Analyst
 
-Đối với finding mức High, hệ thống không tự động cô lập EC2 ngay lập tức. Thay vào đó, SOC Analyst sẽ xem xét thông tin incident trên dashboard.
+Äá»‘i vá»›i finding má»©c High, há»‡ thá»‘ng khÃ´ng tá»± Ä‘á»™ng cÃ´ láº­p EC2 ngay láº­p tá»©c. Thay vÃ o Ä‘Ã³, SOC Analyst sáº½ xem xÃ©t thÃ´ng tin incident trÃªn dashboard.
 
-Luồng phê duyệt:
+Luá»“ng phÃª duyá»‡t:
 
 ```text
 SOC Analyst
-→ SOC Dashboard
-→ Review Incident
-→ Approve / Reject
-→ Step Functions Callback
-→ Continue or End Workflow
+â†’ SOC Dashboard
+â†’ Review Incident
+â†’ Approve / Reject
+â†’ Step Functions Callback
+â†’ Continue or End Workflow
 ```
 
-Nếu SOC Analyst phê duyệt, workflow tiếp tục thu thập bằng chứng, tạo snapshot và cô lập EC2.
+Náº¿u SOC Analyst phÃª duyá»‡t, workflow tiáº¿p tá»¥c thu tháº­p báº±ng chá»©ng, táº¡o snapshot vÃ  cÃ´ láº­p EC2.
 
-Nếu SOC Analyst từ chối hoặc quá thời gian chờ, workflow kết thúc và chỉ ghi nhận trạng thái incident.
+Náº¿u SOC Analyst tá»« chá»‘i hoáº·c quÃ¡ thá»i gian chá», workflow káº¿t thÃºc vÃ  chá»‰ ghi nháº­n tráº¡ng thÃ¡i incident.
 
 ---
 
-#### Tóm tắt luồng kiến trúc
+#### TÃ³m táº¯t luá»“ng kiáº¿n trÃºc
 
-Bảng sau tóm tắt vai trò của từng nhóm trong kiến trúc AWS CloudSOC.
+Báº£ng sau tÃ³m táº¯t vai trÃ² cá»§a tá»«ng nhÃ³m trong kiáº¿n trÃºc AWS CloudSOC.
 
-| Nhóm | Chức năng |
+| NhÃ³m | Chá»©c nÄƒng |
 |------|-----------|
-| Network and Workload | Triển khai EC2 mục tiêu và security group phục vụ cô lập |
-| Logging and Evidence Storage | Ghi log, lưu evidence và tạo snapshot phục vụ điều tra |
-| Threat Detection and Response | Phát hiện finding và điều phối phản ứng sự cố |
-| SOC Dashboard and Access | Cung cấp giao diện theo dõi incident và phê duyệt |
-| Security, Governance, and Notification | Quản lý quyền, theo dõi cấu hình và gửi cảnh báo |
+| Network and Workload | Triá»ƒn khai EC2 má»¥c tiÃªu vÃ  security group phá»¥c vá»¥ cÃ´ láº­p |
+| Logging and Evidence Storage | Ghi log, lÆ°u evidence vÃ  táº¡o snapshot phá»¥c vá»¥ Ä‘iá»u tra |
+| Threat Detection and Response | PhÃ¡t hiá»‡n finding vÃ  Ä‘iá»u phá»‘i pháº£n á»©ng sá»± cá»‘ |
+| SOC Dashboard and Access | Cung cáº¥p giao diá»‡n theo dÃµi incident vÃ  phÃª duyá»‡t |
+| Security, Governance, and Notification | Quáº£n lÃ½ quyá»n, theo dÃµi cáº¥u hÃ¬nh vÃ  gá»­i cáº£nh bÃ¡o |
 
-Kiến trúc này giúp mô phỏng một quy trình SOC cơ bản trên AWS, trong đó các bước phát hiện, điều tra, phản ứng và cảnh báo được tự động hóa theo hướng có kiểm soát.
+Kiáº¿n trÃºc nÃ y giÃºp mÃ´ phá»ng má»™t quy trÃ¬nh SOC cÆ¡ báº£n trÃªn AWS, trong Ä‘Ã³ cÃ¡c bÆ°á»›c phÃ¡t hiá»‡n, Ä‘iá»u tra, pháº£n á»©ng vÃ  cáº£nh bÃ¡o Ä‘Æ°á»£c tá»± Ä‘á»™ng hÃ³a theo hÆ°á»›ng cÃ³ kiá»ƒm soÃ¡t.

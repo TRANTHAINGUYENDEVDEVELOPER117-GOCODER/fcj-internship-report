@@ -32,18 +32,18 @@ After completing this section, you will have:
 
 The following diagram illustrates the Logging and Evidence Storage layer in the AWS CloudSOC system.
 
-![Logging and Evidence Storage](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/logging-evidence-architecture.png)
+![Logging and Evidence Storage](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/logging-evidence-architecture.png)
 
 The main logging and evidence flow is:
 
 ```text
-CloudTrail → S3 Audit Logs
-CloudTrail → CloudWatch Logs
-VPC Flow Logs → CloudWatch Logs
-Systems Manager → S3 Evidence Bucket
-Incident Response Lambda → S3 Evidence Bucket
-Incident Response Lambda → CloudWatch Logs
-KMS → S3 Encryption
+CloudTrail â†’ S3 Audit Logs
+CloudTrail â†’ CloudWatch Logs
+VPC Flow Logs â†’ CloudWatch Logs
+Systems Manager â†’ S3 Evidence Bucket
+Incident Response Lambda â†’ S3 Evidence Bucket
+Incident Response Lambda â†’ CloudWatch Logs
+KMS â†’ S3 Encryption
 ```
 
 ---
@@ -72,7 +72,7 @@ You can use the following configuration values for this workshop:
 Open the **Amazon S3** service and choose:
 
 ```text
-Buckets → Create bucket
+Buckets â†’ Create bucket
 ```
 
 Configure the bucket as follows:
@@ -96,7 +96,7 @@ Expected result:
 The S3 bucket cloudsoc-audit-logs-<account-id> is created successfully.
 ```
 
-![Create Audit Logs Bucket](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-audit-logs-bucket.png)
+![Create Audit Logs Bucket](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-audit-logs-bucket.png)
 
 ---
 
@@ -107,7 +107,7 @@ Next, create a second bucket to store incident evidence and forensic output.
 In Amazon S3, choose:
 
 ```text
-Buckets → Create bucket
+Buckets â†’ Create bucket
 ```
 
 Configure the bucket as follows:
@@ -134,7 +134,7 @@ Expected result:
 The S3 bucket cloudsoc-evidence-<account-id> is created successfully.
 ```
 
-![Create Evidence Bucket](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-evidence-bucket.png)
+![Create Evidence Bucket](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-evidence-bucket.png)
 
 ---
 
@@ -170,7 +170,7 @@ Expected result:
 The evidence bucket has a folder structure ready for evidence storage.
 ```
 
-![Evidence Bucket Folders](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/evidence-bucket-folders.png)
+![Evidence Bucket Folders](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/evidence-bucket-folders.png)
 
 ---
 
@@ -181,7 +181,7 @@ AWS KMS is used to encrypt sensitive data in S3 if required. In a lab environmen
 Open the **AWS KMS** service and choose:
 
 ```text
-Customer managed keys → Create key
+Customer managed keys â†’ Create key
 ```
 
 Configure the key:
@@ -206,7 +206,7 @@ Expected result:
 The KMS key alias/cloudsoc-evidence-key is created successfully.
 ```
 
-![Create KMS Key](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-kms-key.png)
+![Create KMS Key](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-kms-key.png)
 
 ---
 
@@ -217,7 +217,7 @@ AWS CloudTrail is used to record management events in the AWS account. These eve
 Open the **AWS CloudTrail** service and choose:
 
 ```text
-Trails → Create trail
+Trails â†’ Create trail
 ```
 
 Configure the trail:
@@ -252,7 +252,7 @@ Expected result:
 The cloudsoc-cloudtrail trail is enabled and sends logs to S3 and CloudWatch.
 ```
 
-![Create CloudTrail](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-cloudtrail.png)
+![Create CloudTrail](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-cloudtrail.png)
 
 ---
 
@@ -280,7 +280,7 @@ Expected result:
 CloudTrail log files appear in the S3 audit logs bucket.
 ```
 
-![CloudTrail Logs in S3](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/cloudtrail-logs-s3.png)
+![CloudTrail Logs in S3](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/cloudtrail-logs-s3.png)
 
 ---
 
@@ -289,7 +289,7 @@ CloudTrail log files appear in the S3 audit logs bucket.
 Open the **Amazon CloudWatch** service and choose:
 
 ```text
-Logs → Log groups → Create log group
+Logs â†’ Log groups â†’ Create log group
 ```
 
 Configure the log group:
@@ -307,7 +307,7 @@ Expected result:
 The CloudWatch Log Group for VPC Flow Logs is created successfully.
 ```
 
-![Create VPC Flow Logs Log Group](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/vpc-flowlogs-cloudwatch.png)
+![Create VPC Flow Logs Log Group](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/vpc-flowlogs-cloudwatch.png)
 
 ---
 
@@ -318,7 +318,7 @@ VPC Flow Logs are used to capture metadata about network traffic in the VPC. In 
 Open the **VPC** service and choose:
 
 ```text
-Your VPCs → cloudsoc-vpc → Flow logs
+Your VPCs â†’ cloudsoc-vpc â†’ Flow logs
 ```
 
 Choose:
@@ -346,7 +346,7 @@ Expected result:
 VPC Flow Logs are enabled for cloudsoc-vpc and sent to CloudWatch Logs.
 ```
 
-![Create VPC Flow Logs](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/create-vpc-flowlogs.png)
+![Create VPC Flow Logs](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/create-vpc-flowlogs.png)
 
 ---
 
@@ -355,7 +355,7 @@ VPC Flow Logs are enabled for cloudsoc-vpc and sent to CloudWatch Logs.
 After enabling VPC Flow Logs, wait a few minutes and open:
 
 ```text
-CloudWatch → Logs → Log groups
+CloudWatch â†’ Logs â†’ Log groups
 ```
 
 Select the log group:
@@ -372,7 +372,7 @@ Expected result:
 VPC Flow Logs appear in CloudWatch Logs.
 ```
 
-![VPC Flow Logs in CloudWatch](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.2-logging-and-evidence-storage/vpc-flowlogs-cloudwatch.png)
+![VPC Flow Logs in CloudWatch](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.2-Logging-And-Evidence-Storage/vpc-flowlogs-cloudwatch.png)
 
 ---
 
@@ -416,11 +416,11 @@ Example incident-based evidence structure:
 
 ```text
 incidents/
-└── finding-id/
-    ├── finding.json
-    ├── response-result.json
-    ├── isolation-status.json
-    └── snapshot-metadata.json
+â””â”€â”€ finding-id/
+    â”œâ”€â”€ finding.json
+    â”œâ”€â”€ response-result.json
+    â”œâ”€â”€ isolation-status.json
+    â””â”€â”€ snapshot-metadata.json
 ```
 
 Expected result:

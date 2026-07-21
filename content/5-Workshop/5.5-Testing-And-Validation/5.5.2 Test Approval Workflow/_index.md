@@ -18,13 +18,13 @@ The overall workflow is:
 
 ```text
 GuardDuty Finding
-→ EventBridge
-→ Step Functions
-→ Approval Required
-→ DynamoDB Incident Table
-→ SOC Dashboard
-→ Approve / Reject
-→ Update Incident Status
+â†’ EventBridge
+â†’ Step Functions
+â†’ Approval Required
+â†’ DynamoDB Incident Table
+â†’ SOC Dashboard
+â†’ Approve / Reject
+â†’ Update Incident Status
 ```
 
 In this section, the focus is on validating the incident status transition from `Pending` to `Approved` or `Rejected`.
@@ -47,17 +47,17 @@ After completing this section, you will be able to confirm that:
 
 The following diagram shows the Approval Workflow test flow.
 
-![Test Approval Workflow Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/test-approval-workflow-flow.png)
+![Test Approval Workflow Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/test-approval-workflow-flow.png)
 
 The testing flow includes the following steps:
 
 ```text
 Step Functions
-→ Approval Required Branch
-→ DynamoDB Incident Table
-→ SOC Dashboard
-→ SOC Analyst Approval
-→ DynamoDB Status Update
+â†’ Approval Required Branch
+â†’ DynamoDB Incident Table
+â†’ SOC Dashboard
+â†’ SOC Analyst Approval
+â†’ DynamoDB Status Update
 ```
 
 In this test, an incident is placed into a pending approval state. The SOC Analyst then reviews the incident on the dashboard and updates the response decision.
@@ -68,7 +68,7 @@ In this test, an incident is placed into a pending approval state. The SOC Analy
 
 In the Step Functions workflow, the `Approval Required` branch is used for findings that have high severity but should not trigger automated response immediately.
 
-![Step Functions Approval Branch](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/stepfunctions-approval-branch.png)
+![Step Functions Approval Branch](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/stepfunctions-approval-branch.png)
 
 This branch helps separate three response paths:
 
@@ -98,7 +98,7 @@ incidentStatus = WaitingApproval
 responseMode = ApprovalRequired
 ```
 
-![Pending Incident in DynamoDB](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/incident-pending-in-dynamodb.png)
+![Pending Incident in DynamoDB](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/incident-pending-in-dynamodb.png)
 
 Example incident data:
 
@@ -120,7 +120,7 @@ The `Pending` status indicates that the incident is waiting for SOC Analyst revi
 
 After the incident is written to DynamoDB, the dashboard reads data from the Incident Table and displays the incident for the SOC Analyst.
 
-![Dashboard Pending Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dashboard-pending-incident.png)
+![Dashboard Pending Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-pending-incident.png)
 
 The dashboard displays the main incident information, including:
 
@@ -149,7 +149,7 @@ This confirms that the dashboard can read incident data from DynamoDB correctly.
 
 The SOC Analyst reviews the incident information and selects **Approve** on the dashboard.
 
-![Dashboard Approve Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dashboard-approve-action.png)
+![Dashboard Approve Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-approve-action.png)
 
 When **Approve** is selected, the dashboard sends a request to the backend API to update the incident status.
 
@@ -157,10 +157,10 @@ The processing flow is:
 
 ```text
 SOC Analyst
-→ Click Approve
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
+â†’ Click Approve
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
 ```
 
 After the request is processed successfully, the approval status of the incident is updated.
@@ -171,7 +171,7 @@ After the request is processed successfully, the approval status of the incident
 
 After the SOC Analyst selects **Approve**, DynamoDB is checked to confirm that the status has been updated.
 
-![DynamoDB Approval Updated](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dynamodb-approval-updated.png)
+![DynamoDB Approval Updated](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dynamodb-approval-updated.png)
 
 Expected result:
 
@@ -195,7 +195,7 @@ The `Approved` status confirms that the SOC Analyst has allowed the incident to 
 
 After DynamoDB is updated, the dashboard displays the new status of the incident.
 
-![Dashboard Approved Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dashboard-approved-status.png)
+![Dashboard Approved Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-approved-status.png)
 
 The dashboard now shows that the incident has been approved.
 
@@ -221,16 +221,16 @@ This confirms that the Approval Workflow works correctly from the dashboard inte
 
 In addition to **Approve**, the SOC Analyst can also select **Reject** if the incident should not continue to the next response step.
 
-![Dashboard Reject Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dashboard-reject-action.png)
+![Dashboard Reject Action](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dashboard-reject-action.png)
 
 Reject processing flow:
 
 ```text
 SOC Analyst
-→ Click Reject
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
+â†’ Click Reject
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
 ```
 
 After the incident is rejected, the expected status is:
@@ -247,7 +247,7 @@ approvalStatus = Rejected
 incidentStatus = Rejected
 ```
 
-![DynamoDB Rejected Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-test-approval-workflow/dynamodb-rejected-status.png)
+![DynamoDB Rejected Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.2-Test-Approval-Workflow/dynamodb-rejected-status.png)
 
 The `Rejected` status confirms that the incident will not continue to the auto response phase.
 

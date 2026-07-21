@@ -38,17 +38,17 @@ After completing this section, you will have:
 
 The following diagram illustrates the Threat Detection Services layer in the AWS CloudSOC system.
 
-![Threat Detection Services Architecture](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/threat-detection-architecture.png)
+![Threat Detection Services Architecture](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/threat-detection-architecture.png)
 
 The main threat detection flow is:
 
 ```text
 AWS Telemetry
-→ Amazon GuardDuty
-→ AWS Security Hub
-→ Amazon Detective
-→ Amazon EventBridge
-→ Step Functions Response Workflow
+â†’ Amazon GuardDuty
+â†’ AWS Security Hub
+â†’ Amazon Detective
+â†’ Amazon EventBridge
+â†’ Step Functions Response Workflow
 ```
 
 Amazon GuardDuty analyzes AWS-managed telemetry sources such as CloudTrail management events, VPC Flow Logs, and DNS logs. When suspicious behavior is detected, GuardDuty creates a security finding. This finding will be used in later sections to trigger EventBridge and Step Functions.
@@ -80,7 +80,7 @@ Open the **Amazon GuardDuty** service in the AWS Management Console.
 Choose:
 
 ```text
-GuardDuty → Get started
+GuardDuty â†’ Get started
 ```
 
 Then choose:
@@ -97,7 +97,7 @@ Expected result:
 Amazon GuardDuty is enabled successfully in the ap-southeast-1 Region.
 ```
 
-![Enable GuardDuty](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/enable-guardduty.png)
+![Enable GuardDuty](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-guardduty.png)
 
 ---
 
@@ -108,13 +108,13 @@ After enabling GuardDuty, check the GuardDuty dashboard.
 Go to:
 
 ```text
-GuardDuty → Summary
+GuardDuty â†’ Summary
 ```
 
 Or:
 
 ```text
-GuardDuty → Findings
+GuardDuty â†’ Findings
 ```
 
 At the beginning, there may be no real findings. This is normal because GuardDuty needs activity data to analyze.
@@ -126,7 +126,7 @@ GuardDuty is active.
 The GuardDuty Findings page is accessible.
 ```
 
-![GuardDuty Dashboard](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/guardduty-dashboard.png)
+![GuardDuty Dashboard](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/guardduty-dashboard.png)
 
 ---
 
@@ -137,7 +137,7 @@ To test the interface and prepare sample data for the EventBridge section, you c
 Go to:
 
 ```text
-GuardDuty → Settings
+GuardDuty â†’ Settings
 ```
 
 Find the section:
@@ -155,7 +155,7 @@ Generate sample findings
 After generating sample findings, return to:
 
 ```text
-GuardDuty → Findings
+GuardDuty â†’ Findings
 ```
 
 Expected result:
@@ -164,7 +164,7 @@ Expected result:
 Sample findings appear in the GuardDuty Findings page.
 ```
 
-![GuardDuty Sample Findings](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/guardduty-sample-findings.png)
+![GuardDuty Sample Findings](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/guardduty-sample-findings.png)
 
 > **Note:** Sample findings are used to test the interface and event flow. In the Testing and Validation section, the workflow will be tested with more specific findings.
 
@@ -179,7 +179,7 @@ Open the **AWS Security Hub** service.
 Choose:
 
 ```text
-Security Hub → Go to Security Hub
+Security Hub â†’ Go to Security Hub
 ```
 
 If this is the first time using Security Hub, choose:
@@ -196,7 +196,7 @@ Expected result:
 AWS Security Hub is enabled successfully.
 ```
 
-![Enable Security Hub](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/enable-security-hub.png)
+![Enable Security Hub](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-security-hub.png)
 
 ---
 
@@ -205,7 +205,7 @@ AWS Security Hub is enabled successfully.
 After enabling Security Hub, go to:
 
 ```text
-Security Hub → Findings
+Security Hub â†’ Findings
 ```
 
 If GuardDuty has generated sample findings or real findings, they may appear in Security Hub after a short period.
@@ -216,7 +216,7 @@ Expected result:
 Security Hub can display findings from GuardDuty.
 ```
 
-![Security Hub Findings](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/security-hub-findings.png)
+![Security Hub Findings](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/security-hub-findings.png)
 
 Security Hub helps the SOC Analyst:
 
@@ -237,7 +237,7 @@ Open the **Amazon Detective** service.
 Choose:
 
 ```text
-Detective → Get started
+Detective â†’ Get started
 ```
 
 Then choose:
@@ -252,7 +252,7 @@ Expected result:
 Amazon Detective is enabled successfully.
 ```
 
-![Enable Detective](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/enable-detective.png)
+![Enable Detective](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-detective.png)
 
 ---
 
@@ -263,13 +263,13 @@ After enabling Detective, it may take some time for data to be collected and dis
 Go to:
 
 ```text
-Detective → Search
+Detective â†’ Search
 ```
 
 Or:
 
 ```text
-Detective → Investigations
+Detective â†’ Investigations
 ```
 
 The SOC Analyst can use Detective to investigate entities such as:
@@ -286,7 +286,7 @@ Expected result:
 Detective is ready to support security finding investigation.
 ```
 
-![Detective Investigation](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/detective-investigation.png)
+![Detective Investigation](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/detective-investigation.png)
 
 ---
 
@@ -299,7 +299,7 @@ Open the **AWS Config** service.
 Choose:
 
 ```text
-AWS Config → Get started
+AWS Config â†’ Get started
 ```
 
 Basic configuration:
@@ -324,7 +324,7 @@ Expected result:
 AWS Config is enabled and starts recording resource configuration changes.
 ```
 
-![Enable AWS Config](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/enable-aws-config.png)
+![Enable AWS Config](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/enable-aws-config.png)
 
 ---
 
@@ -333,7 +333,7 @@ AWS Config is enabled and starts recording resource configuration changes.
 After enabling AWS Config, go to:
 
 ```text
-AWS Config → Resources
+AWS Config â†’ Resources
 ```
 
 Search for CloudSOC-related resources, such as:
@@ -349,12 +349,12 @@ Expected result:
 AWS Config records the main resources of the CloudSOC Lab.
 ```
 
-![AWS Config Resources](/images/5-Workshop/5.4-Deploy-cloudsoc-system/5.4.3-threat-detection-services/aws-config-resources.png)
+![AWS Config Resources](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/5.4.3-Threat-Detection-Services/aws-config-resources.png)
 
 AWS Config will be useful later when Lambda changes the EC2 security group from:
 
 ```text
-SG-Workload → SG-Isolation
+SG-Workload â†’ SG-Isolation
 ```
 
 This change can be recorded as a configuration change.
@@ -371,9 +371,9 @@ Preparation flow for the next section:
 
 ```text
 GuardDuty Finding
-→ EventBridge Rule
-→ Step Functions
-→ Incident Response Workflow
+â†’ EventBridge Rule
+â†’ Step Functions
+â†’ Incident Response Workflow
 ```
 
 Expected result:

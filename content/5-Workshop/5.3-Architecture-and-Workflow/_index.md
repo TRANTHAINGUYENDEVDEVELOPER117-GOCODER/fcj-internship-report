@@ -18,7 +18,7 @@ The system follows an **event-driven** and **serverless** architecture. Security
 
 The following diagram shows the overall architecture of the AWS CloudSOC system.
 
-![AWS CloudSOC Architecture](/images/5-Workshop/5.3-Architecture-and-workflow/cloudsoc-architecture.png)
+![AWS CloudSOC Architecture](/images/5-Workshop/5.3-Architecture-and-Workflow/cloudsoc-architecture.png)
 
 The architecture is divided into the following main groups:
 
@@ -71,14 +71,14 @@ The main components include:
 The logging and evidence flow in the system is:
 
 ```text
-CloudTrail → S3
-CloudTrail → CloudWatch
-VPC Flow Logs → CloudWatch
-Systems Manager → S3
-Systems Manager → EBS Snapshot
-Incident Response Lambda → S3
-Incident Response Lambda → CloudWatch
-KMS → S3
+CloudTrail â†’ S3
+CloudTrail â†’ CloudWatch
+VPC Flow Logs â†’ CloudWatch
+Systems Manager â†’ S3
+Systems Manager â†’ EBS Snapshot
+Incident Response Lambda â†’ S3
+Incident Response Lambda â†’ CloudWatch
+KMS â†’ S3
 ```
 
 The role of each component:
@@ -110,10 +110,10 @@ The incident detection and response flow is:
 
 ```text
 GuardDuty
-→ EventBridge
-→ Step Functions
-→ Systems Manager / Lambda
-→ Evidence Storage / Isolation / Notification
+â†’ EventBridge
+â†’ Step Functions
+â†’ Systems Manager / Lambda
+â†’ Evidence Storage / Isolation / Notification
 ```
 
 When GuardDuty detects suspicious activity, it creates a security finding. The finding is sent to EventBridge, which triggers the Step Functions workflow.
@@ -153,12 +153,12 @@ The dashboard flow is:
 
 ```text
 SOC Analyst
-→ AWS Amplify Hosting
-→ Amazon Cognito
-→ Amazon API Gateway
-→ Dashboard API Lambda
-→ Amazon DynamoDB / Amazon S3
-→ AWS Step Functions Approval Callback
+â†’ AWS Amplify Hosting
+â†’ Amazon Cognito
+â†’ Amazon API Gateway
+â†’ Dashboard API Lambda
+â†’ Amazon DynamoDB / Amazon S3
+â†’ AWS Step Functions Approval Callback
 ```
 
 The role of each component:
@@ -213,7 +213,7 @@ These roles ensure that each service only has the required permissions to perfor
 
 The following diagram illustrates the main workflow of the AWS CloudSOC system.
 
-![AWS CloudSOC Main Workflow](/images/5-Workshop/5.3-Architecture-and-workflow/cloudsoc-main-workflow.png)
+![AWS CloudSOC Main Workflow](/images/5-Workshop/5.3-Architecture-and-Workflow/cloudsoc-main-workflow.png)
 
 The main workflow includes the following steps:
 
@@ -267,7 +267,7 @@ When abnormal behavior is detected, GuardDuty generates a security finding.
 The GuardDuty finding is sent to Amazon EventBridge. EventBridge uses a configured rule to filter matching findings and trigger AWS Step Functions.
 
 ```text
-GuardDuty Finding → EventBridge Rule → Step Functions
+GuardDuty Finding â†’ EventBridge Rule â†’ Step Functions
 ```
 
 ---
@@ -297,11 +297,11 @@ Auto Response
 The system response policy is:
 
 ```text
-Non-EC2 Finding        → Alert Only
-Low / Medium Severity  → Dry Run
-High Severity          → Request Approval
-Critical Severity      → Auto Response
-Reject / Timeout       → End Workflow
+Non-EC2 Finding        â†’ Alert Only
+Low / Medium Severity  â†’ Dry Run
+High Severity          â†’ Request Approval
+Critical Severity      â†’ Auto Response
+Reject / Timeout       â†’ End Workflow
 ```
 
 For High severity findings, the system requires SOC Analyst approval before isolating the EC2 instance.
@@ -345,7 +345,7 @@ This snapshot can be used for:
 AWS Lambda performs the isolation action by replacing the current security group of the EC2 instance.
 
 ```text
-SG-Workload → SG-Isolation
+SG-Workload â†’ SG-Isolation
 ```
 
 `SG-Isolation` does not allow inbound or outbound traffic. This helps prevent the EC2 instance from continuing to communicate with other systems.
@@ -393,11 +393,11 @@ The approval flow is:
 
 ```text
 SOC Analyst
-→ SOC Dashboard
-→ Review Incident
-→ Approve / Reject
-→ Step Functions Callback
-→ Continue or End Workflow
+â†’ SOC Dashboard
+â†’ Review Incident
+â†’ Approve / Reject
+â†’ Step Functions Callback
+â†’ Continue or End Workflow
 ```
 
 If the SOC Analyst approves the action, the workflow continues to collect evidence, create a snapshot, and isolate the EC2 instance.

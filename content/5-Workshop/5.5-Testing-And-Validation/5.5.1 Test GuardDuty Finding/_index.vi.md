@@ -1,85 +1,85 @@
 ---
-title : "Kiểm thử GuardDuty Finding"
+title : "Kiá»ƒm thá»­ GuardDuty Finding"
 date : 2026-07-01
 weight : 1
 chapter : false
 pre : " <b> 5.5.1. </b> "
 ---
 
-#### Kiểm thử GuardDuty Finding
+#### Kiá»ƒm thá»­ GuardDuty Finding
 
-Trong phần này, chúng ta sẽ kiểm thử khả năng tạo và hiển thị **security findings** của **Amazon GuardDuty** trong hệ thống AWS CloudSOC.
+Trong pháº§n nÃ y, chÃºng ta sáº½ kiá»ƒm thá»­ kháº£ nÄƒng táº¡o vÃ  hiá»ƒn thá»‹ **security findings** cá»§a **Amazon GuardDuty** trong há»‡ thá»‘ng AWS CloudSOC.
 
-Mục tiêu của bài kiểm thử là xác nhận rằng GuardDuty đã được bật thành công và có thể tạo ra các security findings. Các finding này sẽ được sử dụng làm dữ liệu đầu vào cho những bước tiếp theo trong quy trình phản ứng sự cố của CloudSOC.
+Má»¥c tiÃªu cá»§a bÃ i kiá»ƒm thá»­ lÃ  xÃ¡c nháº­n ráº±ng GuardDuty Ä‘Ã£ Ä‘Æ°á»£c báº­t thÃ nh cÃ´ng vÃ  cÃ³ thá»ƒ táº¡o ra cÃ¡c security findings. CÃ¡c finding nÃ y sáº½ Ä‘Æ°á»£c sá»­ dá»¥ng lÃ m dá»¯ liá»‡u Ä‘áº§u vÃ o cho nhá»¯ng bÆ°á»›c tiáº¿p theo trong quy trÃ¬nh pháº£n á»©ng sá»± cá»‘ cá»§a CloudSOC.
 
-GuardDuty Finding là điểm bắt đầu của luồng phản ứng sự cố:
+GuardDuty Finding lÃ  Ä‘iá»ƒm báº¯t Ä‘áº§u cá»§a luá»“ng pháº£n á»©ng sá»± cá»‘:
 
 ```text
 GuardDuty Finding
-→ EventBridge
-→ Step Functions
-→ Incident Response Workflow
+â†’ EventBridge
+â†’ Step Functions
+â†’ Incident Response Workflow
 ```
 
-Trong phần 5.5.1, trọng tâm là tạo và xem lại GuardDuty findings trong GuardDuty console. Các bước kiểm thử workflow, approval, auto isolation, dashboard và alert sẽ được thực hiện ở các phần tiếp theo.
+Trong pháº§n 5.5.1, trá»ng tÃ¢m lÃ  táº¡o vÃ  xem láº¡i GuardDuty findings trong GuardDuty console. CÃ¡c bÆ°á»›c kiá»ƒm thá»­ workflow, approval, auto isolation, dashboard vÃ  alert sáº½ Ä‘Æ°á»£c thá»±c hiá»‡n á»Ÿ cÃ¡c pháº§n tiáº¿p theo.
 
 ---
 
-#### Mục tiêu kiểm thử
+#### Má»¥c tiÃªu kiá»ƒm thá»­
 
-Sau khi hoàn thành phần này, chúng ta có thể xác nhận rằng:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, chÃºng ta cÃ³ thá»ƒ xÃ¡c nháº­n ráº±ng:
 
-+ Amazon GuardDuty đã được bật.
-+ GuardDuty có thể tạo sample findings.
-+ Findings được hiển thị trong GuardDuty console.
-+ Mỗi finding có các thông tin quan trọng như severity, finding type, resource, account và region.
-+ Finding có thể được sử dụng làm dữ liệu đầu vào cho EventBridge và Step Functions ở các bước kiểm thử tiếp theo.
++ Amazon GuardDuty Ä‘Ã£ Ä‘Æ°á»£c báº­t.
++ GuardDuty cÃ³ thá»ƒ táº¡o sample findings.
++ Findings Ä‘Æ°á»£c hiá»ƒn thá»‹ trong GuardDuty console.
++ Má»—i finding cÃ³ cÃ¡c thÃ´ng tin quan trá»ng nhÆ° severity, finding type, resource, account vÃ  region.
++ Finding cÃ³ thá»ƒ Ä‘Æ°á»£c sá»­ dá»¥ng lÃ m dá»¯ liá»‡u Ä‘áº§u vÃ o cho EventBridge vÃ  Step Functions á»Ÿ cÃ¡c bÆ°á»›c kiá»ƒm thá»­ tiáº¿p theo.
 
 ---
 
-#### Kiến trúc kiểm thử
+#### Kiáº¿n trÃºc kiá»ƒm thá»­
 
-Sơ đồ dưới đây mô tả luồng kiểm thử GuardDuty Finding.
+SÆ¡ Ä‘á»“ dÆ°á»›i Ä‘Ã¢y mÃ´ táº£ luá»“ng kiá»ƒm thá»­ GuardDuty Finding.
 
-![Test GuardDuty Finding Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/test-guardduty-finding-flow.png)
+![Test GuardDuty Finding Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/test-guardduty-finding-flow.png)
 
-Luồng kiểm thử bao gồm các bước chính:
+Luá»“ng kiá»ƒm thá»­ bao gá»“m cÃ¡c bÆ°á»›c chÃ­nh:
 
 ```text
 SOC Analyst
-→ GuardDuty Console
-→ Generate Sample Findings
-→ View Finding Details
-→ Confirm Finding Information
-→ Check EventBridge Rule
-→ Check Step Functions Execution
+â†’ GuardDuty Console
+â†’ Generate Sample Findings
+â†’ View Finding Details
+â†’ Confirm Finding Information
+â†’ Check EventBridge Rule
+â†’ Check Step Functions Execution
 ```
 
-Trong bài kiểm thử này, chúng ta sử dụng **GuardDuty sample findings**. Đây là cách an toàn để kiểm thử lab mà không cần thực hiện hành vi tấn công thật vào EC2 instance.
+Trong bÃ i kiá»ƒm thá»­ nÃ y, chÃºng ta sá»­ dá»¥ng **GuardDuty sample findings**. ÄÃ¢y lÃ  cÃ¡ch an toÃ n Ä‘á»ƒ kiá»ƒm thá»­ lab mÃ  khÃ´ng cáº§n thá»±c hiá»‡n hÃ nh vi táº¥n cÃ´ng tháº­t vÃ o EC2 instance.
 
 ---
 
-#### Bước 1: Mở Amazon GuardDuty
+#### BÆ°á»›c 1: Má»Ÿ Amazon GuardDuty
 
-Đầu tiên, truy cập AWS Console và mở dịch vụ **Amazon GuardDuty** trong Region:
+Äáº§u tiÃªn, truy cáº­p AWS Console vÃ  má»Ÿ dá»‹ch vá»¥ **Amazon GuardDuty** trong Region:
 
 ```text
 Asia Pacific (Singapore) / ap-southeast-1
 ```
 
-GuardDuty dashboard xác nhận rằng dịch vụ đã được bật và sẵn sàng hiển thị security findings.
+GuardDuty dashboard xÃ¡c nháº­n ráº±ng dá»‹ch vá»¥ Ä‘Ã£ Ä‘Æ°á»£c báº­t vÃ  sáºµn sÃ ng hiá»ƒn thá»‹ security findings.
 
-![GuardDuty Dashboard Before Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-dashboard-before-test.png)
+![GuardDuty Dashboard Before Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-dashboard-before-test.png)
 
-Ở bước này, GuardDuty đã sẵn sàng đóng vai trò là dịch vụ phát hiện mối đe dọa chính trong AWS CloudSOC lab.
+á»ž bÆ°á»›c nÃ y, GuardDuty Ä‘Ã£ sáºµn sÃ ng Ä‘Ã³ng vai trÃ² lÃ  dá»‹ch vá»¥ phÃ¡t hiá»‡n má»‘i Ä‘e dá»a chÃ­nh trong AWS CloudSOC lab.
 
 ---
 
-#### Bước 2: Tạo Sample Findings
+#### BÆ°á»›c 2: Táº¡o Sample Findings
 
-Để kiểm thử GuardDuty mà không cần thực hiện tấn công thật, chúng ta sử dụng tính năng tạo sample findings trong GuardDuty console.
+Äá»ƒ kiá»ƒm thá»­ GuardDuty mÃ  khÃ´ng cáº§n thá»±c hiá»‡n táº¥n cÃ´ng tháº­t, chÃºng ta sá»­ dá»¥ng tÃ­nh nÄƒng táº¡o sample findings trong GuardDuty console.
 
-GuardDuty có thể tạo các findings mô phỏng nhiều tình huống bảo mật khác nhau, ví dụ:
+GuardDuty cÃ³ thá»ƒ táº¡o cÃ¡c findings mÃ´ phá»ng nhiá»u tÃ¬nh huá»‘ng báº£o máº­t khÃ¡c nhau, vÃ­ dá»¥:
 
 ```text
 UnauthorizedAccess:EC2/SSHBruteForce
@@ -88,54 +88,54 @@ CryptoCurrency:EC2/BitcoinTool.B
 Trojan:EC2/DNSDataExfiltration
 ```
 
-Các sample findings này chỉ phục vụ mục đích kiểm thử. Chúng không có nghĩa là AWS account đang bị tấn công thật.
+CÃ¡c sample findings nÃ y chá»‰ phá»¥c vá»¥ má»¥c Ä‘Ã­ch kiá»ƒm thá»­. ChÃºng khÃ´ng cÃ³ nghÄ©a lÃ  AWS account Ä‘ang bá»‹ táº¥n cÃ´ng tháº­t.
 
-![Generate GuardDuty Sample Findings](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/generate-guardduty-sample-findings.png)
+![Generate GuardDuty Sample Findings](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/generate-guardduty-sample-findings.png)
 
-Sau khi sample findings được tạo, GuardDuty sẽ hiển thị nhiều sự kiện bảo mật mô phỏng trong danh sách findings.
+Sau khi sample findings Ä‘Æ°á»£c táº¡o, GuardDuty sáº½ hiá»ƒn thá»‹ nhiá»u sá»± kiá»‡n báº£o máº­t mÃ´ phá»ng trong danh sÃ¡ch findings.
 
 ---
 
-#### Bước 3: Kiểm tra danh sách Findings
+#### BÆ°á»›c 3: Kiá»ƒm tra danh sÃ¡ch Findings
 
-Sau khi tạo sample findings, trang **Findings** của GuardDuty sẽ hiển thị nhiều findings mẫu.
+Sau khi táº¡o sample findings, trang **Findings** cá»§a GuardDuty sáº½ hiá»ƒn thá»‹ nhiá»u findings máº«u.
 
-![GuardDuty Sample Findings List](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-sample-findings-list.png)
+![GuardDuty Sample Findings List](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-sample-findings-list.png)
 
-Danh sách findings hiển thị các thông tin quan trọng như title, severity, finding type và resource liên quan.
+Danh sÃ¡ch findings hiá»ƒn thá»‹ cÃ¡c thÃ´ng tin quan trá»ng nhÆ° title, severity, finding type vÃ  resource liÃªn quan.
 
-| Thông tin | Mô tả |
+| ThÃ´ng tin | MÃ´ táº£ |
 |---|---|
-| Finding type | Loại hành vi đáng ngờ |
-| Severity | Mức độ nghiêm trọng của finding |
-| Resource | Tài nguyên AWS có liên quan |
-| Account ID | AWS account phát sinh finding |
-| Region | AWS Region phát sinh finding |
-| Updated at | Thời điểm finding được cập nhật gần nhất |
+| Finding type | Loáº¡i hÃ nh vi Ä‘Ã¡ng ngá» |
+| Severity | Má»©c Ä‘á»™ nghiÃªm trá»ng cá»§a finding |
+| Resource | TÃ i nguyÃªn AWS cÃ³ liÃªn quan |
+| Account ID | AWS account phÃ¡t sinh finding |
+| Region | AWS Region phÃ¡t sinh finding |
+| Updated at | Thá»i Ä‘iá»ƒm finding Ä‘Æ°á»£c cáº­p nháº­t gáº§n nháº¥t |
 
-Từ danh sách findings, chúng ta có thể chọn một finding liên quan đến EC2 để xem chi tiết. Những finding này giúp xác nhận rằng lớp phát hiện mối đe dọa của CloudSOC đang hoạt động.
+Tá»« danh sÃ¡ch findings, chÃºng ta cÃ³ thá»ƒ chá»n má»™t finding liÃªn quan Ä‘áº¿n EC2 Ä‘á»ƒ xem chi tiáº¿t. Nhá»¯ng finding nÃ y giÃºp xÃ¡c nháº­n ráº±ng lá»›p phÃ¡t hiá»‡n má»‘i Ä‘e dá»a cá»§a CloudSOC Ä‘ang hoáº¡t Ä‘á»™ng.
 
 ---
 
-#### Bước 4: Mở chi tiết một Finding
+#### BÆ°á»›c 4: Má»Ÿ chi tiáº¿t má»™t Finding
 
-Một finding liên quan đến EC2 được chọn để kiểm tra thông tin chi tiết. Ví dụ các finding type liên quan EC2:
+Má»™t finding liÃªn quan Ä‘áº¿n EC2 Ä‘Æ°á»£c chá»n Ä‘á»ƒ kiá»ƒm tra thÃ´ng tin chi tiáº¿t. VÃ­ dá»¥ cÃ¡c finding type liÃªn quan EC2:
 
 ```text
 UnauthorizedAccess:EC2/SSHBruteForce
 ```
 
-hoặc:
+hoáº·c:
 
 ```text
 Recon:EC2/PortProbeUnprotectedPort
 ```
 
-Trang chi tiết finding cung cấp thông tin rõ hơn về hành vi đáng ngờ, tài nguyên bị ảnh hưởng, mức độ nghiêm trọng và mốc thời gian phát hiện.
+Trang chi tiáº¿t finding cung cáº¥p thÃ´ng tin rÃµ hÆ¡n vá» hÃ nh vi Ä‘Ã¡ng ngá», tÃ i nguyÃªn bá»‹ áº£nh hÆ°á»Ÿng, má»©c Ä‘á»™ nghiÃªm trá»ng vÃ  má»‘c thá»i gian phÃ¡t hiá»‡n.
 
-![GuardDuty Finding Detail](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/guardduty-finding-detail.png)
+![GuardDuty Finding Detail](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/guardduty-finding-detail.png)
 
-Các trường thông tin được kiểm tra trong trang chi tiết finding gồm:
+CÃ¡c trÆ°á»ng thÃ´ng tin Ä‘Æ°á»£c kiá»ƒm tra trong trang chi tiáº¿t finding gá»“m:
 
 ```text
 Finding ID
@@ -149,17 +149,17 @@ First seen
 Last seen
 ```
 
-Những thông tin này giúp SOC Analyst hiểu sự cố đang thuộc loại nào, tài nguyên nào liên quan và mức độ nghiêm trọng ra sao.
+Nhá»¯ng thÃ´ng tin nÃ y giÃºp SOC Analyst hiá»ƒu sá»± cá»‘ Ä‘ang thuá»™c loáº¡i nÃ o, tÃ i nguyÃªn nÃ o liÃªn quan vÃ  má»©c Ä‘á»™ nghiÃªm trá»ng ra sao.
 
 ---
 
-#### Bước 5: Ghi nhận thông tin Finding
+#### BÆ°á»›c 5: Ghi nháº­n thÃ´ng tin Finding
 
-Sau khi xem chi tiết finding, các thông tin quan trọng được ghi nhận để phục vụ cho các bước kiểm thử tiếp theo.
+Sau khi xem chi tiáº¿t finding, cÃ¡c thÃ´ng tin quan trá»ng Ä‘Æ°á»£c ghi nháº­n Ä‘á»ƒ phá»¥c vá»¥ cho cÃ¡c bÆ°á»›c kiá»ƒm thá»­ tiáº¿p theo.
 
-Ví dụ:
+VÃ­ dá»¥:
 
-| Trường thông tin | Ví dụ |
+| TrÆ°á»ng thÃ´ng tin | VÃ­ dá»¥ |
 |---|---|
 | Finding type | UnauthorizedAccess:EC2/SSHBruteForce |
 | Severity | High |
@@ -167,21 +167,21 @@ Ví dụ:
 | Region | ap-southeast-1 |
 | Response action | Send to EventBridge and Step Functions |
 
-Thông tin này giúp xác định finding nên đi theo nhánh `Alert Only`, `Approval Required` hay `Auto Response` trong CloudSOC workflow.
+ThÃ´ng tin nÃ y giÃºp xÃ¡c Ä‘á»‹nh finding nÃªn Ä‘i theo nhÃ¡nh `Alert Only`, `Approval Required` hay `Auto Response` trong CloudSOC workflow.
 
 ---
 
-#### Bước 6: Kiểm tra EventBridge Rule
+#### BÆ°á»›c 6: Kiá»ƒm tra EventBridge Rule
 
-Sau khi GuardDuty tạo findings, EventBridge rule được kiểm tra để xác nhận rule nhận GuardDuty findings đang hoạt động.
+Sau khi GuardDuty táº¡o findings, EventBridge rule Ä‘Æ°á»£c kiá»ƒm tra Ä‘á»ƒ xÃ¡c nháº­n rule nháº­n GuardDuty findings Ä‘ang hoáº¡t Ä‘á»™ng.
 
-Rule sử dụng trong lab này là:
+Rule sá»­ dá»¥ng trong lab nÃ y lÃ :
 
 ```text
 cloudsoc-guardduty-finding-rule
 ```
 
-Event pattern được cấu hình để khớp với GuardDuty findings:
+Event pattern Ä‘Æ°á»£c cáº¥u hÃ¬nh Ä‘á»ƒ khá»›p vá»›i GuardDuty findings:
 
 ```json
 {
@@ -190,76 +190,76 @@ Event pattern được cấu hình để khớp với GuardDuty findings:
 }
 ```
 
-![EventBridge GuardDuty Rule Enabled](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/eventbridge-guardduty-rule-enabled.png)
+![EventBridge GuardDuty Rule Enabled](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/eventbridge-guardduty-rule-enabled.png)
 
-Rule này cho phép các GuardDuty findings được chuyển tiếp vào CloudSOC workflow.
+Rule nÃ y cho phÃ©p cÃ¡c GuardDuty findings Ä‘Æ°á»£c chuyá»ƒn tiáº¿p vÃ o CloudSOC workflow.
 
 ---
 
-#### Bước 7: Kiểm tra Step Functions Execution
+#### BÆ°á»›c 7: Kiá»ƒm tra Step Functions Execution
 
-Tiếp theo, Step Functions state machine được kiểm tra để xác nhận workflow đã sẵn sàng xử lý GuardDuty findings.
+Tiáº¿p theo, Step Functions state machine Ä‘Æ°á»£c kiá»ƒm tra Ä‘á»ƒ xÃ¡c nháº­n workflow Ä‘Ã£ sáºµn sÃ ng xá»­ lÃ½ GuardDuty findings.
 
-State machine sử dụng trong lab này là:
+State machine sá»­ dá»¥ng trong lab nÃ y lÃ :
 
 ```text
 cloudsoc-incident-response-workflow
 ```
 
-Trang executions cho biết workflow đã nhận và xử lý event finding hay chưa.
+Trang executions cho biáº¿t workflow Ä‘Ã£ nháº­n vÃ  xá»­ lÃ½ event finding hay chÆ°a.
 
-![Step Functions Execution From GuardDuty](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-test-guardduty-finding/stepfunctions-execution-from-guardduty.png)
+![Step Functions Execution From GuardDuty](/images/5-Workshop/5.5-Testing-and-validation/5.5.1-Test-Guardduty-Finding/stepfunctions-execution-from-guardduty.png)
 
-Trong một số trường hợp, GuardDuty sample findings có thể không kích hoạt ngay workflow execution đúng như mong đợi trong lab. Vì vậy, bài kiểm thử auto isolation đầy đủ sẽ được thực hiện ở phần **5.5.3 Test Auto Isolation** bằng một sample event có kiểm soát.
+Trong má»™t sá»‘ trÆ°á»ng há»£p, GuardDuty sample findings cÃ³ thá»ƒ khÃ´ng kÃ­ch hoáº¡t ngay workflow execution Ä‘Ãºng nhÆ° mong Ä‘á»£i trong lab. VÃ¬ váº­y, bÃ i kiá»ƒm thá»­ auto isolation Ä‘áº§y Ä‘á»§ sáº½ Ä‘Æ°á»£c thá»±c hiá»‡n á»Ÿ pháº§n **5.5.3 Test Auto Isolation** báº±ng má»™t sample event cÃ³ kiá»ƒm soÃ¡t.
 
 ---
 
-#### Kết quả mong đợi
+#### Káº¿t quáº£ mong Ä‘á»£i
 
-Sau khi hoàn thành phần này, các kết quả mong đợi gồm:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, cÃ¡c káº¿t quáº£ mong Ä‘á»£i gá»“m:
 
-| Thành phần | Kết quả mong đợi |
+| ThÃ nh pháº§n | Káº¿t quáº£ mong Ä‘á»£i |
 |---|---|
-| GuardDuty | Sample findings được tạo |
-| Findings list | Các findings mới được hiển thị |
-| Finding detail | Thông tin finding type, severity và resource được hiển thị |
-| EventBridge Rule | Rule nhận GuardDuty Finding đang enabled |
-| Step Functions | Workflow sẵn sàng nhận findings hoặc có thể kiểm thử bằng sample event |
+| GuardDuty | Sample findings Ä‘Æ°á»£c táº¡o |
+| Findings list | CÃ¡c findings má»›i Ä‘Æ°á»£c hiá»ƒn thá»‹ |
+| Finding detail | ThÃ´ng tin finding type, severity vÃ  resource Ä‘Æ°á»£c hiá»ƒn thá»‹ |
+| EventBridge Rule | Rule nháº­n GuardDuty Finding Ä‘ang enabled |
+| Step Functions | Workflow sáºµn sÃ ng nháº­n findings hoáº·c cÃ³ thá»ƒ kiá»ƒm thá»­ báº±ng sample event |
 
 ---
 
-#### Bằng chứng kiểm thử
+#### Báº±ng chá»©ng kiá»ƒm thá»­
 
-Các bằng chứng kiểm thử trong phần này bao gồm những hình ảnh sau:
+CÃ¡c báº±ng chá»©ng kiá»ƒm thá»­ trong pháº§n nÃ y bao gá»“m nhá»¯ng hÃ¬nh áº£nh sau:
 
-| STT | Hình ảnh | Mục đích |
+| STT | HÃ¬nh áº£nh | Má»¥c Ä‘Ã­ch |
 |---|---|---|
-| 1 | GuardDuty finding flow diagram | Mô tả luồng kiểm thử tổng quan |
-| 2 | GuardDuty dashboard | Xác nhận GuardDuty đã được bật |
-| 3 | Generate sample findings | Xác nhận sample findings được tạo |
-| 4 | GuardDuty findings list | Hiển thị danh sách sample findings |
-| 5 | GuardDuty finding detail | Hiển thị chi tiết một finding được chọn |
-| 6 | EventBridge rule | Xác nhận GuardDuty rule đang enabled |
-| 7 | Step Functions executions | Xác nhận workflow sẵn sàng xử lý event |
+| 1 | GuardDuty finding flow diagram | MÃ´ táº£ luá»“ng kiá»ƒm thá»­ tá»•ng quan |
+| 2 | GuardDuty dashboard | XÃ¡c nháº­n GuardDuty Ä‘Ã£ Ä‘Æ°á»£c báº­t |
+| 3 | Generate sample findings | XÃ¡c nháº­n sample findings Ä‘Æ°á»£c táº¡o |
+| 4 | GuardDuty findings list | Hiá»ƒn thá»‹ danh sÃ¡ch sample findings |
+| 5 | GuardDuty finding detail | Hiá»ƒn thá»‹ chi tiáº¿t má»™t finding Ä‘Æ°á»£c chá»n |
+| 6 | EventBridge rule | XÃ¡c nháº­n GuardDuty rule Ä‘ang enabled |
+| 7 | Step Functions executions | XÃ¡c nháº­n workflow sáºµn sÃ ng xá»­ lÃ½ event |
 
 ---
 
-#### Lưu ý
+#### LÆ°u Ã½
 
-GuardDuty sample findings không phải lúc nào cũng trỏ đúng đến EC2 workload thật đã tạo trong lab. Vì vậy, mục tiêu chính của phần này là xác nhận GuardDuty có thể tạo và hiển thị findings thành công.
+GuardDuty sample findings khÃ´ng pháº£i lÃºc nÃ o cÅ©ng trá» Ä‘Ãºng Ä‘áº¿n EC2 workload tháº­t Ä‘Ã£ táº¡o trong lab. VÃ¬ váº­y, má»¥c tiÃªu chÃ­nh cá»§a pháº§n nÃ y lÃ  xÃ¡c nháº­n GuardDuty cÃ³ thá»ƒ táº¡o vÃ  hiá»ƒn thá»‹ findings thÃ nh cÃ´ng.
 
-Bài kiểm thử cô lập EC2 thật sẽ được thực hiện ở phần:
+BÃ i kiá»ƒm thá»­ cÃ´ láº­p EC2 tháº­t sáº½ Ä‘Æ°á»£c thá»±c hiá»‡n á»Ÿ pháº§n:
 
 ```text
 5.5.3 Test Auto Isolation
 ```
 
-Trong phần đó, một sample event có kiểm soát sẽ được sử dụng với đúng EC2 instance ID của lab. Điều này giúp Incident Response Lambda có thể thu thập evidence, tạo EBS Snapshot, cập nhật DynamoDB và thay Security Group của EC2 sang `SG-Isolation`.
+Trong pháº§n Ä‘Ã³, má»™t sample event cÃ³ kiá»ƒm soÃ¡t sáº½ Ä‘Æ°á»£c sá»­ dá»¥ng vá»›i Ä‘Ãºng EC2 instance ID cá»§a lab. Äiá»u nÃ y giÃºp Incident Response Lambda cÃ³ thá»ƒ thu tháº­p evidence, táº¡o EBS Snapshot, cáº­p nháº­t DynamoDB vÃ  thay Security Group cá»§a EC2 sang `SG-Isolation`.
 
 ---
 
-#### Hoàn thành
+#### HoÃ n thÃ nh
 
-Bạn đã hoàn thành phần kiểm thử GuardDuty Finding.
+Báº¡n Ä‘Ã£ hoÃ n thÃ nh pháº§n kiá»ƒm thá»­ GuardDuty Finding.
 
-Kết quả của phần này xác nhận rằng GuardDuty đang hoạt động và có thể tạo security findings. Đây là dữ liệu đầu vào quan trọng để hệ thống CloudSOC tiếp tục xử lý qua EventBridge, Step Functions, Lambda và SNS trong các phần kiểm thử tiếp theo.
+Káº¿t quáº£ cá»§a pháº§n nÃ y xÃ¡c nháº­n ráº±ng GuardDuty Ä‘ang hoáº¡t Ä‘á»™ng vÃ  cÃ³ thá»ƒ táº¡o security findings. ÄÃ¢y lÃ  dá»¯ liá»‡u Ä‘áº§u vÃ o quan trá»ng Ä‘á»ƒ há»‡ thá»‘ng CloudSOC tiáº¿p tá»¥c xá»­ lÃ½ qua EventBridge, Step Functions, Lambda vÃ  SNS trong cÃ¡c pháº§n kiá»ƒm thá»­ tiáº¿p theo.

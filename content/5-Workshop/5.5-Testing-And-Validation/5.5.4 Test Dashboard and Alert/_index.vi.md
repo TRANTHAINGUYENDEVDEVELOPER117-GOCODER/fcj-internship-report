@@ -1,88 +1,88 @@
 ---
-title : "Kiểm thử Dashboard và Alert"
+title : "Kiá»ƒm thá»­ Dashboard vÃ  Alert"
 date : 2026-07-01
 weight : 4
 chapter : false
 pre : " <b> 5.5.4. </b> "
 ---
 
-#### Kiểm thử Dashboard và Alert
+#### Kiá»ƒm thá»­ Dashboard vÃ  Alert
 
-Trong phần này, chúng ta sẽ kiểm thử khả năng hiển thị incident trên **SOC Dashboard** và khả năng gửi cảnh báo qua **Amazon SNS**, **Email** và **Slack**.
+Trong pháº§n nÃ y, chÃºng ta sáº½ kiá»ƒm thá»­ kháº£ nÄƒng hiá»ƒn thá»‹ incident trÃªn **SOC Dashboard** vÃ  kháº£ nÄƒng gá»­i cáº£nh bÃ¡o qua **Amazon SNS**, **Email** vÃ  **Slack**.
 
-Sau khi hệ thống CloudSOC phát hiện và xử lý incident, SOC Analyst cần có khả năng theo dõi trạng thái incident trên dashboard và nhận cảnh báo kịp thời qua các kênh notification.
+Sau khi há»‡ thá»‘ng CloudSOC phÃ¡t hiá»‡n vÃ  xá»­ lÃ½ incident, SOC Analyst cáº§n cÃ³ kháº£ nÄƒng theo dÃµi tráº¡ng thÃ¡i incident trÃªn dashboard vÃ  nháº­n cáº£nh bÃ¡o ká»‹p thá»i qua cÃ¡c kÃªnh notification.
 
-Luồng tổng quan:
+Luá»“ng tá»•ng quan:
 
 ```text
 Incident Response Lambda
-→ DynamoDB Incident Table
-→ SOC Dashboard
+â†’ DynamoDB Incident Table
+â†’ SOC Dashboard
 
 Incident Response Lambda
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 
 CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
+â†’ Amazon SNS
+â†’ Email / Slack
 ```
 
-Phần kiểm thử này xác nhận rằng dashboard và alerting layer hoạt động đúng sau khi incident được xử lý.
+Pháº§n kiá»ƒm thá»­ nÃ y xÃ¡c nháº­n ráº±ng dashboard vÃ  alerting layer hoáº¡t Ä‘á»™ng Ä‘Ãºng sau khi incident Ä‘Æ°á»£c xá»­ lÃ½.
 
 ---
 
-#### Mục tiêu kiểm thử
+#### Má»¥c tiÃªu kiá»ƒm thá»­
 
-Sau khi hoàn thành phần này, chúng ta có thể xác nhận rằng:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, chÃºng ta cÃ³ thá»ƒ xÃ¡c nháº­n ráº±ng:
 
-+ SOC Dashboard hiển thị được danh sách incident.
-+ Dashboard cập nhật trạng thái incident sau khi hệ thống xử lý.
-+ DynamoDB lưu được thông tin notification.
-+ SNS Topic có subscription hoạt động.
-+ Email nhận được incident alert.
-+ Slack nhận được incident alert thông qua Amazon Q Developer in chat applications.
-+ CloudWatch Alarm có thể gửi cảnh báo lỗi về SNS.
++ SOC Dashboard hiá»ƒn thá»‹ Ä‘Æ°á»£c danh sÃ¡ch incident.
++ Dashboard cáº­p nháº­t tráº¡ng thÃ¡i incident sau khi há»‡ thá»‘ng xá»­ lÃ½.
++ DynamoDB lÆ°u Ä‘Æ°á»£c thÃ´ng tin notification.
++ SNS Topic cÃ³ subscription hoáº¡t Ä‘á»™ng.
++ Email nháº­n Ä‘Æ°á»£c incident alert.
++ Slack nháº­n Ä‘Æ°á»£c incident alert thÃ´ng qua Amazon Q Developer in chat applications.
++ CloudWatch Alarm cÃ³ thá»ƒ gá»­i cáº£nh bÃ¡o lá»—i vá» SNS.
 
 ---
 
-#### Kiến trúc kiểm thử
+#### Kiáº¿n trÃºc kiá»ƒm thá»­
 
-Sơ đồ dưới đây mô tả luồng kiểm thử Dashboard và Alert.
+SÆ¡ Ä‘á»“ dÆ°á»›i Ä‘Ã¢y mÃ´ táº£ luá»“ng kiá»ƒm thá»­ Dashboard vÃ  Alert.
 
-![Test Dashboard and Alert Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/test-dashboard-alert-flow.png)
+![Test Dashboard and Alert Flow](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/test-dashboard-alert-flow.png)
 
-Luồng kiểm thử gồm hai nhánh chính:
+Luá»“ng kiá»ƒm thá»­ gá»“m hai nhÃ¡nh chÃ­nh:
 
 ```text
 Dashboard Validation:
 DynamoDB Incident Table
-→ Dashboard API Lambda
-→ API Gateway
-→ Amplify Dashboard
-→ SOC Analyst
+â†’ Dashboard API Lambda
+â†’ API Gateway
+â†’ Amplify Dashboard
+â†’ SOC Analyst
 
 Alert Validation:
 Incident Response Lambda / CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
 ---
 
-#### Bước 1: Kiểm tra dashboard trước khi nhận alert mới
+#### BÆ°á»›c 1: Kiá»ƒm tra dashboard trÆ°á»›c khi nháº­n alert má»›i
 
-Đầu tiên, mở SOC Dashboard đã triển khai bằng AWS Amplify.
+Äáº§u tiÃªn, má»Ÿ SOC Dashboard Ä‘Ã£ triá»ƒn khai báº±ng AWS Amplify.
 
-Dashboard sử dụng trong lab:
+Dashboard sá»­ dá»¥ng trong lab:
 
 ```text
 AWS CloudSOC Dashboard
 ```
 
-Dashboard cần hiển thị các thông tin tổng quan như:
+Dashboard cáº§n hiá»ƒn thá»‹ cÃ¡c thÃ´ng tin tá»•ng quan nhÆ°:
 
 ```text
 Total Incidents
@@ -91,19 +91,19 @@ Critical Findings
 Incident List
 ```
 
-![Dashboard Before Alert Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-before-alert-test.png)
+![Dashboard Before Alert Test](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-before-alert-test.png)
 
-Ở bước này, dashboard đóng vai trò là giao diện theo dõi incident cho SOC Analyst.
+á»ž bÆ°á»›c nÃ y, dashboard Ä‘Ã³ng vai trÃ² lÃ  giao diá»‡n theo dÃµi incident cho SOC Analyst.
 
 ---
 
-#### Bước 2: Kiểm tra incident đã được xử lý trên dashboard
+#### BÆ°á»›c 2: Kiá»ƒm tra incident Ä‘Ã£ Ä‘Æ°á»£c xá»­ lÃ½ trÃªn dashboard
 
-Sau khi phần **5.5.3 Test Auto Isolation** hoàn thành, incident đã được xử lý bởi Incident Response Lambda.
+Sau khi pháº§n **5.5.3 Test Auto Isolation** hoÃ n thÃ nh, incident Ä‘Ã£ Ä‘Æ°á»£c xá»­ lÃ½ bá»Ÿi Incident Response Lambda.
 
-Dashboard cần hiển thị trạng thái mới của incident.
+Dashboard cáº§n hiá»ƒn thá»‹ tráº¡ng thÃ¡i má»›i cá»§a incident.
 
-Ví dụ trạng thái mong đợi:
+VÃ­ dá»¥ tráº¡ng thÃ¡i mong Ä‘á»£i:
 
 ```text
 Incident ID: INC-sample-finding-001
@@ -114,17 +114,17 @@ Approval Status: Approved
 Incident Status: Isolated
 ```
 
-![Dashboard Isolated Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-isolated-incident.png)
+![Dashboard Isolated Incident](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-isolated-incident.png)
 
-Thông tin này xác nhận rằng dashboard có thể hiển thị kết quả xử lý incident sau khi auto isolation hoàn tất.
+ThÃ´ng tin nÃ y xÃ¡c nháº­n ráº±ng dashboard cÃ³ thá»ƒ hiá»ƒn thá»‹ káº¿t quáº£ xá»­ lÃ½ incident sau khi auto isolation hoÃ n táº¥t.
 
 ---
 
-#### Bước 3: Kiểm tra DynamoDB notification record
+#### BÆ°á»›c 3: Kiá»ƒm tra DynamoDB notification record
 
-Sau khi Lambda xử lý incident và gửi notification, DynamoDB Incident Table cần lưu lại thông tin liên quan đến trạng thái xử lý và notification.
+Sau khi Lambda xá»­ lÃ½ incident vÃ  gá»­i notification, DynamoDB Incident Table cáº§n lÆ°u láº¡i thÃ´ng tin liÃªn quan Ä‘áº¿n tráº¡ng thÃ¡i xá»­ lÃ½ vÃ  notification.
 
-Các trường quan trọng có thể bao gồm:
+CÃ¡c trÆ°á»ng quan trá»ng cÃ³ thá»ƒ bao gá»“m:
 
 ```text
 incidentId
@@ -140,15 +140,15 @@ ssmCommandId
 notificationMessageId
 ```
 
-![DynamoDB Notification Record](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dynamodb-notification-record.png)
+![DynamoDB Notification Record](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dynamodb-notification-record.png)
 
-Trường `notificationMessageId` cho biết Lambda đã gọi SNS publish thành công và SNS đã tạo message ID cho notification.
+TrÆ°á»ng `notificationMessageId` cho biáº¿t Lambda Ä‘Ã£ gá»i SNS publish thÃ nh cÃ´ng vÃ  SNS Ä‘Ã£ táº¡o message ID cho notification.
 
 ---
 
-#### Bước 4: Kiểm tra SNS Topic và Subscriptions
+#### BÆ°á»›c 4: Kiá»ƒm tra SNS Topic vÃ  Subscriptions
 
-Tiếp theo, kiểm tra SNS Topic dùng để gửi cảnh báo.
+Tiáº¿p theo, kiá»ƒm tra SNS Topic dÃ¹ng Ä‘á»ƒ gá»­i cáº£nh bÃ¡o.
 
 SNS Topic trong lab:
 
@@ -156,32 +156,32 @@ SNS Topic trong lab:
 cloudsoc-incident-alerts
 ```
 
-Topic này được sử dụng để gửi incident alert đến Email và Slack.
+Topic nÃ y Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ gá»­i incident alert Ä‘áº¿n Email vÃ  Slack.
 
-![SNS Topic Subscriptions Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/sns-topic-subscriptions-validation.png)
+![SNS Topic Subscriptions Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/sns-topic-subscriptions-validation.png)
 
-Subscription cần có trạng thái:
+Subscription cáº§n cÃ³ tráº¡ng thÃ¡i:
 
 ```text
 Confirmed
 ```
 
-Các endpoint có thể bao gồm:
+CÃ¡c endpoint cÃ³ thá»ƒ bao gá»“m:
 
 ```text
 Email subscription
 Slack integration through Amazon Q Developer in chat applications
 ```
 
-Điều này xác nhận rằng SNS Topic đã sẵn sàng gửi cảnh báo đến SOC Analyst.
+Äiá»u nÃ y xÃ¡c nháº­n ráº±ng SNS Topic Ä‘Ã£ sáºµn sÃ ng gá»­i cáº£nh bÃ¡o Ä‘áº¿n SOC Analyst.
 
 ---
 
-#### Bước 5: Kiểm tra Email incident alert
+#### BÆ°á»›c 5: Kiá»ƒm tra Email incident alert
 
-Sau khi Incident Response Lambda publish message đến SNS, email subscription sẽ nhận được incident alert.
+Sau khi Incident Response Lambda publish message Ä‘áº¿n SNS, email subscription sáº½ nháº­n Ä‘Æ°á»£c incident alert.
 
-Nội dung email có thể bao gồm:
+Ná»™i dung email cÃ³ thá»ƒ bao gá»“m:
 
 ```text
 AWS CloudSOC Incident Response Completed
@@ -198,29 +198,29 @@ Snapshot IDs
 Evidence Path
 ```
 
-![Email Incident Alert Received](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/email-incident-alert-received.png)
+![Email Incident Alert Received](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/email-incident-alert-received.png)
 
-Email alert xác nhận rằng SOC Analyst có thể nhận thông báo sau khi incident được xử lý.
+Email alert xÃ¡c nháº­n ráº±ng SOC Analyst cÃ³ thá»ƒ nháº­n thÃ´ng bÃ¡o sau khi incident Ä‘Æ°á»£c xá»­ lÃ½.
 
 ---
 
-#### Bước 6: Kiểm tra Slack incident alert
+#### BÆ°á»›c 6: Kiá»ƒm tra Slack incident alert
 
-Ngoài email, SNS cũng có thể gửi alert đến Slack thông qua Amazon Q Developer in chat applications.
+NgoÃ i email, SNS cÅ©ng cÃ³ thá»ƒ gá»­i alert Ä‘áº¿n Slack thÃ´ng qua Amazon Q Developer in chat applications.
 
-Slack channel sử dụng trong lab:
+Slack channel sá»­ dá»¥ng trong lab:
 
 ```text
 #cloudsoc-alerts
 ```
 
-Sau khi SNS gửi message, Slack channel sẽ hiển thị notification từ AWS.
+Sau khi SNS gá»­i message, Slack channel sáº½ hiá»ƒn thá»‹ notification tá»« AWS.
 
-![Slack Incident Alert Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/slack-incident-alert-validation.png)
+![Slack Incident Alert Validation](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/slack-incident-alert-validation.png)
 
-Slack alert giúp SOC Analyst nhận thông báo nhanh trong kênh làm việc nhóm.
+Slack alert giÃºp SOC Analyst nháº­n thÃ´ng bÃ¡o nhanh trong kÃªnh lÃ m viá»‡c nhÃ³m.
 
-Nội dung alert nên thể hiện được các thông tin chính:
+Ná»™i dung alert nÃªn thá»ƒ hiá»‡n Ä‘Æ°á»£c cÃ¡c thÃ´ng tin chÃ­nh:
 
 ```text
 Incident ID
@@ -232,11 +232,11 @@ Incident Status
 
 ---
 
-#### Bước 7: Kiểm tra CloudWatch Alarm
+#### BÆ°á»›c 7: Kiá»ƒm tra CloudWatch Alarm
 
-Ngoài incident alert, hệ thống cũng cần cảnh báo khi Lambda phản ứng sự cố gặp lỗi.
+NgoÃ i incident alert, há»‡ thá»‘ng cÅ©ng cáº§n cáº£nh bÃ¡o khi Lambda pháº£n á»©ng sá»± cá»‘ gáº·p lá»—i.
 
-CloudWatch Alarm được sử dụng để theo dõi metric lỗi của Lambda:
+CloudWatch Alarm Ä‘Æ°á»£c sá»­ dá»¥ng Ä‘á»ƒ theo dÃµi metric lá»—i cá»§a Lambda:
 
 ```text
 Lambda Errors >= 1
@@ -248,36 +248,36 @@ Alarm trong lab:
 cloudsoc-incident-response-lambda-errors
 ```
 
-![CloudWatch Alarm Dashboard](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/cloudwatch-alarm-dashboard.png)
+![CloudWatch Alarm Dashboard](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/cloudwatch-alarm-dashboard.png)
 
-Alarm này giúp SOC Analyst biết khi Incident Response Lambda bị lỗi và cần kiểm tra lại hệ thống.
+Alarm nÃ y giÃºp SOC Analyst biáº¿t khi Incident Response Lambda bá»‹ lá»—i vÃ  cáº§n kiá»ƒm tra láº¡i há»‡ thá»‘ng.
 
 ---
 
-#### Bước 8: Kiểm tra alarm notification
+#### BÆ°á»›c 8: Kiá»ƒm tra alarm notification
 
-Khi CloudWatch Alarm chuyển sang trạng thái `In alarm`, alarm sẽ gửi notification đến SNS Topic.
+Khi CloudWatch Alarm chuyá»ƒn sang tráº¡ng thÃ¡i `In alarm`, alarm sáº½ gá»­i notification Ä‘áº¿n SNS Topic.
 
-Luồng cảnh báo lỗi:
+Luá»“ng cáº£nh bÃ¡o lá»—i:
 
 ```text
 CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
-![CloudWatch Alarm Notification](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/cloudwatch-alarm-notification.png)
+![CloudWatch Alarm Notification](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/cloudwatch-alarm-notification.png)
 
-Thông báo alarm giúp SOC Analyst phát hiện lỗi trong quy trình phản ứng sự cố, ví dụ Lambda error hoặc workflow failure.
+ThÃ´ng bÃ¡o alarm giÃºp SOC Analyst phÃ¡t hiá»‡n lá»—i trong quy trÃ¬nh pháº£n á»©ng sá»± cá»‘, vÃ­ dá»¥ Lambda error hoáº·c workflow failure.
 
 ---
 
-#### Bước 9: Kiểm tra trạng thái cuối cùng trên dashboard
+#### BÆ°á»›c 9: Kiá»ƒm tra tráº¡ng thÃ¡i cuá»‘i cÃ¹ng trÃªn dashboard
 
-Sau khi incident đã được xử lý và alert đã được gửi, dashboard được kiểm tra lại để xác nhận trạng thái cuối cùng.
+Sau khi incident Ä‘Ã£ Ä‘Æ°á»£c xá»­ lÃ½ vÃ  alert Ä‘Ã£ Ä‘Æ°á»£c gá»­i, dashboard Ä‘Æ°á»£c kiá»ƒm tra láº¡i Ä‘á»ƒ xÃ¡c nháº­n tráº¡ng thÃ¡i cuá»‘i cÃ¹ng.
 
-Trạng thái mong đợi:
+Tráº¡ng thÃ¡i mong Ä‘á»£i:
 
 ```text
 Incident Status: Isolated
@@ -286,69 +286,69 @@ Approval Status: Approved
 Notification: Sent
 ```
 
-![Dashboard Final Incident Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-test-dashboard-and-alert/dashboard-final-incident-status.png)
+![Dashboard Final Incident Status](/images/5-Workshop/5.5-Testing-and-validation/5.5.4-Test-Dashboard-And-Alert/dashboard-final-incident-status.png)
 
-Kết quả này xác nhận rằng SOC Dashboard đã phản ánh đúng trạng thái cuối cùng của incident.
+Káº¿t quáº£ nÃ y xÃ¡c nháº­n ráº±ng SOC Dashboard Ä‘Ã£ pháº£n Ã¡nh Ä‘Ãºng tráº¡ng thÃ¡i cuá»‘i cÃ¹ng cá»§a incident.
 
 ---
 
-#### Kết quả mong đợi
+#### Káº¿t quáº£ mong Ä‘á»£i
 
-Sau khi hoàn thành phần này, các kết quả mong đợi gồm:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, cÃ¡c káº¿t quáº£ mong Ä‘á»£i gá»“m:
 
-| Thành phần | Kết quả mong đợi |
+| ThÃ nh pháº§n | Káº¿t quáº£ mong Ä‘á»£i |
 |---|---|
-| SOC Dashboard | Hiển thị incident và trạng thái xử lý |
-| DynamoDB | Lưu trạng thái incident và notification message ID |
-| SNS Topic | Có subscription hoạt động |
-| Email | Nhận được incident alert |
-| Slack | Nhận được incident alert |
-| CloudWatch Alarm | Có thể gửi alarm notification qua SNS |
-| SOC Analyst | Có thể theo dõi incident qua dashboard và alert |
+| SOC Dashboard | Hiá»ƒn thá»‹ incident vÃ  tráº¡ng thÃ¡i xá»­ lÃ½ |
+| DynamoDB | LÆ°u tráº¡ng thÃ¡i incident vÃ  notification message ID |
+| SNS Topic | CÃ³ subscription hoáº¡t Ä‘á»™ng |
+| Email | Nháº­n Ä‘Æ°á»£c incident alert |
+| Slack | Nháº­n Ä‘Æ°á»£c incident alert |
+| CloudWatch Alarm | CÃ³ thá»ƒ gá»­i alarm notification qua SNS |
+| SOC Analyst | CÃ³ thá»ƒ theo dÃµi incident qua dashboard vÃ  alert |
 
 ---
 
-#### Bằng chứng kiểm thử
+#### Báº±ng chá»©ng kiá»ƒm thá»­
 
-Các bằng chứng kiểm thử trong phần này bao gồm những hình ảnh sau:
+CÃ¡c báº±ng chá»©ng kiá»ƒm thá»­ trong pháº§n nÃ y bao gá»“m nhá»¯ng hÃ¬nh áº£nh sau:
 
-| STT | Hình ảnh | Mục đích |
+| STT | HÃ¬nh áº£nh | Má»¥c Ä‘Ã­ch |
 |---|---|---|
-| 1 | Dashboard and alert flow diagram | Mô tả luồng kiểm thử dashboard và alert |
-| 2 | Dashboard before alert test | Xác nhận dashboard đã hoạt động |
-| 3 | Dashboard isolated incident | Xác nhận dashboard hiển thị incident đã xử lý |
-| 4 | DynamoDB notification record | Xác nhận DynamoDB lưu trạng thái notification |
-| 5 | SNS topic subscriptions | Xác nhận SNS subscription đã confirmed |
-| 6 | Email incident alert | Xác nhận email nhận incident alert |
-| 7 | Slack incident alert | Xác nhận Slack nhận incident alert |
-| 8 | CloudWatch alarm dashboard | Xác nhận alarm theo dõi Lambda error |
-| 9 | CloudWatch alarm notification | Xác nhận alarm gửi notification |
-| 10 | Dashboard final incident status | Xác nhận trạng thái cuối cùng trên dashboard |
+| 1 | Dashboard and alert flow diagram | MÃ´ táº£ luá»“ng kiá»ƒm thá»­ dashboard vÃ  alert |
+| 2 | Dashboard before alert test | XÃ¡c nháº­n dashboard Ä‘Ã£ hoáº¡t Ä‘á»™ng |
+| 3 | Dashboard isolated incident | XÃ¡c nháº­n dashboard hiá»ƒn thá»‹ incident Ä‘Ã£ xá»­ lÃ½ |
+| 4 | DynamoDB notification record | XÃ¡c nháº­n DynamoDB lÆ°u tráº¡ng thÃ¡i notification |
+| 5 | SNS topic subscriptions | XÃ¡c nháº­n SNS subscription Ä‘Ã£ confirmed |
+| 6 | Email incident alert | XÃ¡c nháº­n email nháº­n incident alert |
+| 7 | Slack incident alert | XÃ¡c nháº­n Slack nháº­n incident alert |
+| 8 | CloudWatch alarm dashboard | XÃ¡c nháº­n alarm theo dÃµi Lambda error |
+| 9 | CloudWatch alarm notification | XÃ¡c nháº­n alarm gá»­i notification |
+| 10 | Dashboard final incident status | XÃ¡c nháº­n tráº¡ng thÃ¡i cuá»‘i cÃ¹ng trÃªn dashboard |
 
 ---
 
-#### Ghi chú
+#### Ghi chÃº
 
-Dashboard và alert là hai thành phần quan trọng trong hoạt động SOC.
+Dashboard vÃ  alert lÃ  hai thÃ nh pháº§n quan trá»ng trong hoáº¡t Ä‘á»™ng SOC.
 
-Dashboard giúp SOC Analyst theo dõi incident tập trung, trong khi SNS, Email và Slack giúp gửi cảnh báo nhanh khi có sự cố hoặc khi hệ thống phản ứng sự cố gặp lỗi.
+Dashboard giÃºp SOC Analyst theo dÃµi incident táº­p trung, trong khi SNS, Email vÃ  Slack giÃºp gá»­i cáº£nh bÃ¡o nhanh khi cÃ³ sá»± cá»‘ hoáº·c khi há»‡ thá»‘ng pháº£n á»©ng sá»± cá»‘ gáº·p lá»—i.
 
-Trong môi trường thực tế, dashboard và alerting layer giúp đội SOC:
+Trong mÃ´i trÆ°á»ng thá»±c táº¿, dashboard vÃ  alerting layer giÃºp Ä‘á»™i SOC:
 
 ```text
-Theo dõi incident theo thời gian gần thực
-Nhận thông báo nhanh khi có sự cố
-Kiểm tra trạng thái xử lý incident
-Theo dõi lỗi của hệ thống response automation
-Hỗ trợ điều tra và ra quyết định nhanh hơn
+Theo dÃµi incident theo thá»i gian gáº§n thá»±c
+Nháº­n thÃ´ng bÃ¡o nhanh khi cÃ³ sá»± cá»‘
+Kiá»ƒm tra tráº¡ng thÃ¡i xá»­ lÃ½ incident
+Theo dÃµi lá»—i cá»§a há»‡ thá»‘ng response automation
+Há»— trá»£ Ä‘iá»u tra vÃ  ra quyáº¿t Ä‘á»‹nh nhanh hÆ¡n
 ```
 
 ---
 
-#### Hoàn thành
+#### HoÃ n thÃ nh
 
-Bạn đã hoàn thành phần kiểm thử Dashboard và Alert.
+Báº¡n Ä‘Ã£ hoÃ n thÃ nh pháº§n kiá»ƒm thá»­ Dashboard vÃ  Alert.
 
-Kết quả của phần này xác nhận rằng hệ thống AWS CloudSOC không chỉ có thể xử lý incident tự động, mà còn có thể hiển thị trạng thái trên dashboard và gửi cảnh báo đến SOC Analyst qua Email, Slack và CloudWatch Alarm.
+Káº¿t quáº£ cá»§a pháº§n nÃ y xÃ¡c nháº­n ráº±ng há»‡ thá»‘ng AWS CloudSOC khÃ´ng chá»‰ cÃ³ thá»ƒ xá»­ lÃ½ incident tá»± Ä‘á»™ng, mÃ  cÃ²n cÃ³ thá»ƒ hiá»ƒn thá»‹ tráº¡ng thÃ¡i trÃªn dashboard vÃ  gá»­i cáº£nh bÃ¡o Ä‘áº¿n SOC Analyst qua Email, Slack vÃ  CloudWatch Alarm.
 
-Đây là bước kiểm thử cuối cùng trong phần **5.5 Testing and Validation**, giúp xác nhận toàn bộ luồng CloudSOC đã hoạt động từ phát hiện, xử lý, lưu evidence đến cảnh báo.
+ÄÃ¢y lÃ  bÆ°á»›c kiá»ƒm thá»­ cuá»‘i cÃ¹ng trong pháº§n **5.5 Testing and Validation**, giÃºp xÃ¡c nháº­n toÃ n bá»™ luá»“ng CloudSOC Ä‘Ã£ hoáº¡t Ä‘á»™ng tá»« phÃ¡t hiá»‡n, xá»­ lÃ½, lÆ°u evidence Ä‘áº¿n cáº£nh bÃ¡o.

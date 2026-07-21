@@ -1,79 +1,79 @@
 ---
-title : "Triển khai hệ thống CloudSOC"
+title : "Triá»ƒn khai há»‡ thá»‘ng CloudSOC"
 date : 2024-01-01
 weight : 4
 chapter : false
 pre : " <b> 5.4. </b> "
 ---
 
-#### Triển khai hệ thống CloudSOC
+#### Triá»ƒn khai há»‡ thá»‘ng CloudSOC
 
-Trong phần này, chúng ta sẽ triển khai toàn bộ hệ thống **AWS CloudSOC** theo kiến trúc đã thiết kế ở phần trước. Đây là phần triển khai chính của workshop, nơi các thành phần bảo mật, giám sát, điều phối phản ứng sự cố, lưu trữ bằng chứng, dashboard phê duyệt và cảnh báo được cấu hình thành một hệ thống hoàn chỉnh.
+Trong pháº§n nÃ y, chÃºng ta sáº½ triá»ƒn khai toÃ n bá»™ há»‡ thá»‘ng **AWS CloudSOC** theo kiáº¿n trÃºc Ä‘Ã£ thiáº¿t káº¿ á»Ÿ pháº§n trÆ°á»›c. ÄÃ¢y lÃ  pháº§n triá»ƒn khai chÃ­nh cá»§a workshop, nÆ¡i cÃ¡c thÃ nh pháº§n báº£o máº­t, giÃ¡m sÃ¡t, Ä‘iá»u phá»‘i pháº£n á»©ng sá»± cá»‘, lÆ°u trá»¯ báº±ng chá»©ng, dashboard phÃª duyá»‡t vÃ  cáº£nh bÃ¡o Ä‘Æ°á»£c cáº¥u hÃ¬nh thÃ nh má»™t há»‡ thá»‘ng hoÃ n chá»‰nh.
 
-Mục tiêu của phần 5.4 là xây dựng một mô hình **Security Operations Center trên AWS** có khả năng phát hiện mối đe dọa, điều tra sự cố, phản ứng tự động, lưu lại bằng chứng và gửi cảnh báo đến SOC Analyst.
+Má»¥c tiÃªu cá»§a pháº§n 5.4 lÃ  xÃ¢y dá»±ng má»™t mÃ´ hÃ¬nh **Security Operations Center trÃªn AWS** cÃ³ kháº£ nÄƒng phÃ¡t hiá»‡n má»‘i Ä‘e dá»a, Ä‘iá»u tra sá»± cá»‘, pháº£n á»©ng tá»± Ä‘á»™ng, lÆ°u láº¡i báº±ng chá»©ng vÃ  gá»­i cáº£nh bÃ¡o Ä‘áº¿n SOC Analyst.
 
-Quy trình tổng thể của hệ thống:
+Quy trÃ¬nh tá»•ng thá»ƒ cá»§a há»‡ thá»‘ng:
 
 ```text
-Detect → Investigate → Respond → Store Evidence → Notify
+Detect â†’ Investigate â†’ Respond â†’ Store Evidence â†’ Notify
 ```
 
-Hệ thống được triển khai theo mô hình **serverless** và **event-driven**, sử dụng các dịch vụ chính như Amazon GuardDuty, AWS Security Hub, Amazon EventBridge, AWS Step Functions, AWS Lambda, AWS Systems Manager, Amazon S3, Amazon DynamoDB, Amazon SNS và Amazon CloudWatch.
+Há»‡ thá»‘ng Ä‘Æ°á»£c triá»ƒn khai theo mÃ´ hÃ¬nh **serverless** vÃ  **event-driven**, sá»­ dá»¥ng cÃ¡c dá»‹ch vá»¥ chÃ­nh nhÆ° Amazon GuardDuty, AWS Security Hub, Amazon EventBridge, AWS Step Functions, AWS Lambda, AWS Systems Manager, Amazon S3, Amazon DynamoDB, Amazon SNS vÃ  Amazon CloudWatch.
 
 ---
 
-#### Mục tiêu triển khai
+#### Má»¥c tiÃªu triá»ƒn khai
 
-Sau khi hoàn thành phần này, hệ thống CloudSOC sẽ có khả năng:
+Sau khi hoÃ n thÃ nh pháº§n nÃ y, há»‡ thá»‘ng CloudSOC sáº½ cÃ³ kháº£ nÄƒng:
 
-+ Tạo môi trường mạng cơ bản cho workload EC2.
-+ Ghi nhận log và lưu trữ evidence phục vụ điều tra.
-+ Bật các dịch vụ phát hiện mối đe dọa như GuardDuty, Security Hub, Detective và AWS Config.
-+ Sử dụng EventBridge để nhận security finding.
-+ Sử dụng Step Functions để điều phối workflow phản ứng sự cố.
-+ Xây dựng dashboard cho SOC Analyst xem incident và phê duyệt hành động.
-+ Tự động thu thập forensic evidence.
-+ Tạo EBS Snapshot phục vụ điều tra sau sự cố.
-+ Cô lập EC2 bị nghi ngờ bằng `SG-Isolation`.
-+ Gửi cảnh báo qua SNS, Email và Slack optional.
++ Táº¡o mÃ´i trÆ°á»ng máº¡ng cÆ¡ báº£n cho workload EC2.
++ Ghi nháº­n log vÃ  lÆ°u trá»¯ evidence phá»¥c vá»¥ Ä‘iá»u tra.
++ Báº­t cÃ¡c dá»‹ch vá»¥ phÃ¡t hiá»‡n má»‘i Ä‘e dá»a nhÆ° GuardDuty, Security Hub, Detective vÃ  AWS Config.
++ Sá»­ dá»¥ng EventBridge Ä‘á»ƒ nháº­n security finding.
++ Sá»­ dá»¥ng Step Functions Ä‘á»ƒ Ä‘iá»u phá»‘i workflow pháº£n á»©ng sá»± cá»‘.
++ XÃ¢y dá»±ng dashboard cho SOC Analyst xem incident vÃ  phÃª duyá»‡t hÃ nh Ä‘á»™ng.
++ Tá»± Ä‘á»™ng thu tháº­p forensic evidence.
++ Táº¡o EBS Snapshot phá»¥c vá»¥ Ä‘iá»u tra sau sá»± cá»‘.
++ CÃ´ láº­p EC2 bá»‹ nghi ngá» báº±ng `SG-Isolation`.
++ Gá»­i cáº£nh bÃ¡o qua SNS, Email vÃ  Slack optional.
 
 ---
 
-#### Tổng quan triển khai
+#### Tá»•ng quan triá»ƒn khai
 
-Sơ đồ dưới đây mô tả tổng quan các bước triển khai hệ thống CloudSOC.
+SÆ¡ Ä‘á»“ dÆ°á»›i Ä‘Ã¢y mÃ´ táº£ tá»•ng quan cÃ¡c bÆ°á»›c triá»ƒn khai há»‡ thá»‘ng CloudSOC.
 
-![CloudSOC Deployment Flow](/images/5-Workshop/5.4-Deploy-cloudsoc-system/deployment-flow.png)
+![CloudSOC Deployment Flow](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/deployment-flow.png)
 
-Luồng triển khai tổng thể:
+Luá»“ng triá»ƒn khai tá»•ng thá»ƒ:
 
 ```text
 Network and EC2
-→ Logging and Evidence Storage
-→ Threat Detection Services
-→ EventBridge and Step Functions
-→ Dashboard and Approval Flow
-→ Forensics, Snapshot and Isolation
-→ Notification and Alerting
+â†’ Logging and Evidence Storage
+â†’ Threat Detection Services
+â†’ EventBridge and Step Functions
+â†’ Dashboard and Approval Flow
+â†’ Forensics, Snapshot and Isolation
+â†’ Notification and Alerting
 ```
 
-Mỗi phần trong 5.4 sẽ triển khai một nhóm thành phần riêng. Khi kết hợp lại, các thành phần này tạo thành một quy trình SOC hoàn chỉnh trên AWS.
+Má»—i pháº§n trong 5.4 sáº½ triá»ƒn khai má»™t nhÃ³m thÃ nh pháº§n riÃªng. Khi káº¿t há»£p láº¡i, cÃ¡c thÃ nh pháº§n nÃ y táº¡o thÃ nh má»™t quy trÃ¬nh SOC hoÃ n chá»‰nh trÃªn AWS.
 
 ---
 
-#### Các phần triển khai trong 5.4
+#### CÃ¡c pháº§n triá»ƒn khai trong 5.4
 
-Phần 5.4 được chia thành 7 phần con. Bạn nên triển khai theo đúng thứ tự bên dưới để đảm bảo các dịch vụ được kết nối đúng luồng.
+Pháº§n 5.4 Ä‘Æ°á»£c chia thÃ nh 7 pháº§n con. Báº¡n nÃªn triá»ƒn khai theo Ä‘Ãºng thá»© tá»± bÃªn dÆ°á»›i Ä‘á»ƒ Ä‘áº£m báº£o cÃ¡c dá»‹ch vá»¥ Ä‘Æ°á»£c káº¿t ná»‘i Ä‘Ãºng luá»“ng.
 
-| Phần | Nội dung | Vai trò trong hệ thống |
+| Pháº§n | Ná»™i dung | Vai trÃ² trong há»‡ thá»‘ng |
 |---|---|---|
-| [5.4.1 Network and EC2 Workload](./5.4.1-network-and-ec2/) | Tạo VPC, subnet, EC2, IAM Role và Security Groups | Chuẩn bị workload để giám sát và cô lập |
-| [5.4.2 Logging and Evidence Storage](./5.4.2-logging-and-evidence-storage/) | Tạo S3 bucket, CloudTrail và VPC Flow Logs | Lưu log và evidence phục vụ điều tra |
-| [5.4.3 Threat Detection Services](./5.4.3-threat-detection-services/) | Bật GuardDuty, Security Hub, Detective và AWS Config | Phát hiện và điều tra mối đe dọa |
-| [5.4.4 EventBridge and Step Functions](./5.4.4-eventbridge-and-step-functions/) | Tạo EventBridge Rule và Step Functions workflow | Điều phối luồng phản ứng sự cố |
-| [5.4.5 Dashboard and Approval Flow](./5.4.5-dashboard-and-approval-flow/) | Tạo DynamoDB, Cognito, API Gateway, Lambda và Amplify Dashboard | Cho phép SOC Analyst xem và phê duyệt incident |
-| [5.4.6 Forensics, Snapshot and Isolation](./5.4.6-forensics-snapshot-and-isolation/) | Tạo Incident Response Lambda, SSM, EBS Snapshot và SG-Isolation | Thu thập bằng chứng, tạo snapshot và cô lập EC2 |
-| [5.4.7 Notification and Alerting](./5.4.7-notification-and-alerting/) | Tạo SNS, Email alert, CloudWatch Alarm và Slack optional | Gửi cảnh báo cho SOC Analyst |
+| [5.4.1 Network and EC2 Workload](./5.4.1-network-and-ec2/) | Táº¡o VPC, subnet, EC2, IAM Role vÃ  Security Groups | Chuáº©n bá»‹ workload Ä‘á»ƒ giÃ¡m sÃ¡t vÃ  cÃ´ láº­p |
+| [5.4.2 Logging and Evidence Storage](./5.4.2-logging-and-evidence-storage/) | Táº¡o S3 bucket, CloudTrail vÃ  VPC Flow Logs | LÆ°u log vÃ  evidence phá»¥c vá»¥ Ä‘iá»u tra |
+| [5.4.3 Threat Detection Services](./5.4.3-threat-detection-services/) | Báº­t GuardDuty, Security Hub, Detective vÃ  AWS Config | PhÃ¡t hiá»‡n vÃ  Ä‘iá»u tra má»‘i Ä‘e dá»a |
+| [5.4.4 EventBridge and Step Functions](./5.4.4-eventbridge-and-step-functions/) | Táº¡o EventBridge Rule vÃ  Step Functions workflow | Äiá»u phá»‘i luá»“ng pháº£n á»©ng sá»± cá»‘ |
+| [5.4.5 Dashboard and Approval Flow](./5.4.5-dashboard-and-approval-flow/) | Táº¡o DynamoDB, Cognito, API Gateway, Lambda vÃ  Amplify Dashboard | Cho phÃ©p SOC Analyst xem vÃ  phÃª duyá»‡t incident |
+| [5.4.6 Forensics, Snapshot and Isolation](./5.4.6-forensics-snapshot-and-isolation/) | Táº¡o Incident Response Lambda, SSM, EBS Snapshot vÃ  SG-Isolation | Thu tháº­p báº±ng chá»©ng, táº¡o snapshot vÃ  cÃ´ láº­p EC2 |
+| [5.4.7 Notification and Alerting](./5.4.7-notification-and-alerting/) | Táº¡o SNS, Email alert, CloudWatch Alarm vÃ  Slack optional | Gá»­i cáº£nh bÃ¡o cho SOC Analyst |
 
 ---
 
@@ -89,249 +89,249 @@ Phần 5.4 được chia thành 7 phần con. Bạn nên triển khai theo đún
 
 ---
 
-#### Thứ tự triển khai khuyến nghị
+#### Thá»© tá»± triá»ƒn khai khuyáº¿n nghá»‹
 
 ```text
 5.4.1 Network and EC2 Workload
-        ↓
+        â†“
 5.4.2 Logging and Evidence Storage
-        ↓
+        â†“
 5.4.3 Threat Detection Services
-        ↓
+        â†“
 5.4.4 EventBridge and Step Functions
-        ↓
+        â†“
 5.4.5 Dashboard and Approval Flow
-        ↓
+        â†“
 5.4.6 Forensics, Snapshot and Isolation
-        ↓
+        â†“
 5.4.7 Notification and Alerting
 ```
 
-Thứ tự này giúp hệ thống được triển khai theo đúng luồng:
+Thá»© tá»± nÃ y giÃºp há»‡ thá»‘ng Ä‘Æ°á»£c triá»ƒn khai theo Ä‘Ãºng luá»“ng:
 
 ```text
-Infrastructure → Logging → Detection → Workflow → Dashboard → Response → Notification
+Infrastructure â†’ Logging â†’ Detection â†’ Workflow â†’ Dashboard â†’ Response â†’ Notification
 ```
 
 ---
 
-#### Kiến trúc triển khai trong phần này
+#### Kiáº¿n trÃºc triá»ƒn khai trong pháº§n nÃ y
 
-Hệ thống CloudSOC được chia thành nhiều lớp chức năng. Mỗi lớp đảm nhiệm một vai trò riêng trong quy trình phát hiện và phản ứng sự cố.
+Há»‡ thá»‘ng CloudSOC Ä‘Æ°á»£c chia thÃ nh nhiá»u lá»›p chá»©c nÄƒng. Má»—i lá»›p Ä‘áº£m nhiá»‡m má»™t vai trÃ² riÃªng trong quy trÃ¬nh phÃ¡t hiá»‡n vÃ  pháº£n á»©ng sá»± cá»‘.
 
-| Nhóm chức năng | Dịch vụ sử dụng | Vai trò |
+| NhÃ³m chá»©c nÄƒng | Dá»‹ch vá»¥ sá»­ dá»¥ng | Vai trÃ² |
 |---|---|---|
-| Network Layer | VPC, Subnet, Internet Gateway, Route Table, EC2, Security Group | Tạo môi trường workload để giám sát |
-| Logging Layer | CloudTrail, VPC Flow Logs, CloudWatch Logs, S3 | Ghi nhận log và lưu bằng chứng |
-| Detection Layer | GuardDuty, Security Hub, Detective, AWS Config | Phát hiện, tổng hợp và điều tra finding |
-| Workflow Layer | EventBridge, Step Functions | Điều phối phản ứng sự cố |
-| Dashboard Layer | Cognito, API Gateway, Lambda, DynamoDB, Amplify | Cho phép SOC Analyst xem và phê duyệt incident |
-| Response Layer | Lambda, Systems Manager, EBS Snapshot, Security Group | Thu thập evidence, tạo snapshot và cô lập EC2 |
-| Notification Layer | SNS, Email, CloudWatch Alarm, Slack optional | Gửi cảnh báo đến SOC Analyst |
+| Network Layer | VPC, Subnet, Internet Gateway, Route Table, EC2, Security Group | Táº¡o mÃ´i trÆ°á»ng workload Ä‘á»ƒ giÃ¡m sÃ¡t |
+| Logging Layer | CloudTrail, VPC Flow Logs, CloudWatch Logs, S3 | Ghi nháº­n log vÃ  lÆ°u báº±ng chá»©ng |
+| Detection Layer | GuardDuty, Security Hub, Detective, AWS Config | PhÃ¡t hiá»‡n, tá»•ng há»£p vÃ  Ä‘iá»u tra finding |
+| Workflow Layer | EventBridge, Step Functions | Äiá»u phá»‘i pháº£n á»©ng sá»± cá»‘ |
+| Dashboard Layer | Cognito, API Gateway, Lambda, DynamoDB, Amplify | Cho phÃ©p SOC Analyst xem vÃ  phÃª duyá»‡t incident |
+| Response Layer | Lambda, Systems Manager, EBS Snapshot, Security Group | Thu tháº­p evidence, táº¡o snapshot vÃ  cÃ´ láº­p EC2 |
+| Notification Layer | SNS, Email, CloudWatch Alarm, Slack optional | Gá»­i cáº£nh bÃ¡o Ä‘áº¿n SOC Analyst |
 
 ---
 
 #### 5.4.1 Network and EC2 Workload
 
-Trong phần này, chúng ta tạo nền tảng mạng cho lab CloudSOC.
+Trong pháº§n nÃ y, chÃºng ta táº¡o ná»n táº£ng máº¡ng cho lab CloudSOC.
 
-Các thành phần được triển khai gồm:
+CÃ¡c thÃ nh pháº§n Ä‘Æ°á»£c triá»ƒn khai gá»“m:
 
 + VPC `cloudsoc-vpc`.
 + Public subnet `cloudsoc-public-subnet`.
 + Internet Gateway.
 + Public Route Table.
 + EC2 instance `cloudsoc-workload-ec2`.
-+ IAM Role cho EC2 sử dụng Systems Manager.
-+ Security Group bình thường `SG-Workload`.
-+ Security Group cô lập `SG-Isolation`.
++ IAM Role cho EC2 sá»­ dá»¥ng Systems Manager.
++ Security Group bÃ¬nh thÆ°á»ng `SG-Workload`.
++ Security Group cÃ´ láº­p `SG-Isolation`.
 
-Mục tiêu chính là tạo một EC2 workload có thể được quản lý bằng Systems Manager và có thể bị cô lập bằng cách thay Security Group khi xảy ra incident.
+Má»¥c tiÃªu chÃ­nh lÃ  táº¡o má»™t EC2 workload cÃ³ thá»ƒ Ä‘Æ°á»£c quáº£n lÃ½ báº±ng Systems Manager vÃ  cÃ³ thá»ƒ bá»‹ cÃ´ láº­p báº±ng cÃ¡ch thay Security Group khi xáº£y ra incident.
 
-Luồng cơ bản:
+Luá»“ng cÆ¡ báº£n:
 
 ```text
 Internet
-→ Internet Gateway
-→ Public Subnet
-→ EC2 Workload
+â†’ Internet Gateway
+â†’ Public Subnet
+â†’ EC2 Workload
 ```
 
-EC2 workload được gắn tag:
+EC2 workload Ä‘Æ°á»£c gáº¯n tag:
 
 ```text
 AutoIsolate = true
 ```
 
-Tag này giúp Incident Response Lambda xác định EC2 có được phép cô lập tự động hay không.
+Tag nÃ y giÃºp Incident Response Lambda xÃ¡c Ä‘á»‹nh EC2 cÃ³ Ä‘Æ°á»£c phÃ©p cÃ´ láº­p tá»± Ä‘á»™ng hay khÃ´ng.
 
-Kết quả mong đợi sau phần 5.4.1:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.1:
 
 ```text
-EC2 workload đang chạy với SG-Workload, có IAM Role cho SSM và có SG-Isolation sẵn sàng để cô lập.
+EC2 workload Ä‘ang cháº¡y vá»›i SG-Workload, cÃ³ IAM Role cho SSM vÃ  cÃ³ SG-Isolation sáºµn sÃ ng Ä‘á»ƒ cÃ´ láº­p.
 ```
 
 ---
 
 #### 5.4.2 Logging and Evidence Storage
 
-Trong phần này, chúng ta tạo lớp lưu trữ log và evidence.
+Trong pháº§n nÃ y, chÃºng ta táº¡o lá»›p lÆ°u trá»¯ log vÃ  evidence.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
-+ S3 bucket lưu CloudTrail audit logs.
-+ S3 bucket lưu incident evidence.
-+ CloudTrail ghi nhận management events.
-+ VPC Flow Logs ghi network traffic metadata vào CloudWatch Logs.
-+ Cấu trúc thư mục evidence phục vụ forensic investigation.
++ S3 bucket lÆ°u CloudTrail audit logs.
++ S3 bucket lÆ°u incident evidence.
++ CloudTrail ghi nháº­n management events.
++ VPC Flow Logs ghi network traffic metadata vÃ o CloudWatch Logs.
++ Cáº¥u trÃºc thÆ° má»¥c evidence phá»¥c vá»¥ forensic investigation.
 
-Mục tiêu là đảm bảo mọi sự kiện quan trọng và bằng chứng phản ứng sự cố đều được lưu trữ để điều tra sau này.
+Má»¥c tiÃªu lÃ  Ä‘áº£m báº£o má»i sá»± kiá»‡n quan trá»ng vÃ  báº±ng chá»©ng pháº£n á»©ng sá»± cá»‘ Ä‘á»u Ä‘Æ°á»£c lÆ°u trá»¯ Ä‘á»ƒ Ä‘iá»u tra sau nÃ y.
 
-Luồng logging chính:
+Luá»“ng logging chÃ­nh:
 
 ```text
-CloudTrail → S3 Audit Logs
-VPC Flow Logs → CloudWatch Logs
-Incident Response Lambda → S3 Evidence Bucket
-Systems Manager → S3 Evidence Bucket
+CloudTrail â†’ S3 Audit Logs
+VPC Flow Logs â†’ CloudWatch Logs
+Incident Response Lambda â†’ S3 Evidence Bucket
+Systems Manager â†’ S3 Evidence Bucket
 ```
 
-Kết quả mong đợi sau phần 5.4.2:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.2:
 
 ```text
-CloudTrail, VPC Flow Logs và S3 Evidence Bucket đã sẵn sàng để lưu log và bằng chứng.
+CloudTrail, VPC Flow Logs vÃ  S3 Evidence Bucket Ä‘Ã£ sáºµn sÃ ng Ä‘á»ƒ lÆ°u log vÃ  báº±ng chá»©ng.
 ```
 
 ---
 
 #### 5.4.3 Threat Detection Services
 
-Trong phần này, chúng ta bật các dịch vụ phát hiện và điều tra mối đe dọa.
+Trong pháº§n nÃ y, chÃºng ta báº­t cÃ¡c dá»‹ch vá»¥ phÃ¡t hiá»‡n vÃ  Ä‘iá»u tra má»‘i Ä‘e dá»a.
 
-Các dịch vụ gồm:
+CÃ¡c dá»‹ch vá»¥ gá»“m:
 
 + Amazon GuardDuty.
 + AWS Security Hub.
 + Amazon Detective.
 + AWS Config.
 
-GuardDuty đóng vai trò phát hiện hành vi bất thường. Security Hub tổng hợp finding. Detective hỗ trợ điều tra mối quan hệ giữa tài nguyên, còn AWS Config theo dõi thay đổi cấu hình tài nguyên.
+GuardDuty Ä‘Ã³ng vai trÃ² phÃ¡t hiá»‡n hÃ nh vi báº¥t thÆ°á»ng. Security Hub tá»•ng há»£p finding. Detective há»— trá»£ Ä‘iá»u tra má»‘i quan há»‡ giá»¯a tÃ i nguyÃªn, cÃ²n AWS Config theo dÃµi thay Ä‘á»•i cáº¥u hÃ¬nh tÃ i nguyÃªn.
 
-Luồng detection chính:
+Luá»“ng detection chÃ­nh:
 
 ```text
 CloudTrail / VPC Flow Logs / DNS Logs
-→ GuardDuty
-→ Security Hub
-→ EventBridge
+â†’ GuardDuty
+â†’ Security Hub
+â†’ EventBridge
 ```
 
-Ngoài ra, Detective hỗ trợ điều tra incident sau khi có finding:
+NgoÃ i ra, Detective há»— trá»£ Ä‘iá»u tra incident sau khi cÃ³ finding:
 
 ```text
 GuardDuty Finding
-→ Amazon Detective
-→ Investigation
+â†’ Amazon Detective
+â†’ Investigation
 ```
 
-Kết quả mong đợi sau phần 5.4.3:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.3:
 
 ```text
-GuardDuty, Security Hub, Detective và AWS Config đã được bật để phục vụ phát hiện và điều tra mối đe dọa.
+GuardDuty, Security Hub, Detective vÃ  AWS Config Ä‘Ã£ Ä‘Æ°á»£c báº­t Ä‘á»ƒ phá»¥c vá»¥ phÃ¡t hiá»‡n vÃ  Ä‘iá»u tra má»‘i Ä‘e dá»a.
 ```
 
 ---
 
 #### 5.4.4 EventBridge and Step Functions
 
-Trong phần này, chúng ta triển khai lớp điều phối phản ứng sự cố.
+Trong pháº§n nÃ y, chÃºng ta triá»ƒn khai lá»›p Ä‘iá»u phá»‘i pháº£n á»©ng sá»± cá»‘.
 
-Các thành phần chính gồm:
+CÃ¡c thÃ nh pháº§n chÃ­nh gá»“m:
 
-+ EventBridge Rule nhận GuardDuty Finding.
-+ Step Functions State Machine điều phối workflow.
-+ Nhánh `Alert Only`.
-+ Nhánh `Approval Required`.
-+ Nhánh `Auto Response`.
++ EventBridge Rule nháº­n GuardDuty Finding.
++ Step Functions State Machine Ä‘iá»u phá»‘i workflow.
++ NhÃ¡nh `Alert Only`.
++ NhÃ¡nh `Approval Required`.
++ NhÃ¡nh `Auto Response`.
 
-Workflow giúp hệ thống quyết định cách phản ứng tùy theo severity, resource type và chính sách xử lý.
+Workflow giÃºp há»‡ thá»‘ng quyáº¿t Ä‘á»‹nh cÃ¡ch pháº£n á»©ng tÃ¹y theo severity, resource type vÃ  chÃ­nh sÃ¡ch xá»­ lÃ½.
 
-Luồng xử lý chính:
+Luá»“ng xá»­ lÃ½ chÃ­nh:
 
 ```text
 GuardDuty Finding
-→ EventBridge Rule
-→ Step Functions
-→ Evaluate Finding
-→ Alert Only / Approval Required / Auto Response
+â†’ EventBridge Rule
+â†’ Step Functions
+â†’ Evaluate Finding
+â†’ Alert Only / Approval Required / Auto Response
 ```
 
-Các nhánh xử lý:
+CÃ¡c nhÃ¡nh xá»­ lÃ½:
 
-| Nhánh | Điều kiện | Hành động |
+| NhÃ¡nh | Äiá»u kiá»‡n | HÃ nh Ä‘á»™ng |
 |---|---|---|
-| Alert Only | Finding có mức độ thấp hoặc không đủ điều kiện xử lý | Gửi cảnh báo, không cô lập EC2 |
-| Approval Required | Finding có mức độ cao nhưng cần SOC Analyst phê duyệt | Tạo incident chờ phê duyệt |
-| Auto Response | Finding nghiêm trọng và EC2 có tag `AutoIsolate=true` | Tự động phản ứng và cô lập EC2 |
+| Alert Only | Finding cÃ³ má»©c Ä‘á»™ tháº¥p hoáº·c khÃ´ng Ä‘á»§ Ä‘iá»u kiá»‡n xá»­ lÃ½ | Gá»­i cáº£nh bÃ¡o, khÃ´ng cÃ´ láº­p EC2 |
+| Approval Required | Finding cÃ³ má»©c Ä‘á»™ cao nhÆ°ng cáº§n SOC Analyst phÃª duyá»‡t | Táº¡o incident chá» phÃª duyá»‡t |
+| Auto Response | Finding nghiÃªm trá»ng vÃ  EC2 cÃ³ tag `AutoIsolate=true` | Tá»± Ä‘á»™ng pháº£n á»©ng vÃ  cÃ´ láº­p EC2 |
 
-Kết quả mong đợi sau phần 5.4.4:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.4:
 
 ```text
-GuardDuty finding có thể kích hoạt Step Functions workflow thông qua EventBridge.
+GuardDuty finding cÃ³ thá»ƒ kÃ­ch hoáº¡t Step Functions workflow thÃ´ng qua EventBridge.
 ```
 
 ---
 
 #### 5.4.5 Dashboard and Approval Flow
 
-Trong phần này, chúng ta triển khai dashboard cho SOC Analyst.
+Trong pháº§n nÃ y, chÃºng ta triá»ƒn khai dashboard cho SOC Analyst.
 
-Các thành phần gồm:
+CÃ¡c thÃ nh pháº§n gá»“m:
 
 + DynamoDB Incident Table.
 + Cognito User Pool.
 + Dashboard API Lambda.
 + API Gateway.
 + Amplify Hosting.
-+ Dashboard giao diện web.
-+ Approval action: Approve hoặc Reject.
++ Dashboard giao diá»‡n web.
++ Approval action: Approve hoáº·c Reject.
 
-Dashboard giúp SOC Analyst xem incident, kiểm tra thông tin finding và phê duyệt hành động phản ứng khi cần.
+Dashboard giÃºp SOC Analyst xem incident, kiá»ƒm tra thÃ´ng tin finding vÃ  phÃª duyá»‡t hÃ nh Ä‘á»™ng pháº£n á»©ng khi cáº§n.
 
-Luồng dashboard:
-
-```text
-SOC Analyst
-→ Amplify Dashboard
-→ Cognito Authentication
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
-```
-
-Luồng approval:
+Luá»“ng dashboard:
 
 ```text
 SOC Analyst
-→ Approve / Reject
-→ API Gateway
-→ Dashboard API Lambda
-→ DynamoDB Incident Table
+â†’ Amplify Dashboard
+â†’ Cognito Authentication
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
 ```
 
-Kết quả mong đợi sau phần 5.4.5:
+Luá»“ng approval:
 
 ```text
-SOC Analyst có thể xem incident trên dashboard và thay đổi approval status từ Pending sang Approved hoặc Rejected.
+SOC Analyst
+â†’ Approve / Reject
+â†’ API Gateway
+â†’ Dashboard API Lambda
+â†’ DynamoDB Incident Table
+```
+
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.5:
+
+```text
+SOC Analyst cÃ³ thá»ƒ xem incident trÃªn dashboard vÃ  thay Ä‘á»•i approval status tá»« Pending sang Approved hoáº·c Rejected.
 ```
 
 ---
 
 #### 5.4.6 Forensics, Snapshot and Isolation
 
-Trong phần này, chúng ta triển khai hành động phản ứng sự cố thật.
+Trong pháº§n nÃ y, chÃºng ta triá»ƒn khai hÃ nh Ä‘á»™ng pháº£n á»©ng sá»± cá»‘ tháº­t.
 
-Các thành phần gồm:
+CÃ¡c thÃ nh pháº§n gá»“m:
 
 + Incident Response Lambda.
 + Systems Manager Run Command.
@@ -340,168 +340,168 @@ Các thành phần gồm:
 + Security Group Isolation.
 + DynamoDB incident update.
 
-Khi Lambda được kích hoạt, hệ thống sẽ:
+Khi Lambda Ä‘Æ°á»£c kÃ­ch hoáº¡t, há»‡ thá»‘ng sáº½:
 
 ```text
 Collect Evidence
-→ Create EBS Snapshot
-→ Store Evidence in S3
-→ Replace SG-Workload with SG-Isolation
-→ Update DynamoDB Incident Status
+â†’ Create EBS Snapshot
+â†’ Store Evidence in S3
+â†’ Replace SG-Workload with SG-Isolation
+â†’ Update DynamoDB Incident Status
 ```
 
-Incident Response Lambda thực hiện các hành động chính:
+Incident Response Lambda thá»±c hiá»‡n cÃ¡c hÃ nh Ä‘á»™ng chÃ­nh:
 
-| Hành động | Mục đích |
+| HÃ nh Ä‘á»™ng | Má»¥c Ä‘Ã­ch |
 |---|---|
-| Đọc GuardDuty event | Xác định finding và EC2 bị ảnh hưởng |
-| Kiểm tra tag `AutoIsolate=true` | Đảm bảo chỉ cô lập workload được phép |
-| Chạy SSM Run Command | Thu thập thông tin forensic cơ bản |
-| Tạo EBS Snapshot | Lưu trạng thái volume phục vụ điều tra |
-| Ghi evidence vào S3 | Lưu event và response summary |
-| Thay Security Group | Cô lập EC2 bằng `SG-Isolation` |
-| Cập nhật DynamoDB | Ghi nhận trạng thái incident |
+| Äá»c GuardDuty event | XÃ¡c Ä‘á»‹nh finding vÃ  EC2 bá»‹ áº£nh hÆ°á»Ÿng |
+| Kiá»ƒm tra tag `AutoIsolate=true` | Äáº£m báº£o chá»‰ cÃ´ láº­p workload Ä‘Æ°á»£c phÃ©p |
+| Cháº¡y SSM Run Command | Thu tháº­p thÃ´ng tin forensic cÆ¡ báº£n |
+| Táº¡o EBS Snapshot | LÆ°u tráº¡ng thÃ¡i volume phá»¥c vá»¥ Ä‘iá»u tra |
+| Ghi evidence vÃ o S3 | LÆ°u event vÃ  response summary |
+| Thay Security Group | CÃ´ láº­p EC2 báº±ng `SG-Isolation` |
+| Cáº­p nháº­t DynamoDB | Ghi nháº­n tráº¡ng thÃ¡i incident |
 
-Kết quả mong đợi sau phần 5.4.6:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.6:
 
 ```text
-Lambda có thể thu thập evidence, tạo snapshot, ghi dữ liệu vào S3/DynamoDB và đổi EC2 sang SG-Isolation.
+Lambda cÃ³ thá»ƒ thu tháº­p evidence, táº¡o snapshot, ghi dá»¯ liá»‡u vÃ o S3/DynamoDB vÃ  Ä‘á»•i EC2 sang SG-Isolation.
 ```
 
 ---
 
 #### 5.4.7 Notification and Alerting
 
-Trong phần này, chúng ta triển khai lớp cảnh báo.
+Trong pháº§n nÃ y, chÃºng ta triá»ƒn khai lá»›p cáº£nh bÃ¡o.
 
-Các thành phần gồm:
+CÃ¡c thÃ nh pháº§n gá»“m:
 
 + SNS Topic `cloudsoc-incident-alerts`.
 + Email subscription.
 + Lambda publish notification.
-+ CloudWatch Alarm theo dõi Lambda Errors.
-+ Slack notification optional thông qua Amazon Q Developer in chat applications.
++ CloudWatch Alarm theo dÃµi Lambda Errors.
++ Slack notification optional thÃ´ng qua Amazon Q Developer in chat applications.
 
-Luồng notification chính:
+Luá»“ng notification chÃ­nh:
 
 ```text
 Incident Response Lambda
-→ Amazon SNS
-→ Email / Slack
-→ SOC Analyst
+â†’ Amazon SNS
+â†’ Email / Slack
+â†’ SOC Analyst
 ```
 
-Luồng cảnh báo lỗi:
+Luá»“ng cáº£nh bÃ¡o lá»—i:
 
 ```text
 CloudWatch Metrics
-→ CloudWatch Alarm
-→ Amazon SNS
-→ Email / Slack
+â†’ CloudWatch Alarm
+â†’ Amazon SNS
+â†’ Email / Slack
 ```
 
-Mục tiêu là giúp SOC Analyst nhận được thông báo kịp thời khi incident được xử lý hoặc khi hệ thống phản ứng sự cố gặp lỗi.
+Má»¥c tiÃªu lÃ  giÃºp SOC Analyst nháº­n Ä‘Æ°á»£c thÃ´ng bÃ¡o ká»‹p thá»i khi incident Ä‘Æ°á»£c xá»­ lÃ½ hoáº·c khi há»‡ thá»‘ng pháº£n á»©ng sá»± cá»‘ gáº·p lá»—i.
 
-Kết quả mong đợi sau phần 5.4.7:
+Káº¿t quáº£ mong Ä‘á»£i sau pháº§n 5.4.7:
 
 ```text
-SNS gửi notification thành công đến Email và Slack optional sau khi incident được xử lý.
+SNS gá»­i notification thÃ nh cÃ´ng Ä‘áº¿n Email vÃ  Slack optional sau khi incident Ä‘Æ°á»£c xá»­ lÃ½.
 ```
 
 ---
 
 #### Deployment Checklist
 
-Bảng dưới đây tóm tắt các thành phần cần hoàn thành trong phần triển khai.
+Báº£ng dÆ°á»›i Ä‘Ã¢y tÃ³m táº¯t cÃ¡c thÃ nh pháº§n cáº§n hoÃ n thÃ nh trong pháº§n triá»ƒn khai.
 
-![CloudSOC Deployment Checklist](/images/5-Workshop/5.4-Deploy-cloudsoc-system/deployment-checklist.png)
+![CloudSOC Deployment Checklist](/images/5-Workshop/5.4-Deploy-Cloudsoc-System/deployment-checklist.png)
 
-| Mục | Trạng thái mong đợi |
+| Má»¥c | Tráº¡ng thÃ¡i mong Ä‘á»£i |
 |---|---|
-| VPC và EC2 workload | Đã tạo |
-| SG-Workload và SG-Isolation | Đã cấu hình |
-| EC2 tag `AutoIsolate=true` | Đã thêm |
-| IAM Role cho EC2 SSM | Đã tạo |
-| CloudTrail | Đã bật |
-| VPC Flow Logs | Đã bật |
-| S3 Audit Logs Bucket | Đã tạo |
-| S3 Evidence Bucket | Đã tạo |
-| GuardDuty | Đã bật |
-| Security Hub | Đã bật |
-| Detective | Đã bật |
-| AWS Config | Đã bật |
-| EventBridge Rule | Đã tạo |
-| Step Functions Workflow | Đã tạo |
-| DynamoDB Incident Table | Đã tạo |
-| Cognito User Pool | Đã tạo |
-| Dashboard API Lambda | Đã tạo |
-| API Gateway | Đã tạo |
-| Amplify Dashboard | Đã triển khai |
-| Incident Response Lambda | Đã triển khai |
-| Systems Manager Run Command | Chạy thành công khi test |
-| EBS Snapshot | Tạo thành công khi test |
-| EC2 Isolation | Đổi sang SG-Isolation khi test |
-| SNS Topic | Đã tạo |
-| Email Notification | Gửi thành công |
-| CloudWatch Alarm | Đã tạo |
+| VPC vÃ  EC2 workload | ÄÃ£ táº¡o |
+| SG-Workload vÃ  SG-Isolation | ÄÃ£ cáº¥u hÃ¬nh |
+| EC2 tag `AutoIsolate=true` | ÄÃ£ thÃªm |
+| IAM Role cho EC2 SSM | ÄÃ£ táº¡o |
+| CloudTrail | ÄÃ£ báº­t |
+| VPC Flow Logs | ÄÃ£ báº­t |
+| S3 Audit Logs Bucket | ÄÃ£ táº¡o |
+| S3 Evidence Bucket | ÄÃ£ táº¡o |
+| GuardDuty | ÄÃ£ báº­t |
+| Security Hub | ÄÃ£ báº­t |
+| Detective | ÄÃ£ báº­t |
+| AWS Config | ÄÃ£ báº­t |
+| EventBridge Rule | ÄÃ£ táº¡o |
+| Step Functions Workflow | ÄÃ£ táº¡o |
+| DynamoDB Incident Table | ÄÃ£ táº¡o |
+| Cognito User Pool | ÄÃ£ táº¡o |
+| Dashboard API Lambda | ÄÃ£ táº¡o |
+| API Gateway | ÄÃ£ táº¡o |
+| Amplify Dashboard | ÄÃ£ triá»ƒn khai |
+| Incident Response Lambda | ÄÃ£ triá»ƒn khai |
+| Systems Manager Run Command | Cháº¡y thÃ nh cÃ´ng khi test |
+| EBS Snapshot | Táº¡o thÃ nh cÃ´ng khi test |
+| EC2 Isolation | Äá»•i sang SG-Isolation khi test |
+| SNS Topic | ÄÃ£ táº¡o |
+| Email Notification | Gá»­i thÃ nh cÃ´ng |
+| CloudWatch Alarm | ÄÃ£ táº¡o |
 | Slack Notification | Optional |
 
 ---
 
-#### Kết quả mong đợi sau từng phần
+#### Káº¿t quáº£ mong Ä‘á»£i sau tá»«ng pháº§n
 
-| Phần | Kết quả mong đợi |
+| Pháº§n | Káº¿t quáº£ mong Ä‘á»£i |
 |---|---|
-| 5.4.1 | EC2 workload chạy trong VPC và có thể được quản lý bằng Systems Manager |
-| 5.4.2 | CloudTrail, VPC Flow Logs và S3 Evidence Bucket hoạt động |
-| 5.4.3 | GuardDuty, Security Hub, Detective và AWS Config được bật |
-| 5.4.4 | GuardDuty finding có thể kích hoạt Step Functions qua EventBridge |
-| 5.4.5 | SOC Analyst có dashboard để xem incident và phê duyệt response |
-| 5.4.6 | Lambda có thể thu thập evidence, tạo snapshot và cô lập EC2 |
-| 5.4.7 | SNS có thể gửi alert qua Email và Slack optional |
+| 5.4.1 | EC2 workload cháº¡y trong VPC vÃ  cÃ³ thá»ƒ Ä‘Æ°á»£c quáº£n lÃ½ báº±ng Systems Manager |
+| 5.4.2 | CloudTrail, VPC Flow Logs vÃ  S3 Evidence Bucket hoáº¡t Ä‘á»™ng |
+| 5.4.3 | GuardDuty, Security Hub, Detective vÃ  AWS Config Ä‘Æ°á»£c báº­t |
+| 5.4.4 | GuardDuty finding cÃ³ thá»ƒ kÃ­ch hoáº¡t Step Functions qua EventBridge |
+| 5.4.5 | SOC Analyst cÃ³ dashboard Ä‘á»ƒ xem incident vÃ  phÃª duyá»‡t response |
+| 5.4.6 | Lambda cÃ³ thá»ƒ thu tháº­p evidence, táº¡o snapshot vÃ  cÃ´ láº­p EC2 |
+| 5.4.7 | SNS cÃ³ thá»ƒ gá»­i alert qua Email vÃ  Slack optional |
 
 ---
 
-#### Luồng hoạt động sau khi triển khai
+#### Luá»“ng hoáº¡t Ä‘á»™ng sau khi triá»ƒn khai
 
-Sau khi hoàn thành phần 5.4, hệ thống AWS CloudSOC có thể hoạt động theo luồng sau:
+Sau khi hoÃ n thÃ nh pháº§n 5.4, há»‡ thá»‘ng AWS CloudSOC cÃ³ thá»ƒ hoáº¡t Ä‘á»™ng theo luá»“ng sau:
 
 ```text
-1. GuardDuty phát hiện finding bất thường.
-2. Security Hub tổng hợp finding bảo mật.
-3. EventBridge nhận GuardDuty Finding.
-4. Step Functions đánh giá severity và resource type.
-5. Dashboard hiển thị incident cho SOC Analyst.
-6. Incident Response Lambda được kích hoạt khi finding đủ điều kiện.
-7. Systems Manager thu thập forensic evidence từ EC2.
-8. Lambda tạo EBS Snapshot để phục vụ điều tra.
-9. Lambda ghi event và response summary vào S3 Evidence Bucket.
-10. Lambda đổi EC2 từ SG-Workload sang SG-Isolation.
-11. DynamoDB cập nhật trạng thái incident.
-12. SNS gửi notification đến Email hoặc Slack.
+1. GuardDuty phÃ¡t hiá»‡n finding báº¥t thÆ°á»ng.
+2. Security Hub tá»•ng há»£p finding báº£o máº­t.
+3. EventBridge nháº­n GuardDuty Finding.
+4. Step Functions Ä‘Ã¡nh giÃ¡ severity vÃ  resource type.
+5. Dashboard hiá»ƒn thá»‹ incident cho SOC Analyst.
+6. Incident Response Lambda Ä‘Æ°á»£c kÃ­ch hoáº¡t khi finding Ä‘á»§ Ä‘iá»u kiá»‡n.
+7. Systems Manager thu tháº­p forensic evidence tá»« EC2.
+8. Lambda táº¡o EBS Snapshot Ä‘á»ƒ phá»¥c vá»¥ Ä‘iá»u tra.
+9. Lambda ghi event vÃ  response summary vÃ o S3 Evidence Bucket.
+10. Lambda Ä‘á»•i EC2 tá»« SG-Workload sang SG-Isolation.
+11. DynamoDB cáº­p nháº­t tráº¡ng thÃ¡i incident.
+12. SNS gá»­i notification Ä‘áº¿n Email hoáº·c Slack.
 ```
 
 ---
 
-#### Kết quả sau khi hoàn thành phần 5.4
+#### Káº¿t quáº£ sau khi hoÃ n thÃ nh pháº§n 5.4
 
-Sau khi hoàn thành toàn bộ phần 5.4, hệ thống AWS CloudSOC đã có đầy đủ các thành phần cốt lõi của một mô hình SOC tự động trên AWS.
+Sau khi hoÃ n thÃ nh toÃ n bá»™ pháº§n 5.4, há»‡ thá»‘ng AWS CloudSOC Ä‘Ã£ cÃ³ Ä‘áº§y Ä‘á»§ cÃ¡c thÃ nh pháº§n cá»‘t lÃµi cá»§a má»™t mÃ´ hÃ¬nh SOC tá»± Ä‘á»™ng trÃªn AWS.
 
-Hệ thống có thể thực hiện quy trình:
+Há»‡ thá»‘ng cÃ³ thá»ƒ thá»±c hiá»‡n quy trÃ¬nh:
 
 ```text
 GuardDuty detects a finding
-→ EventBridge routes the finding
-→ Step Functions evaluates the response path
-→ Lambda performs response actions
-→ Systems Manager collects evidence
-→ EBS Snapshot preserves forensic state
-→ EC2 is isolated with SG-Isolation
-→ DynamoDB records incident status
-→ SNS sends notification to SOC Analyst
+â†’ EventBridge routes the finding
+â†’ Step Functions evaluates the response path
+â†’ Lambda performs response actions
+â†’ Systems Manager collects evidence
+â†’ EBS Snapshot preserves forensic state
+â†’ EC2 is isolated with SG-Isolation
+â†’ DynamoDB records incident status
+â†’ SNS sends notification to SOC Analyst
 ```
 
-Các thành phần chính đã hoàn thành:
+CÃ¡c thÃ nh pháº§n chÃ­nh Ä‘Ã£ hoÃ n thÃ nh:
 
 ```text
 VPC
@@ -530,14 +530,14 @@ Slack optional
 
 ---
 
-#### Tổng kết
+#### Tá»•ng káº¿t
 
-Phần 5.4 đã hoàn thành quá trình triển khai hệ thống CloudSOC từ hạ tầng mạng, logging, detection, workflow, dashboard, forensic response đến alerting.
+Pháº§n 5.4 Ä‘Ã£ hoÃ n thÃ nh quÃ¡ trÃ¬nh triá»ƒn khai há»‡ thá»‘ng CloudSOC tá»« háº¡ táº§ng máº¡ng, logging, detection, workflow, dashboard, forensic response Ä‘áº¿n alerting.
 
-Đây là phần triển khai chính của workshop và là nền tảng để thực hiện phần tiếp theo:
+ÄÃ¢y lÃ  pháº§n triá»ƒn khai chÃ­nh cá»§a workshop vÃ  lÃ  ná»n táº£ng Ä‘á»ƒ thá»±c hiá»‡n pháº§n tiáº¿p theo:
 
 ```text
 5.5 Testing and Validation
 ```
 
-Trong phần tiếp theo, chúng ta sẽ kiểm tra toàn bộ luồng hoạt động của hệ thống, bao gồm phát hiện finding, chạy workflow, cô lập EC2, lưu evidence và gửi notification.
+Trong pháº§n tiáº¿p theo, chÃºng ta sáº½ kiá»ƒm tra toÃ n bá»™ luá»“ng hoáº¡t Ä‘á»™ng cá»§a há»‡ thá»‘ng, bao gá»“m phÃ¡t hiá»‡n finding, cháº¡y workflow, cÃ´ láº­p EC2, lÆ°u evidence vÃ  gá»­i notification.
