@@ -19,7 +19,7 @@ Each event provided useful lessons that supported my AWS learning journey, inter
       <span class="event-date">09/05/2026</span>
       <h3>AWS AI Day / FCAJ Meetup</h3>
       <p>This event focused on AI product development, AWS cloud services, serverless architecture, prompt optimization, AI security, and modern AI-assisted software development methods.</p>
-      <a class="event-link" href="4.1-Event1/">View details</a>
+      <a class="event-link" href="4.1-event1/">View details</a>
     </div>
   </article>
 
@@ -29,7 +29,7 @@ Each event provided useful lessons that supported my AWS learning journey, inter
       <span class="event-date">23/05/2026</span>
       <h3>FCAJ Community Day</h3>
       <p>This event shared knowledge about Generative AI, Cloud Computing, AI Agents, enterprise systems, and how AI/cloud technologies are applied in real environments.</p>
-      <a class="event-link" href="4.2-Event2/">View details</a>
+      <a class="event-link" href="4.2-event2/">View details</a>
     </div>
   </article>
 
@@ -39,7 +39,7 @@ Each event provided useful lessons that supported my AWS learning journey, inter
       <span class="event-date">13/06/2026</span>
       <h3>FCAJ Meetup</h3>
       <p>This event covered real learning journeys, AWS community opportunities, Cloud/AWS career paths, and practical DevOps experience in working environments.</p>
-      <a class="event-link" href="4.3-Event3/">View details</a>
+      <a class="event-link" href="4.3-event3/">View details</a>
     </div>
   </article>
 </div>

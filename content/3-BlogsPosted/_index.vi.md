@@ -16,7 +16,7 @@ Những chủ đề chính bao gồm **Cloud Security**, **Security Operations C
 
 ---
 
-### [Blog 1 - Hoàn thành Proof of Concept AWS CloudSOC](3.1-Blog1/)
+### [Blog 1 - Hoàn thành Proof of Concept AWS CloudSOC](3.1-blog1/)
 
 Bài viết này giới thiệu quá trình nhóm hoàn thành **Proof of Concept cho dự án AWS CloudSOC** sau hơn hai tuần triển khai. Nội dung tập trung vào mục tiêu của dự án, kiến trúc tổng quan và cách hệ thống phát hiện các hành vi đáng ngờ như port scanning, SSH brute-force hoặc truy cập từ IP đáng ngờ.
 
@@ -24,7 +24,7 @@ Bài viết cũng trình bày cách các dịch vụ như **Amazon GuardDuty**, 
 
 ---
 
-### [Blog 2 - Quy trình xử lý sự cố thông minh và có kiểm soát trong AWS CloudSOC](3.2-Blog2/)
+### [Blog 2 - Quy trình xử lý sự cố thông minh và có kiểm soát trong AWS CloudSOC](3.2-blog2/)
 
 Bài viết này tập trung vào luồng xử lý sự cố trong hệ thống AWS CloudSOC. Nội dung giải thích cách một security finding từ **Amazon GuardDuty** được đưa vào **Amazon EventBridge**, sau đó kích hoạt **AWS Step Functions** để điều phối quy trình phản ứng sự cố.
 
@@ -32,7 +32,7 @@ Bài viết cũng mô tả cách hệ thống xử lý incident dựa trên mứ
 
 ---
 
-### [Blog 3 - Kết thúc dự án AWS CloudSOC: Những bài học quý giá nhất](3.3-Blog3/)
+### [Blog 3 - Kết thúc dự án AWS CloudSOC: Những bài học quý giá nhất](3.3-blog3/)
 
 Bài viết này tổng kết những bài học quan trọng sau khi hoàn thành dự án AWS CloudSOC. Nội dung đề cập đến sự khác biệt giữa môi trường Lab và Production, tầm quan trọng của controlled automation, thiết kế IAM theo nguyên tắc least privilege, bảo toàn forensic evidence, logging, kiểm soát chi phí và kiểm thử thực tế.
 

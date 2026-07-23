@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Báo cáo thực tập"
 date: 2024-01-01
 weight: 1
@@ -65,7 +65,7 @@ aliases:
 
 <ul class="report-sections">
 <li>
-  <a href="1-Worklog/" class="section-card">
+  <a href="1-worklog/" class="section-card">
     <div class="card-icon-wrap worklog"><i class="fas fa-clipboard-list"></i></div>
     <div class="card-body">
       <span class="card-title">Worklog</span>
@@ -76,7 +76,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="2-Proposal/" class="section-card">
+  <a href="2-proposal/" class="section-card">
     <div class="card-icon-wrap proposal"><i class="fas fa-file-alt"></i></div>
     <div class="card-body">
       <span class="card-title">Proposal — Bản đề xuất</span>
@@ -87,7 +87,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="3-BlogsPosted/" class="section-card">
+  <a href="3-blogsposted/" class="section-card">
     <div class="card-icon-wrap blogs"><i class="fas fa-newspaper"></i></div>
     <div class="card-body">
       <span class="card-title">Blogs đã đăng</span>
@@ -98,7 +98,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="4-EventParticipated/" class="section-card">
+  <a href="4-eventparticipated/" class="section-card">
     <div class="card-icon-wrap events"><i class="fas fa-calendar-check"></i></div>
     <div class="card-body">
       <span class="card-title">Events đã tham gia</span>
@@ -109,7 +109,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="5-Workshop/" class="section-card">
+  <a href="5-workshop/" class="section-card">
     <div class="card-icon-wrap workshop"><i class="fas fa-tools"></i></div>
     <div class="card-body">
       <span class="card-title">Workshop</span>
@@ -120,7 +120,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="6-Self-evaluation/" class="section-card">
+  <a href="6-self-evaluation/" class="section-card">
     <div class="card-icon-wrap eval"><i class="fas fa-star"></i></div>
     <div class="card-body">
       <span class="card-title">Self-Assessment</span>
@@ -131,7 +131,7 @@ aliases:
   </a>
 </li>
 <li>
-  <a href="7-Feedback/" class="section-card">
+  <a href="7-feedback/" class="section-card">
     <div class="card-icon-wrap feedback"><i class="fas fa-comments"></i></div>
     <div class="card-body">
       <span class="card-title">Sharing and Feedback</span>

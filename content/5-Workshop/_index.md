@@ -95,12 +95,12 @@ GuardDuty Finding
 
 #### Content
 
-1. [Workshop Overview](5.1-Workshop-overview/)
-2. [Prerequisites](5.2-Prerequiste/)
-3. [Architecture and Workflow](5.3-Architecture-and-workflow/)
-4. [Deploy CloudSOC System](5.4-Deploy-cloudsoc-system/)
-5. [Testing and Validation](5.5-Testing-and-validation/)
-6. [Resource Cleanup](5.6-Resource-Cleanup/)
+1. [Workshop Overview](5.1-workshop-overview/)
+2. [Prerequisites](5.2-prerequiste/)
+3. [Architecture and Workflow](5.3-architecture-and-workflow/)
+4. [Deploy CloudSOC System](5.4-deploy-cloudsoc-system/)
+5. [Testing and Validation](5.5-testing-and-validation/)
+6. [Resource Cleanup](5.6-resource-cleanup/)
 
 #### Expected Final Result
 

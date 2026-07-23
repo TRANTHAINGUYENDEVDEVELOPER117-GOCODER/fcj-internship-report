@@ -103,12 +103,12 @@ GuardDuty Finding
 
 #### Nội dung
 
-1. [Tổng quan workshop](5.1-Workshop-overview/)
-2. [Điều kiện tiên quyết](5.2-Prerequiste/)
-3. [Kiến trúc và workflow](5.3-Architecture-and-workflow/)
-4. [Triển khai hệ thống CloudSOC](5.4-Deploy-cloudsoc-system/)
-5. [Kiểm thử và xác thực hệ thống](5.5-Testing-and-validation/)
-6. [Dọn dẹp tài nguyên](5.6-Resource-Cleanup/)
+1. [Tổng quan workshop](5.1-workshop-overview/)
+2. [Điều kiện tiên quyết](5.2-prerequiste/)
+3. [Kiến trúc và workflow](5.3-architecture-and-workflow/)
+4. [Triển khai hệ thống CloudSOC](5.4-deploy-cloudsoc-system/)
+5. [Kiểm thử và xác thực hệ thống](5.5-testing-and-validation/)
+6. [Dọn dẹp tài nguyên](5.6-resource-cleanup/)
 
 ---
 

@@ -14,7 +14,7 @@ The main topics include **Cloud Security**, **Security Operations Center**, **In
 
 ---
 
-### [Blog 1 - Completing the AWS CloudSOC Proof of Concept](3.1-Blog1/)
+### [Blog 1 - Completing the AWS CloudSOC Proof of Concept](3.1-blog1/)
 
 This blog introduces the completion of the **AWS CloudSOC Proof of Concept** after more than two weeks of implementation. It explains the overall goal of the project, the main architecture, and how the system can detect suspicious activities such as port scanning, SSH brute-force attempts, and access from suspicious IP addresses.
 
@@ -22,7 +22,7 @@ The blog also highlights how AWS services such as **Amazon GuardDuty**, **Amazon
 
 ---
 
-### [Blog 2 - A Smart and Controlled Incident Response Workflow in AWS CloudSOC](3.2-Blog2/)
+### [Blog 2 - A Smart and Controlled Incident Response Workflow in AWS CloudSOC](3.2-blog2/)
 
 This blog focuses on the incident response workflow of the AWS CloudSOC system. It explains how a security finding from **Amazon GuardDuty** is processed through **Amazon EventBridge** and **AWS Step Functions**, then handled based on severity, resource type, `AutoIsolate=true` tag, and Dry-run mode.
 
@@ -30,7 +30,7 @@ The blog also describes the controlled response process, including SOC Analyst a
 
 ---
 
-### [Blog 3 - Completing the AWS CloudSOC Project: The Most Valuable Lessons Learned](3.3-Blog3/)
+### [Blog 3 - Completing the AWS CloudSOC Project: The Most Valuable Lessons Learned](3.3-blog3/)
 
 This blog summarizes the most valuable lessons learned after completing the AWS CloudSOC project. It discusses the difference between lab and production environments, the importance of controlled automation, least privilege IAM design, forensic evidence preservation, logging, cost control, and real-world testing.
 

@@ -19,7 +19,7 @@ Mỗi sự kiện đều mang lại những bài học hữu ích, hỗ trợ ch
       <span class="event-date">09/05/2026</span>
       <h3>AWS AI Day / FCAJ Meetup</h3>
       <p>Sự kiện tập trung vào AI product development, AWS cloud services, kiến trúc serverless, prompt optimization, AI security và các phương pháp phát triển phần mềm hiện đại hỗ trợ bởi AI.</p>
-      <a class="event-link" href="4.1-Event1/">Xem chi tiết</a>
+      <a class="event-link" href="4.1-event1/">Xem chi tiết</a>
     </div>
   </article>
 
@@ -29,7 +29,7 @@ Mỗi sự kiện đều mang lại những bài học hữu ích, hỗ trợ ch
       <span class="event-date">23/05/2026</span>
       <h3>FCAJ Community Day</h3>
       <p>Sự kiện chia sẻ kiến thức về Generative AI, Cloud Computing, AI Agents, kiến trúc hệ thống doanh nghiệp và cách áp dụng AI/cloud trong môi trường thực tế.</p>
-      <a class="event-link" href="4.2-Event2/">Xem chi tiết</a>
+      <a class="event-link" href="4.2-event2/">Xem chi tiết</a>
     </div>
   </article>
 
@@ -39,7 +39,7 @@ Mỗi sự kiện đều mang lại những bài học hữu ích, hỗ trợ ch
       <span class="event-date">13/06/2026</span>
       <h3>FCAJ Meetup</h3>
       <p>Sự kiện chia sẻ về hành trình học tập thực tế, cộng đồng AWS, định hướng nghề nghiệp Cloud/AWS và kinh nghiệm DevOps trong môi trường làm việc.</p>
-      <a class="event-link" href="4.3-Event3/">Xem chi tiết</a>
+      <a class="event-link" href="4.3-event3/">Xem chi tiết</a>
     </div>
   </article>
 </div>

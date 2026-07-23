@@ -1,10 +1,3 @@
-Bạn copy nội dung tiếng Việt này vào:
-
-```text
-content/1-Worklog/1.5-Week5/_index.vi.md
-```
-
-```markdown
 ---
 title: "Nhật ký công việc Tuần 5"
 date: 2026-06-01
@@ -86,4 +79,3 @@ pre: " <b> 1.5. </b> "
 * Xóa các tài nguyên thử nghiệm không cần thiết sau khi hoàn thành bài thực hành.
 
 * Hoàn thành Tuần 5 với kiến thức nền tảng về Amazon CloudWatch, VPC Flow Logs, cảnh báo, Dashboard, ghi log và giám sát chi phí AWS.
-```
